@@ -1045,9 +1045,10 @@ void GL_SubmitVertexes (void)
 		// transforms via the world matrix.
 		D3DXMATRIX d3d_ViewMatrix;
 
+#ifndef _XBOX // Not used on Xbox
 		// issue a beginscene (geometry needs this
 		IDirect3DDevice8_BeginScene (d3d_Device);
-
+#endif
 		// force an invalid vertex shader so that the first time will change it
 		D3D_SetVertexShader (D3DFVF_XYZ | D3DFVF_XYZRHW);
 
@@ -1066,6 +1067,7 @@ void GL_SubmitVertexes (void)
 	if(g_bScissorTest)
 		IDirect3DDevice8_SetScissors(d3d_Device, 1, FALSE, &g_ScissorRect);	
 
+#ifndef _XBOX // Not used in PCSX-R
 	// check polygon offset
 	if (!d3d_PolyOffsetSwitched)
 	{
@@ -1077,14 +1079,14 @@ void GL_SubmitVertexes (void)
 		else
 		{
 			// no polygon offset - back to normal z bias
-			// (see comment in 
-//			D3D_SetRenderState (D3DRS_ZBIAS, 8); 
+//			D3D_SetRenderState (D3DRS_ZBIAS, 8);
 			D3D_SetRenderState (D3DRS_ZBIAS, 0);
 		}										 
 
 		// we've switched polygon offset now
 		d3d_PolyOffsetSwitched = TRUE;
 	}
+#endif
 
 	// check for dirty matrixes
 	D3D_CheckDirtyMatrix (&d3d_ModelViewMatrix);
@@ -3349,7 +3351,9 @@ int FakeSwapBuffers (void)
 		}
 #endif
 		// endscene and present are only required if a scene was begun (i.e. if something was actually drawn)
+#ifndef _XBOX // Not used on Xbox
 		IDirect3DDevice8_EndScene (d3d_Device);
+#endif
 		d3d_SceneBegun = FALSE;
 
 		// present the display
