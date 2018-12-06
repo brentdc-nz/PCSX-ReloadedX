@@ -1130,13 +1130,15 @@ void GL_SubmitVertexes (void)
 	case GL_TRIANGLES:
 		//OutputDebugString("GL_TRIANGLES\n");
 		// D3DPT_TRIANGLELIST models GL_TRIANGLES when used for either a single triangle or multiple triangles
-		if (gl_CullMode != GL_FRONT_AND_BACK && d3d_NumVerts % 3 == 0 && d3d_NumVerts != 0) IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_TRIANGLELIST, d3d_NumVerts / 3, d3d_Vertexes, sizeof (gl_vertex_t));
+//		if (gl_CullMode != GL_FRONT_AND_BACK && d3d_NumVerts % 3 == 0 && d3d_NumVerts != 0) IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_TRIANGLELIST, d3d_NumVerts / 3, d3d_Vertexes, sizeof (gl_vertex_t));
+		if (gl_CullMode != GL_FRONT_AND_BACK && d3d_NumVerts != 0) IDirect3DDevice8_DrawVerticesUP (d3d_Device, D3DPT_TRIANGLELIST, d3d_NumVerts, d3d_Vertexes, sizeof (gl_vertex_t));
 		break;
 
 	case GL_TRIANGLE_STRIP:
 		//OutputDebugString("GL_TRIANGLE_STRIP\n");
 		// regular tristrip
-		if (gl_CullMode != GL_FRONT_AND_BACK) IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_TRIANGLESTRIP, d3d_NumVerts - 2, d3d_Vertexes, sizeof (gl_vertex_t));
+//		if (gl_CullMode != GL_FRONT_AND_BACK) IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_TRIANGLESTRIP, d3d_NumVerts - 2, d3d_Vertexes, sizeof (gl_vertex_t));
+		if (gl_CullMode != GL_FRONT_AND_BACK) IDirect3DDevice8_DrawVerticesUP (d3d_Device, D3DPT_TRIANGLESTRIP, d3d_NumVerts, d3d_Vertexes, sizeof (gl_vertex_t));
 		break;
 
 	case GL_POLYGON:
@@ -1145,7 +1147,8 @@ void GL_SubmitVertexes (void)
 	case GL_TRIANGLE_FAN:
 		//OutputDebugString("GL_TRIANGLE_FAN\n");
 		// regular trifan
-		if (gl_CullMode != GL_FRONT_AND_BACK) IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_TRIANGLEFAN, d3d_NumVerts - 2, d3d_Vertexes, sizeof (gl_vertex_t));
+//		if (gl_CullMode != GL_FRONT_AND_BACK) IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_TRIANGLEFAN, d3d_NumVerts - 2, d3d_Vertexes, sizeof (gl_vertex_t));
+		if (gl_CullMode != GL_FRONT_AND_BACK) IDirect3DDevice8_DrawVerticesUP (d3d_Device, D3DPT_TRIANGLEFAN, d3d_NumVerts, d3d_Vertexes, sizeof (gl_vertex_t));
 		break;
 
 	case GL_QUADS:
@@ -1153,17 +1156,24 @@ void GL_SubmitVertexes (void)
 
 		if (gl_CullMode == GL_FRONT_AND_BACK) break;
 
+#ifdef _XBOX // Use special D3DPT_QUADLIST Xbox extension for speed
+		IDirect3DDevice8_DrawVerticesUP(d3d_Device, D3DPT_QUADLIST, d3d_NumVerts, d3d_Vertexes, sizeof (gl_vertex_t));
+#else
 		// quads are a special case of trifans where each quad (numverts / 4) represents a trifan with 2 prims in it
 		for (i = 0; i < d3d_NumVerts; i += 4)
 			IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_TRIANGLEFAN, 2, &d3d_Vertexes[i], sizeof (gl_vertex_t));
-
+#endif
 		break;
 
 	case GL_LINES:
-		IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_LINELIST, d3d_NumVerts, d3d_Vertexes, sizeof (gl_vertex_t));
+//		IDirect3DDevice8_DrawPrimitiveUP (d3d_Device, D3DPT_LINELIST, d3d_NumVerts, d3d_Vertexes, sizeof (gl_vertex_t));
+		IDirect3DDevice8_DrawVerticesUP (d3d_Device, D3DPT_LINELIST, d3d_NumVerts, d3d_Vertexes, sizeof (gl_vertex_t));
 		break;
 
 	case GL_QUAD_STRIP:
+#ifdef _XBOX // Use special D3DPT_QUADSTRIP Xbox extension for speed
+		IDirect3DDevice8_DrawVerticesUP(d3d_Device, D3DPT_QUADSTRIP, d3d_NumVerts, d3d_Vertexes, sizeof (gl_vertex_t));
+#else
 		// not as optimal as it could be, so hopefully it won't be used too often!!!
 		if (gl_CullMode == GL_FRONT_AND_BACK) break;
 
@@ -1191,7 +1201,7 @@ void GL_SubmitVertexes (void)
 				sizeof (gl_vertex_t)
 			);
 		}
-
+#endif
 		break;
 
 	default:
