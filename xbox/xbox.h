@@ -19,6 +19,8 @@
 #ifndef __XBOX_H
 #define __XBOX_H
 
+#define XBOX_VERSION "Pre-Beta v0.6"
+
 // Commands
 #define ID_FILE_RUNBIOS 001
 #define ID_FILE_RUN_ISO 002
