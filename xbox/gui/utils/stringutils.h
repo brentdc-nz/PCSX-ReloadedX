@@ -16,6 +16,8 @@ public:
 	static int SplitString(const std::string& strInput, CStringArray &results);
 	static void ToLower(std::string &strText);
 	static std::string IntToString(int iValue);
+	static std::string ControlEnumToString(int iControl);
+	static int ControlStringToEnum(std::string strControl);
 };
 
 #endif //H_CSTRINGUTILS

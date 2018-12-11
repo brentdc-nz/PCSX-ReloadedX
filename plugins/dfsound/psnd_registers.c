@@ -42,11 +42,6 @@
 #define SUSTAIN_MS     441L
 #define RELEASE_MS     437L
 
-
-
-
-
-
 int Check_IRQ( int addr, int force ) {
 	if(spuCtrl & CTRL_IRQ)         // some callback and irq active?
 	{

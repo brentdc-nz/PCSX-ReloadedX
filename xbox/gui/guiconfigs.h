@@ -58,7 +58,7 @@ public:
 	void SetGUIControlID(int iCtrlID) { m_iGUIControlID = iCtrlID; };
 	int GetGUIControlID() { return m_iGUIControlID; };
 
-private:
+protected:
 	int m_iDataType;
 	int m_iConfigType;
 	int m_iGUIControlID;
@@ -89,9 +89,25 @@ public:
 
 	virtual int GetValue(){ return m_iValue; };
 	virtual void SetValue(int iValue) { m_iValue = iValue; };
-	virtual std::string ToString() { return CStringUtils::IntToString(m_iValue); };
-	virtual void FromString(const std::string strText) { m_iValue = atoi(strText.c_str()); };
+	virtual std::string ToString()
+	{
+		CStringArray vecConfig;
+		CStringUtils::SplitString(m_strSetting, vecConfig);
+		if(vecConfig[0] == "controls")
+			return CStringUtils::ControlEnumToString(m_iValue);
+		else
+			return CStringUtils::IntToString(m_iValue); 
 	
+	};
+	virtual void FromString(const std::string strText)
+	{
+		CStringArray vecConfig;
+		CStringUtils::SplitString(m_strSetting, vecConfig);
+		if(vecConfig[0] == "controls")
+			m_iValue = CStringUtils::ControlStringToEnum(strText);
+		else
+			m_iValue = atoi(strText.c_str());
+	};
 	void AddOption(std::string strDisplayText, int iValue) { m_OptionsMap.insert(std::pair<std::string, int>(strDisplayText, iValue)); }
 	const std::map<std::string, int> &GetOptions() const { return m_OptionsMap; }
 

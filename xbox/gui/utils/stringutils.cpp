@@ -2,6 +2,34 @@
 #include <sstream>
 #include <algorithm>
 #include <sstream>
+#include "..\..\..\xbox\input\sysxboxinput.h"
+
+typedef struct
+{
+	std::string strCtrlName;
+	int iCtrlEnum;
+} sControlNameMap;
+
+// Used to convert between strings and enums
+sControlNameMap ControlNameMap[] =
+{
+	{"xbox_a", K_XBOX_A},
+	{"xbox_b", K_XBOX_B},
+	{"xbox_x", K_XBOX_X},
+	{"xbox_Y", K_XBOX_Y},
+	{"xbox_back", K_XBOX_BACK},
+	{"xbox_start", K_XBOX_START},
+	{"xbox_black", K_XBOX_BLACK},
+	{"xbox_white", K_XBOX_WHITE},
+	{"xbox_dpad_up", K_XBOX_DPAD_UP},
+	{"xbox_dpad_down", K_XBOX_DPAD_DOWN},
+	{"xbox_dpad_left", K_XBOX_DPAD_LEFT},
+	{"xbox_dpad_right", K_XBOX_DPAD_RIGHT},
+	{"xbox_l_trig", K_XBOX_LTRIG},
+	{"xbox_r_trig", K_XBOX_RTRIG},
+	{"xbox_l_thumb", K_XBOX_LTHUMB},
+	{"xbox_r_thumb", K_XBOX_RTHUMB},
+};
 
 void CStringUtils::AddSlashAtEnd(std::string& strFolder)
 {
@@ -52,4 +80,24 @@ std::string CStringUtils::IntToString(int iValue)
 	ssTemp << iValue;
 	std::string strTemp = ssTemp.str();
 	return strTemp;
+}
+
+std::string CStringUtils::ControlEnumToString(int iControl)
+{
+	for(int i = 0; i < sizeof(ControlNameMap)/sizeof(ControlNameMap[0]); i++)
+	{
+		if(iControl == ControlNameMap[i].iCtrlEnum)
+			return ControlNameMap[i].strCtrlName;
+	}
+	return "NA";
+}
+
+int CStringUtils::ControlStringToEnum(std::string strControl)
+{
+	for(int i = 0; i < sizeof(ControlNameMap)/sizeof(ControlNameMap[0]); i++)
+	{
+		if(strControl == ControlNameMap[i].strCtrlName)
+			return ControlNameMap[i].iCtrlEnum;
+	}
+	return 0;
 }
