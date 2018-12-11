@@ -1,4 +1,5 @@
 #include "fileutils.h"
+#include <algorithm>
 #include <xtl.h>
 #include "stringutils.h"
 
@@ -42,4 +43,7 @@ void CFileUtils::GetFilesInDirectory(std::string strPath, std::vector<std::strin
 	}
 
 	FindClose(hFind);
+
+	// Sort the strings alphabetically
+	std::sort(vecFiles.begin(), vecFiles.end());
 }

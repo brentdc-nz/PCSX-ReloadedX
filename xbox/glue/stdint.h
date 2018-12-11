@@ -39,4 +39,4 @@ typedef unsigned __int64 uint64_t;
 #define intptr_t int32_t
 #define uintptr_t uint32_t
 
-#endif
+#endif //__STDINT_H
