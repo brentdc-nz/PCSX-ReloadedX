@@ -16,7 +16,7 @@ sControlNameMap ControlNameMap[] =
 	{"xbox_a", K_XBOX_A},
 	{"xbox_b", K_XBOX_B},
 	{"xbox_x", K_XBOX_X},
-	{"xbox_Y", K_XBOX_Y},
+	{"xbox_y", K_XBOX_Y},
 	{"xbox_back", K_XBOX_BACK},
 	{"xbox_start", K_XBOX_START},
 	{"xbox_black", K_XBOX_BLACK},
