@@ -34,8 +34,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma warning( disable : 4820 )
 
 // Utilities
-#define BYTE_CLAMP(i) (int) ((((i) > 255) ? 255 : (((i) < 0) ? 0 : (i))))
-#define	RELEASENULL(object) if (object) {object->Release();}
+#define	RELEASENULL(object) if (object) { object->Release(); }
+// fd: Macros are evil!
+//#define BYTE_CLAMP(i) (int) ((((i) > 255) ? 255 : (((i) < 0) ? 0 : (i))))
+__inline byte BYTE_CLAMP(int n)
+{
+	if (n&(~0xFF))
+		return (-n)>>31;
+
+	return n;
+}
 
 //#define _PROFILE
 #ifdef _PROFILE

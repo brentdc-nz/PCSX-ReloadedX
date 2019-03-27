@@ -93,10 +93,18 @@ D3DVIEWPORT8 d3d_Viewport;
 BOOL g_bScissorTest = FALSE;
 D3DRECT g_ScissorRect;
 
-// utility
-#define BYTE_CLAMP(i) (int) ((((i) > 255) ? 255 : (((i) < 0) ? 0 : (i))))
+// Utilities
+// fd: Macros are evil!
+//#define BYTE_CLAMP(i) (int) ((((i) > 255) ? 255 : (((i) < 0) ? 0 : (i)))) 
+__inline byte BYTE_CLAMP(int n)
+{
+	if (n&(~0xFF))
+		return (-n)>>31;
 
-// go through the vtable rather than use the macros to make this generic
+	return n;
+}
+
+// Go through the vtable rather than use the macros to make this generic
 #define D3D_SAFE_RELEASE(p) {if (p) (p)->lpVtbl->Release (p);  (p) = NULL;}
 //#define D3D_SAFE_RELEASE(p) {if (p) (p)->Release();            (p)=NULL;} 
 
