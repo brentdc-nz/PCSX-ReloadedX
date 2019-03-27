@@ -103,14 +103,18 @@ CGUIControl* CGUIControlFactory::Create(int iParentID, TiXmlElement* pControlNod
 	}
 	else if(strType == "list")
 	{
+		int iSize = 15;
+		int iLineSpacing = 30;
 		string strFont;
 		DWORD dwColor = 0, dwSelectedColor = 0;
 
 		GetHex(pControlNode, "color", dwColor);
 		GetHex(pControlNode, "selectedcolor", dwSelectedColor);
 		GetString(pControlNode, "font", strFont);
+		GetInt(pControlNode, "size", iSize);
+		GetInt(pControlNode, "linespacing", iLineSpacing);
 
-		pControl = new CGUIControlList(iID, iParentID, iPosX, iPosY, iWidth, iHeight, strFont, dwColor, dwSelectedColor);
+		pControl = new CGUIControlList(iID, iParentID, iPosX, iPosY, iWidth, iHeight, iLineSpacing, strFont, dwColor, iSize, dwSelectedColor);
 	}
 	else if(strType == "checkbox")
 	{
@@ -139,6 +143,7 @@ CGUIControl* CGUIControlFactory::Create(int iParentID, TiXmlElement* pControlNod
 	else if(strType == "spin")
 	{
 		int iSpinWidth = 0, iSpinHeight = 0;
+		int iSize = 15;
 
 		string strFont = "", strText = "", strImageFocus = "-";
 		string strSpinUp = "", strSpinUpFocus = "";
@@ -146,6 +151,7 @@ CGUIControl* CGUIControlFactory::Create(int iParentID, TiXmlElement* pControlNod
 		DWORD dwColor = 0;
 
 		GetString(pControlNode, "label", strText);
+		GetInt(pControlNode, "size", iSize);
 		GetString(pControlNode, "font", strFont);
 		GetHex(pControlNode, "color", dwColor);	
 
@@ -159,7 +165,7 @@ CGUIControl* CGUIControlFactory::Create(int iParentID, TiXmlElement* pControlNod
 		GetString(pControlNode, "texturedown", strSpinDown);
 		GetString(pControlNode, "texturedownfocus", strSpinDownFocus);
 
-		pControl = new CGUIControlSpin(iID, iParentID, iPosX, iPosY, iWidth, iHeight, strFont, strText, dwColor, strImageFocus, strSpinUp, strSpinUpFocus
+		pControl = new CGUIControlSpin(iID, iParentID, iPosX, iPosY, iWidth, iHeight, strFont, iSize, strText, dwColor, strImageFocus, strSpinUp, strSpinUpFocus
 			                           ,strSpinDown, strSpinDownFocus, iSpinWidth, iSpinHeight);
 	}
 

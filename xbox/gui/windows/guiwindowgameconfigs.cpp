@@ -159,7 +159,7 @@ bool CGUIWindowGameConfigs::SetupConfigControls() // If our configs go over a on
 
 		if(pConfig)
 		{
-			if(pConfig->GetConfigType() != GAME)
+			if(pConfig->GetConfigType() != GAME_CFG)
 				continue;
 
 			if(pConfig->GetDataType() == CFG_BOOL)
@@ -182,7 +182,7 @@ bool CGUIWindowGameConfigs::SetupConfigControls() // If our configs go over a on
 				CConfigInt* pConfigInt = (CConfigInt*)(*it).second;
 
 				pNewCtrl = new CGUIControlSpinInt(iID, GetID(), pCtrlDefaultCheckbox->GetPosX(), iPosY, pCtrlDefaultSpin->GetWidth(), pCtrlDefaultSpin->GetHeight(), pCtrlDefaultSpin->GetFont()
-					                              , pConfig->GetDisplayText(), pCtrlDefaultSpin->GetColor(), pCtrlDefaultSpin->GetFocusImage(), pCtrlDefaultSpin->GetSpinUp()
+					                              , pCtrlDefaultSpin->GetFontSize(), pConfig->GetDisplayText(), pCtrlDefaultSpin->GetColor(), pCtrlDefaultSpin->GetFocusImage(), pCtrlDefaultSpin->GetSpinUp()
 											      , pCtrlDefaultSpin->GetSpinUpFocus(), pCtrlDefaultSpin->GetSpinDown(), pCtrlDefaultSpin->GetSpinDownFocus(), pCtrlDefaultSpin->GetSpinWidth()
 											      , pCtrlDefaultSpin->GetSpinHeight());
 
@@ -209,7 +209,7 @@ bool CGUIWindowGameConfigs::SetupConfigControls() // If our configs go over a on
 				CConfigString* pConfigString = (CConfigString*)(*it).second;
 
 				pNewCtrl = new CGUIControlSpinString(iID, GetID(), pCtrlDefaultCheckbox->GetPosX(), iPosY, pCtrlDefaultSpin->GetWidth(), pCtrlDefaultSpin->GetHeight(), pCtrlDefaultSpin->GetFont()
-					                                , pConfig->GetDisplayText(), pCtrlDefaultSpin->GetColor(), pCtrlDefaultSpin->GetFocusImage(), pCtrlDefaultSpin->GetSpinUp()
+					                                , pCtrlDefaultSpin->GetFontSize(), pConfig->GetDisplayText(), pCtrlDefaultSpin->GetColor(), pCtrlDefaultSpin->GetFocusImage(), pCtrlDefaultSpin->GetSpinUp()
 											        , pCtrlDefaultSpin->GetSpinUpFocus(), pCtrlDefaultSpin->GetSpinDown(), pCtrlDefaultSpin->GetSpinDownFocus(), pCtrlDefaultSpin->GetSpinWidth()
 											        , pCtrlDefaultSpin->GetSpinHeight());
 
@@ -280,7 +280,7 @@ void CGUIWindowGameConfigs::SaveConfigs()
 
 		if(pConfig)
 		{
-			if(pConfig->GetConfigType() != GAME)
+			if(pConfig->GetConfigType() != GAME_CFG)
 				continue;
 
 			// TODO: Change to sending a message to get the values for these!

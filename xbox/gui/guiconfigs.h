@@ -15,8 +15,8 @@
 
 enum CfgType
 { 
-	GLOBAL = 0,
-	GAME
+	GLOBAL_CFG = 0,
+	GAME_CFG
 };
 
 enum CfgDataType
@@ -34,6 +34,8 @@ enum CfgCategory
 	CFG_CONTROLS
 };
 
+#endif
+
 #define MULTISAMPLE_NONE 0
 #define MULTISAMPLE_2    2
 #define MULTISAMPLE_4    4
@@ -41,6 +43,12 @@ enum CfgCategory
 #define VSYNC_OFF        0
 #define VSYNC_ON         1
 #define VSYNC_ADAPTIVE   2
+
+#define RESOLUTION_480P  0
+#define RESOLUTION_720P  1
+#define RESOLUTION_1080I 2
+
+#ifdef __cplusplus
 
 class CConfig
 {
@@ -176,6 +184,8 @@ public:
 	const std::map<std::string, CConfig*> GetConfigs(int iCategory) const;
 	CConfig* GetConfig(const char* strConfig);
 
+	void GetScreenSize(int *iWith, int *iHeight);
+
 	typedef std::map<std::string, CConfig*>::iterator mapIter;
 	typedef std::map<std::string, CConfig*> CfgMap;
 
@@ -201,7 +211,9 @@ BOOL XboxConfigs_Load();
 void XboxConfigs_Clear();
 BOOL XboxConfigs_GetBool(const char *strConfig);
 int XboxConfigs_GetInt(const char *strConfig);
+void XboxConfigs_SetInt(const char *strConfig, int iValue);
 const char* XboxConfigs_GetString(const char *strConfig);
+void XboxConfigs_GetScreenSize(int *iWidth, int *iHelight);
 
 #ifdef __cplusplus
 }

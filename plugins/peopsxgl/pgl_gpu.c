@@ -721,13 +721,11 @@ long CALLBACK GPUopen(HWND hwndGPU)
    if(hPSEMenu!=NULL) SetMenu(hWWindow,NULL);
    ShowWindow(hWWindow,SW_SHOWMAXIMIZED);              // -> max mode
   }
-#endif //_XBOX
 
  rRatioRect.left   = rRatioRect.top=0;
  rRatioRect.right  = iResX;
  rRatioRect.bottom = iResY;
 
-#ifndef _XBOX
  r.left=r.top=0;r.right=iResX;r.bottom=iResY;          // hack for getting a clean black window until OGL gets initialized
  hdc = GetDC(hWWindow);
  FillRect(hdc,&r,(HBRUSH)GetStockObject(BLACK_BRUSH));

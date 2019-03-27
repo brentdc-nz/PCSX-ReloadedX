@@ -30,21 +30,26 @@ bool CXboxConfigs::Load()
 	// Global configs
 	//
 
-	AddBool("core.showbiosscreen", "Show Bios Screen", true, GLOBAL);
-	AddBool("video.showfps", "Show FPS Counter", false, GLOBAL);
-	AddBool("video.keepaspectratio", "Keep Aspect Ratio", false, GLOBAL);
+	AddBool("core.showbiosscreen", "Show Bios Screen", true, GLOBAL_CFG);
+	AddBool("video.showfps", "Show FPS Counter", false, GLOBAL_CFG);
+	AddBool("video.keepaspectratio", "Keep Aspect Ratio", false, GLOBAL_CFG);
 
-	AddInt("video.vsync", "VSync", VSYNC_ON, GLOBAL);
+	AddInt("video.vsync", "VSync", VSYNC_ON, GLOBAL_CFG);
 	AddIntOption("video.vsync", "Off", VSYNC_OFF);	
 	AddIntOption("video.vsync", "On", VSYNC_ON);	
 	AddIntOption("video.vsync", "Adaptive", VSYNC_ADAPTIVE);
 
-	AddBool("sound.stereo", "Stereo Sound", false, GLOBAL);
+	AddInt("video.resolution", "Resolution", RESOLUTION_480P, GLOBAL_CFG);
+	AddIntOption("video.resolution", "480p", RESOLUTION_480P);
+	AddIntOption("video.resolution", "720p", RESOLUTION_720P);
+//	AddIntOption("video.resolution", "1080i", RESOLUTION_1080I); // Disabled as prob too slow and ram hungry
 
-	AddString("gui.skin", "Skin", "pm3", GLOBAL);
+	AddBool("sound.stereo", "Stereo Sound", false, GLOBAL_CFG);
+
+	AddString("gui.skin", "Skin", "pm3", GLOBAL_CFG);
 	PopulateSkins(); // Look for skins and load them as options
 
-	AddString("core.biosfile", "Bios File", "scph1001.bin", GLOBAL);
+	AddString("core.biosfile", "Bios File", "scph1001.bin", GLOBAL_CFG);
 	PopulateBiosFiles();
 
 	//
@@ -53,25 +58,25 @@ bool CXboxConfigs::Load()
 
 	// Core Configs
 
-	AddBool("core.usehlebios", "Use HLE Bios", false, GAME);
+	AddBool("core.usehlebios", "Use HLE Bios", false, GAME_CFG);
 
 	// Video Configs
 
-	AddInt("video.antialiasing", "Anti-aliasing", 2, GAME);
+	AddInt("video.antialiasing", "Anti-aliasing", 2, GAME_CFG);
 	AddIntOption("video.antialiasing", "None", MULTISAMPLE_NONE);
 	AddIntOption("video.antialiasing", "2x", MULTISAMPLE_2);
 	AddIntOption("video.antialiasing", "4x", MULTISAMPLE_4);
 
-	AddBool("video.frameskip", "Use Frameskip", false, GAME);
+	AddBool("video.frameskip", "Use Frameskip", false, GAME_CFG);
 
-	AddInt("video.offscreendrawing", "Off-Sceen drawing", 2, GAME);
+	AddInt("video.offscreendrawing", "Off-Sceen drawing", 2, GAME_CFG);
 	AddIntOption("video.offscreendrawing", "Fastest(Most glicthes)", 0);
 	AddIntOption("video.offscreendrawing", "Minimum(Missing screens)", 1);
 	AddIntOption("video.offscreendrawing", "Standard(Ok for most games)", 2);
 	AddIntOption("video.offscreendrawing", "Enhanced(Shows more stuff)", 3);
 	AddIntOption("video.offscreendrawing", "Extended(Can cause garbage)", 4);
 
-	AddInt("video.texturefiltering", "Texture Filtering", 2, GAME);
+	AddInt("video.texturefiltering", "Texture Filtering", 2, GAME_CFG);
 	AddIntOption("video.texturefiltering", "None", 0);
 	AddIntOption("video.texturefiltering", "Standard(Glicthes can happen)", 1);
 	AddIntOption("video.texturefiltering", "Extended(Removes back borders)", 2);
@@ -80,7 +85,7 @@ bool CXboxConfigs::Load()
 	AddIntOption("video.texturefiltering", "Standard + filtered sprites", 5);
 	AddIntOption("video.texturefiltering", "Extended + filtered sprites", 6);
 
-	AddInt("video.vramsize", "VRam Size", 0, GAME);
+	AddInt("video.vramsize", "VRam Size", 0, GAME_CFG);
 	AddIntOption("video.vramsize", "Autodetect", 0);
 	AddIntOption("video.vramsize", "2mb", 2);
 	AddIntOption("video.vramsize", "4mb", 4);
@@ -88,90 +93,90 @@ bool CXboxConfigs::Load()
 	AddIntOption("video.vramsize", "16mb", 16);
 	AddIntOption("video.vramsize", "32mb", 32);
 
-	AddBool("video.useframelimit", "Use frame limit", true, GAME);
+	AddBool("video.useframelimit", "Use frame limit", true, GAME_CFG);
 
-	AddInt("video.hirestextures", "Hi-Res Textures", 0, GAME);
+	AddInt("video.hirestextures", "Hi-Res Textures", 0, GAME_CFG);
 	AddIntOption("video.hirestextures", "None (standard)", 0);
 	AddIntOption("video.hirestextures", "2xSal (alot of VRam required)", 1);
 	AddIntOption("video.hirestextures", "Streteched (filtering required)", 2);
 
-	AddBool("video.usefastmdec", "Use fast Mdec", true, GAME);
+	AddBool("video.usefastmdec", "Use fast Mdec", true, GAME_CFG);
 
-	AddInt("video.framebufferupload", "Framebuffer Upload", 0, GAME);
+	AddInt("video.framebufferupload", "Framebuffer Upload", 0, GAME_CFG);
 	AddIntOption("video.framebufferupload", "Minimum(fast detection)", 0);
 	AddIntOption("video.framebufferupload", "Standard", 1);
 	AddIntOption("video.framebufferupload", "Maximum(full VRam)", 2);
 
 	// Sound Configs
 
-	AddInt("sound.mode", "Mode", 1, GAME);
+	AddInt("sound.mode", "Mode", 1, GAME_CFG);
 	AddIntOption("sound.mode", "Fast threaded mode", 0);
 	AddIntOption("sound.mode", "High compatibility timer mode", 1);
 	AddIntOption("sound.mode", "SPUAsync mode", 2);
 
-	AddInt("sound.interpolation", "Interpolation", 2, GAME);
+	AddInt("sound.interpolation", "Interpolation", 2, GAME_CFG);
 	AddIntOption("sound.interpolation", "None", 0);
 	AddIntOption("sound.interpolation", "Simple", 1);
 	AddIntOption("sound.interpolation", "Gaussian - Good quality", 2);
 	AddIntOption("sound.interpolation", "Cubic- Better treble", 3);
 
-	AddInt("sound.usereverb", "Reverb", 2, GAME);
+	AddInt("sound.usereverb", "Reverb", 2, GAME_CFG);
 	AddIntOption("sound.usereverb", "None", 0);
 	AddIntOption("sound.usereverb", "Simple - Fakes common effects", 1);
 	AddIntOption("sound.usereverb", "PSX Reverb", 2);
 
-	AddBool("sound.spuirqwait", "SPUIRQ Wait", true, GAME);
-	AddBool("sound.xapitch", "XA Pitch", false, GAME);
-	AddBool("sound.freqresponse", "Freq Response", false, GAME);
+	AddBool("sound.spuirqwait", "SPUIRQ Wait", true, GAME_CFG);
+	AddBool("sound.xapitch", "XA Pitch", false, GAME_CFG);
+	AddBool("sound.freqresponse", "Freq Response", false, GAME_CFG);
 
 	// Controls Configs
 
-	AddInt("controls.cross", "Cross", K_XBOX_A, GAME);
+	AddInt("controls.cross", "Cross", K_XBOX_A, GAME_CFG);
 	AddControlOptions("controls.cross");
 
-	AddInt("controls.circle", "Circle", K_XBOX_B, GAME);
+	AddInt("controls.circle", "Circle", K_XBOX_B, GAME_CFG);
 	AddControlOptions("controls.circle");
 
-	AddInt("controls.triangle", "Triangle", K_XBOX_Y, GAME);
+	AddInt("controls.triangle", "Triangle", K_XBOX_Y, GAME_CFG);
 	AddControlOptions("controls.triangle");
 
-	AddInt("controls.square", "Square", K_XBOX_X, GAME);
+	AddInt("controls.square", "Square", K_XBOX_X, GAME_CFG);
 	AddControlOptions("controls.square");
 
-	AddInt("controls.start", "Start", K_XBOX_START, GAME);
+	AddInt("controls.start", "Start", K_XBOX_START, GAME_CFG);
 	AddControlOptions("controls.start");
 
-	AddInt("controls.select", "Select", K_XBOX_BACK, GAME);
+	AddInt("controls.select", "Select", K_XBOX_BACK, GAME_CFG);
 	AddControlOptions("controls.select");
 
-	AddInt("controls.dpadup", "DPad Up", K_XBOX_DPAD_UP, GAME);
+	AddInt("controls.dpadup", "DPad Up", K_XBOX_DPAD_UP, GAME_CFG);
 	AddControlOptions("controls.dpadup");
 
-	AddInt("controls.dpaddown", "DPad Down", K_XBOX_DPAD_DOWN, GAME);
+	AddInt("controls.dpaddown", "DPad Down", K_XBOX_DPAD_DOWN, GAME_CFG);
 	AddControlOptions("controls.dpaddown");
 
-	AddInt("controls.dpadleft", "DPad Left", K_XBOX_DPAD_LEFT, GAME);
+	AddInt("controls.dpadleft", "DPad Left", K_XBOX_DPAD_LEFT, GAME_CFG);
 	AddControlOptions("controls.dpadleft");
 
-	AddInt("controls.dpadright", "DPad Right", K_XBOX_DPAD_RIGHT, GAME);
+	AddInt("controls.dpadright", "DPad Right", K_XBOX_DPAD_RIGHT, GAME_CFG);
 	AddControlOptions("controls.dpadright");
 
-	AddInt("controls.l1", "L1", K_XBOX_LTRIG, GAME);
+	AddInt("controls.l1", "L1", K_XBOX_LTRIG, GAME_CFG);
 	AddControlOptions("controls.l1");
 
-	AddInt("controls.l2", "L2", K_XBOX_WHITE, GAME);
+	AddInt("controls.l2", "L2", K_XBOX_WHITE, GAME_CFG);
 	AddControlOptions("controls.l2");
 
-	AddInt("controls.l3", "L3", K_XBOX_LTHUMB, GAME);
+	AddInt("controls.l3", "L3", K_XBOX_LTHUMB, GAME_CFG);
 	AddControlOptions("controls.l3");
 
-	AddInt("controls.r1", "R1", K_XBOX_RTRIG, GAME);
+	AddInt("controls.r1", "R1", K_XBOX_RTRIG, GAME_CFG);
 	AddControlOptions("controls.r1");
 
-	AddInt("controls.r2", "R2", K_XBOX_BLACK, GAME);
+	AddInt("controls.r2", "R2", K_XBOX_BLACK, GAME_CFG);
 	AddControlOptions("controls.r2");
 
-	AddInt("controls.r3", "R3", K_XBOX_RTHUMB, GAME);
+	AddInt("controls.r3", "R3", K_XBOX_RTHUMB, GAME_CFG);
 	AddControlOptions("controls.r3");
 
 	LoadGlobalConfigs();
@@ -251,7 +256,7 @@ void CXboxConfigs::SetInt(const char *strConfig, const int iValue)
 		return;
 	}
 
-	SysMessage("CXboxConfigs::SetBool %s Not Found!\n", strConfig);
+	SysMessage("CXboxConfigs::SetInt %s Not Found!\n", strConfig);
 }
 
 int CXboxConfigs::GetInt(const char* strConfig)
@@ -401,7 +406,7 @@ bool CXboxConfigs::SaveGlobalConfigs()
 
 	for (mapIter it = m_ConfigsMap.begin(); it != m_ConfigsMap.end(); it++)
 	{
-		if((*it).second->GetConfigType() != GLOBAL)
+		if((*it).second->GetConfigType() != GLOBAL_CFG)
 			continue;
 
 		CStringArray strSplit;
@@ -469,7 +474,7 @@ bool CXboxConfigs::LoadGameConfigs(std::string strGameFilename)
 
 							mapIter it = m_ConfigsMap.find("core." + strElementName);
 	
-							if (it != m_ConfigsMap.end() && ((*it).second->GetConfigType() == GAME))
+							if (it != m_ConfigsMap.end() && ((*it).second->GetConfigType() == GAME_CFG))
 								(*it).second->FromString(pCoreElemets->GetText());			
 
 							pCoreElemets = pCoreElemets->NextSiblingElement();
@@ -488,7 +493,7 @@ bool CXboxConfigs::LoadGameConfigs(std::string strGameFilename)
 
 							mapIter it = m_ConfigsMap.find("video." + strElementName);
 	
-							if (it != m_ConfigsMap.end() && ((*it).second->GetConfigType() == GAME))
+							if (it != m_ConfigsMap.end() && ((*it).second->GetConfigType() == GAME_CFG))
 								(*it).second->FromString(pVideoElemets->GetText());	
 
 							pVideoElemets = pVideoElemets->NextSiblingElement();
@@ -507,7 +512,7 @@ bool CXboxConfigs::LoadGameConfigs(std::string strGameFilename)
 
 							mapIter it = m_ConfigsMap.find("sound." + strElementName);
 	
-							if (it != m_ConfigsMap.end() && ((*it).second->GetConfigType() == GAME))
+							if (it != m_ConfigsMap.end() && ((*it).second->GetConfigType() == GAME_CFG))
 								(*it).second->FromString(pSoundElemets->GetText());	
 
 							pSoundElemets = pSoundElemets->NextSiblingElement();
@@ -563,7 +568,7 @@ bool CXboxConfigs::SaveGameConfigs(std::string strGameFilename)
 
 	for (mapIter it = m_ConfigsMap.begin(); it != m_ConfigsMap.end(); it++)
 	{
-		if((*it).second->GetConfigType() != GAME)
+		if((*it).second->GetConfigType() != GAME_CFG)
 			continue;
 
 		CStringArray strSplit;
@@ -790,6 +795,32 @@ void CXboxConfigs::AddControlOptions(std::string strConfig)
 	AddIntOption(strConfig, "XBOX Right Thumb", K_XBOX_RTHUMB);
 }
 
+void CXboxConfigs::GetScreenSize(int *iWidth, int *iHeight)
+{
+	switch(GetInt("video.resolution"))
+	{
+	case RESOLUTION_480P:
+		*iWidth = 640;
+		*iHeight = 480;
+		break;
+
+	case RESOLUTION_720P:
+		*iWidth = 1280;
+		*iHeight = 720;
+		break;
+
+	case RESOLUTION_1080I:
+		*iWidth = 1920;
+		*iHeight = 1080;
+		break;
+
+	default:
+		*iWidth = 640;
+		*iHeight = 480;
+		break;
+	}
+}
+
 void CXboxConfigs::PopulateSkins()
 {
 	std::vector<std::string> vecSkins;
@@ -857,7 +888,17 @@ int XboxConfigs_GetInt(const char *strConfig)
 	return g_XboxConfigs.GetInt(strConfig);
 }
 
+void XboxConfigs_SetInt(const char *strConfig, int iValue)
+{
+	g_XboxConfigs.SetInt(strConfig, iValue);
+}
+
 const char* XboxConfigs_GetString(const char *strConfig)
 {
 	return g_XboxConfigs.GetStringC(strConfig);
+}
+
+void XboxConfigs_GetScreenSize(int *iWidth, int *iHelight)
+{
+	g_XboxConfigs.GetScreenSize(iWidth, iHelight);
 }

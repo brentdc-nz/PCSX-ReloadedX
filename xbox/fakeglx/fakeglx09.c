@@ -61,6 +61,10 @@ extern void SetGUID3DDevice(LPDIRECT3DDEVICE8 pD3DDevice, D3DPRESENT_PARAMETERS 
 LPDIRECT3D8 d3d_Object = NULL;
 LPDIRECT3DDEVICE8 d3d_Device = NULL;
 
+int g_iWidth = 640;
+int g_iHeight = 480;
+BOOL g_bHDEnabled = FALSE;
+
 // mode definition
 int d3d_BPP = -1;
 //HWND d3d_Window;
@@ -2723,15 +2727,15 @@ void D3D_SetupPresentParams (int width, int height, int bpp, BOOL windowed)
 			d3d_PresentParams.FullScreen_RefreshRateInHz = 50;
 	}
 	
-	//use progressive mode if possible
-	if(XGetAVPack() == XC_AV_PACK_HDTV/* && gVideoMode > 0*/)
+	// Use progressive mode if possible
+	if(g_bHDEnabled)
 	{
-		/*if(videoFlags & XC_VIDEO_FLAGS_HDTV_1080i && width == 1920 && height == 1080)
+		if(videoFlags & XC_VIDEO_FLAGS_HDTV_1080i && width == 1920 && height == 1080)
 		{
-			//Out of memory very likely!
+			// Out of memory very likely!
 			d3d_PresentParams.Flags = D3DPRESENTFLAG_INTERLACED | D3DPRESENTFLAG_WIDESCREEN;
 		} 
-		else*/if(videoFlags & XC_VIDEO_FLAGS_HDTV_720p && width == 1280 && height == 720)
+		else if(videoFlags & XC_VIDEO_FLAGS_HDTV_720p && width == 1280 && height == 720)
 		{
 			d3d_PresentParams.Flags = D3DPRESENTFLAG_PROGRESSIVE | D3DPRESENTFLAG_WIDESCREEN;
 		}
@@ -2741,7 +2745,7 @@ void D3D_SetupPresentParams (int width, int height, int bpp, BOOL windowed)
 		}
 		else if(videoFlags & XC_VIDEO_FLAGS_HDTV_480p)
 		{
-			//Force valid resolution and at least try progressive mode
+			// Force valid resolution and at least try progressive mode
 			width = 640;
 			height = 480;
 			d3d_PresentParams.Flags = D3DPRESENTFLAG_PROGRESSIVE;
@@ -2803,7 +2807,7 @@ BOOL WINAPI wglMakeCurrent (HDC hdc, HGLRC hglrc)
 
 	// setup our present parameters (popup windows are fullscreen always)
 	//D3D_SetupPresentParams (clientrect.right, clientrect.bottom, d3d_BPP, !(winstyle & WS_POPUP));
-	D3D_SetupPresentParams(640, 480, 32, FALSE); //FIXME!!
+	D3D_SetupPresentParams(g_iWidth, g_iHeight, 32, FALSE);
 
 	// here we use D3DCREATE_FPU_PRESERVE to maintain the resolution of Quake's timers (this is a serious problem)
 	// and D3DCREATE_DISABLE_DRIVER_MANAGEMENT to protect us from rogue drivers (call it honest paranoia).  first
@@ -3221,6 +3225,12 @@ void D3D_PostResetRestore (void)
 	d3d_Viewport.Height = -1;
 }
 
+void D3D_SetMode(int iWidth, int iHeight, BOOL bHDEnabled)
+{
+	g_iWidth = iWidth;
+	g_iHeight = iHeight;
+	g_bHDEnabled = bHDEnabled;
+}
 
 void D3D_ResetMode (int width, int height, int bpp, BOOL windowed)
 {

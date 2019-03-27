@@ -76,13 +76,11 @@ void LocalDebugBreak()
 
 // Globals
 bool g_force16bitTextures = false;
-DWORD gWidth = 640;
-DWORD gHeight = 480;
-int g_iTextureId; // Used for glGenTextxures
+int g_iWidth = 640;
+int g_iHeight = 480;
+BOOL g_bHDEnabled = FALSE;
 
-//0 = interlaced 480i
-//1 = progressive ("HD") 480p, 720p, depends on dashboard settings
-int gVideoMode = 0;
+int g_iTextureId; // Used for glGenTextxures
 
 class FakeGL;
 static FakeGL* gFakeGL;
@@ -1262,8 +1260,8 @@ private:
 		params.EnableAutoDepthStencil = TRUE;
 		params.AutoDepthStencilFormat = D3DFMT_D16;
 		params.SwapEffect             = D3DSWAPEFFECT_DISCARD; 
-		params.BackBufferWidth        = gWidth;
-		params.BackBufferHeight       = gHeight;
+		params.BackBufferWidth        = g_iWidth;
+		params.BackBufferHeight       = g_iHeight;
 		params.BackBufferFormat       = D3DFMT_X8R8G8B8;
 		params.FullScreen_RefreshRateInHz = 60;
 		params.MultiSampleType = D3DMULTISAMPLE_4_SAMPLES_MULTISAMPLE_LINEAR;
@@ -1287,45 +1285,40 @@ private:
 				params.FullScreen_RefreshRateInHz = 50;
 		}
 
-		//use progressive mode if possible
-		if(XGetAVPack() == XC_AV_PACK_HDTV/* && gVideoMode > 0*/)
+		// Use progressive mode if possible
+		if(g_bHDEnabled)
 		{
-			/*if(videoFlags & XC_VIDEO_FLAGS_HDTV_1080i && gWidth == 1920 && gHeight == 1080)
+			if(videoFlags & XC_VIDEO_FLAGS_HDTV_1080i && g_iWidth == 1920 && g_iHeight == 1080)
 			{
-				//Out of memory very likely!
+				// Out of memory very likely!
 				params.Flags = D3DPRESENTFLAG_INTERLACED | D3DPRESENTFLAG_WIDESCREEN;
 			} 
-			else*/if(videoFlags & XC_VIDEO_FLAGS_HDTV_720p && gWidth == 1280 && gHeight == 720)
+			else if(videoFlags & XC_VIDEO_FLAGS_HDTV_720p && g_iWidth == 1280 && g_iHeight == 720)
 			{
 				params.Flags = D3DPRESENTFLAG_PROGRESSIVE | D3DPRESENTFLAG_WIDESCREEN;
 			}
-			else if(videoFlags & XC_VIDEO_FLAGS_HDTV_480p && gWidth == 640 && gHeight == 480)
+			else if(videoFlags & XC_VIDEO_FLAGS_HDTV_480p && g_iWidth == 640 && g_iHeight == 480)
 			{
 				params.Flags = D3DPRESENTFLAG_PROGRESSIVE;
 			}
 			else if(videoFlags & XC_VIDEO_FLAGS_HDTV_480p)
 			{
-				//Force valid resolution and at least try progressive mode
-				gWidth = 640;
-				gHeight = 480;
+				// Force valid resolution and at least try progressive mode
+				g_iWidth = 640;
+				g_iHeight = 480;
 				params.Flags = D3DPRESENTFLAG_PROGRESSIVE;
 			}
-			else
-			{
-				//Something went wrong, fall back
-				gVideoMode = 0;
-			}
 		}
-		else // No component cables detected
+		else // No component cables
 		{
-			//Fallback to standard setup (480i)
-			params.BackBufferWidth = gWidth = 640;
-			params.BackBufferHeight = gHeight = 480;
+			// Fallback to standard setup (480i)
+			params.BackBufferWidth = g_iWidth = 640;
+			params.BackBufferHeight = g_iHeight = 480;
 			params.Flags = D3DPRESENTFLAG_INTERLACED;
 		}
 
 		// Create the Direct3D device.
-		hr =  m_pD3D->CreateDevice( 0, D3DDEVTYPE_HAL, NULL, D3DCREATE_HARDWARE_VERTEXPROCESSING, &params, &m_pD3DDev );
+		hr =  m_pD3D->CreateDevice(0, D3DDEVTYPE_HAL, NULL, D3DCREATE_HARDWARE_VERTEXPROCESSING, &params, &m_pD3DDev);
 		if( FAILED(hr) )
 			return hr;
 
@@ -1417,8 +1410,8 @@ public:
 		m_glViewPortX = 0;
 		m_glViewPortY = 0;
 							
-		m_glViewPortWidth = gWidth;
-		m_glViewPortHeight = gHeight;
+		m_glViewPortWidth = g_iWidth;
+		m_glViewPortHeight = g_iHeight;
 
 		m_vendor = 0;
 		m_renderer = 0;
@@ -3631,11 +3624,11 @@ BOOL /*WINAPI*/ wglMakeCurrent(/*HDC hdc, HGLRC hglrc*/)
 	return TRUE;
 }
 
-void d3dSetMode(int width, int height, int bpp, int zbpp, int vmode)
+void D3D_SetMode(int iWidth, int iHeight, BOOL bHDEnabled/* int bpp, int zbpp*/)
 {
-	gWidth = width;
-	gHeight = height;
-	gVideoMode = vmode;
+	g_iWidth = iWidth;
+	g_iHeight = iHeight;
+	g_bHDEnabled = bHDEnabled;
 }
 
 BOOL /*WINAPI*/ FakeSwapBuffers()
@@ -3648,12 +3641,12 @@ BOOL /*WINAPI*/ FakeSwapBuffers()
 	return TRUE;
 }
 
-void d3dSetGammaRamp(const unsigned char* gammaTable)
+void D3D_SetGammaRamp(const unsigned char* gammaTable)
 {
 	gFakeGL->SetGammaRamp(gammaTable);
 }
 
-void d3dInitSetForce16BitTextures(int force16bitTextures)
+void D3D_InitSetForce16BitTextures(int force16bitTextures)
 {
 	// called before gFakeGL exits. That's why we set a global
 	g_force16bitTextures = force16bitTextures != 0; 
@@ -3664,7 +3657,7 @@ void d3dHint_GenerateMipMaps(int value)
 	gFakeGL->Hint_GenerateMipMaps(value);
 }
 
-float d3dGetD3DDriverVersion()
+float D3D_GetD3DDriverVersion()
 {
 	return 0.81f;
 }

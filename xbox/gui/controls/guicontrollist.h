@@ -22,7 +22,7 @@ private:
 class CGUIControlList : public CGUIControl
 {
 public:
-	CGUIControlList(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, DWORD dwColor, DWORD dwSelectedColor);
+	CGUIControlList(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, int iLineSpacing, std::string strFont, DWORD dwColor, unsigned int iSize, DWORD dwSelectedColor);
 	~CGUIControlList();
 
 	virtual void Render();
@@ -36,7 +36,9 @@ public:
 private:
     int m_iCursor;
 	int m_iOffset;
+	int m_iLineSpacing;
 	CGUIFont* m_pFont;
+	unsigned int m_iFontSize;
 	DWORD m_dwColor;
 	DWORD m_dwSelectedColor;
 	std::vector <CGUIListItem*>m_vecItems;

@@ -15,7 +15,7 @@ enum SpinDirection
 class CGUIControlSpin : public CGUIControl
 {
 public:
-	CGUIControlSpin(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, std::string strText, DWORD dwColor, std::string strImageFocus, std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown
+	CGUIControlSpin(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, unsigned int iSize, std::string strText, DWORD dwColor, std::string strImageFocus, std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown
 		            , std::string strSpinDownFocus, int iSpinWidth, int iSpinHeight);
 	~CGUIControlSpin();
 
@@ -25,6 +25,7 @@ public:
 	virtual bool OnKey(int iKey);
 
 	std::string GetFont() { return m_label.GetFont(); };
+	int GetFontSize() { return m_label.GetSize(); };
 	DWORD GetColor() { return m_label.GetColor(); };
 	std::string GetFocusImage() { return m_imgFocused.GetImageFilename(); };
 	int GetSpinWidth() { return m_ImgScrollUp.GetWidth(); };
@@ -55,7 +56,7 @@ protected:
 class CGUIControlSpinInt : public CGUIControlSpin
 {
 public:
-	CGUIControlSpinInt(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, std::string strText, DWORD dwColor, std::string strImageFocus 
+	CGUIControlSpinInt(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, unsigned int iSize, std::string strText, DWORD dwColor, std::string strImageFocus 
 		               ,std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown, std::string strSpinDownFocus, int iSpinWidth, int iSpinHeight);
 	~CGUIControlSpinInt();
 
@@ -91,7 +92,7 @@ protected:
 class CGUIControlSpinString : public CGUIControlSpin
 {
 public:
-	CGUIControlSpinString(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, std::string strText, DWORD dwColor, std::string strImageFocus 
+	CGUIControlSpinString(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, unsigned int iSize, std::string strText, DWORD dwColor, std::string strImageFocus 
 		                  ,std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown, std::string strSpinDownFocus, int iSpinWidth, int iSpinHeight);
 	~CGUIControlSpinString();
 

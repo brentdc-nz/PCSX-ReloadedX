@@ -59,7 +59,7 @@
 				StackSize="940000"
 				IncludeDebugInfo="TRUE"
 				NoLibWarn="TRUE"
-				TitleName="PCSXRx"/>
+				TitleName="PCSX-ReloadedX"/>
 		</Configuration>
 		<Configuration
 			Name="Profile|Xbox"
@@ -220,7 +220,7 @@
 				StackSize="75536"
 				LimitAvailableMemoryTo64MB="TRUE"
 				NoLibWarn="TRUE"
-				TitleName="PCSXRx"/>
+				TitleName="PCSX-ReloadedX"/>
 		</Configuration>
 		<Configuration
 			Name="Release_LTCG|Xbox"

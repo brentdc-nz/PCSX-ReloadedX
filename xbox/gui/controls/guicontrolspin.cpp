@@ -3,11 +3,11 @@
 #include "..\..\input\sysxboxinput.h"
 #include "..\utils\stringutils.h"
 
-CGUIControlSpin::CGUIControlSpin(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, std::string strText, DWORD dwColor, std::string strImageFocus, std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown
+CGUIControlSpin::CGUIControlSpin(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, unsigned int iSize, std::string strText, DWORD dwColor, std::string strImageFocus, std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown
 		                         , std::string strSpinDownFocus, int iSpinWidth, int iSpinHeight)
 : CGUIControl(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight)
-, m_label(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight, strFont, strText, dwColor, 15)
-, m_labelValue(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight, strFont, "", dwColor, 15)
+, m_label(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight, strFont, strText, dwColor, iSize)
+, m_labelValue(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight, strFont, "", dwColor, iSize)
 , m_imgFocused(iControlID, iWindowID, iPosX-10, iPosY, iWidth+10, iHeight, strImageFocus) // FIXME: Don't hardcode spaces at start and end
 , m_ImgScrollUp(iControlID, iWindowID, iPosX, iPosY, iSpinWidth, iSpinHeight, strSpinUp)
 , m_ImgScrollUpFocus(iControlID, iWindowID, iPosX, iPosY, iSpinWidth, iSpinHeight, strSpinUpFocus)
@@ -116,9 +116,9 @@ void CGUIControlSpin::OnRight()
 
 //===========================================
 
-CGUIControlSpinInt::CGUIControlSpinInt(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, std::string strText, DWORD dwColor, std::string strImageFocus, std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown
+CGUIControlSpinInt::CGUIControlSpinInt(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, unsigned int iSize, std::string strText, DWORD dwColor, std::string strImageFocus, std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown
 		                               ,std::string strSpinDownFocus, int iSpinWidth, int iSpinHeight)
-: CGUIControlSpin(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight, strFont, strText, dwColor, strImageFocus, strSpinUp, strSpinUpFocus, strSpinDown
+: CGUIControlSpin(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight, strFont, iSize, strText, dwColor, strImageFocus, strSpinUp, strSpinUpFocus, strSpinDown
 		          ,strSpinDownFocus, iSpinWidth, iSpinHeight)
 {
 	m_iValue = 0;
@@ -237,9 +237,9 @@ int CGUIControlSpinInt::GetSelectedValue() // TODO: Move to using a message
 //===========================================
 
 
-CGUIControlSpinString::CGUIControlSpinString(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, std::string strText, DWORD dwColor, std::string strImageFocus, std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown
+CGUIControlSpinString::CGUIControlSpinString(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, unsigned int iSize, std::string strText, DWORD dwColor, std::string strImageFocus, std::string strSpinUp, std::string strSpinUpFocus, std::string strSpinDown
 		                               ,std::string strSpinDownFocus, int iSpinWidth, int iSpinHeight)
-: CGUIControlSpin(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight, strFont, strText, dwColor, strImageFocus, strSpinUp, strSpinUpFocus, strSpinDown
+: CGUIControlSpin(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight, strFont, iSize, strText, dwColor, strImageFocus, strSpinUp, strSpinUpFocus, strSpinDown
 		          ,strSpinDownFocus, iSpinWidth, iSpinHeight)
 {
 	m_iValue = 0;

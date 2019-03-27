@@ -221,6 +221,7 @@ void SysRunGUI()
 int main()
 {
 	MEMORYSTATUS lpBuffer;
+	int iScrWidth, iScrHeight;
 	iRunning = 0;
 	iPSXIamgeLoaded = 0;
 
@@ -276,10 +277,19 @@ int main()
 		}
 	}
 #endif
-
 	if (SysInit() == -1) return 1;
 
 #ifdef _XBOX // We need to do this here for the GUI
+	if(!IsHDEnabled())
+	{
+		// No component cables so force to 480p
+		SysMessage("Component cables not detected forcing to 480p.\n");
+		XboxConfigs_SetInt("video.resolution", RESOLUTION_480P);
+	}
+
+	XboxConfigs_GetScreenSize(&iScrWidth, &iScrHeight);
+	D3D_SetMode(iScrWidth, iScrHeight, IsHDEnabled());
+
 	wglCreateContext(NULL);
 	wglMakeCurrent(NULL, NULL);
 #endif

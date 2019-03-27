@@ -224,9 +224,8 @@ void PGL_ReadConfig(void) // read config (linux file)
 #ifdef _XBOX
  // Set Xbox the configs here for now, maybe inline latter,
  // need to check it's not called each frame first
- iResX=640;
- iResY=480;
-//iColDepth=16; // Hardcoded in FGLx
+ XboxConfigs_GetScreenSize(&iResX, &iResY);
+ //iColDepth=16; // Hardcoded in FGLx
  bChangeRes=FALSE;
 //iUseScanLines=0; // Not needed on XBox, if we want scanlines we will use a D3D shader
  bFullVRam=FALSE;

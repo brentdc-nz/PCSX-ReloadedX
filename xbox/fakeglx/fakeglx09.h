@@ -1507,6 +1507,8 @@ LONG ChangeDisplaySettings (/*LPDEVMODE*/int lpDevMode, DWORD dwflags);
 // replacement for GDI SwapBuffers
 int FakeSwapBuffers (void); //MARTY
 
+void D3D_SetMode(int iWidth, int iHeight, BOOL bHDEnabled);
+
 // replacement for mode resets
 void D3D_ResetMode (int width, int height, int bpp, BOOL windowed);
 

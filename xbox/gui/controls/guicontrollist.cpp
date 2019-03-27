@@ -6,7 +6,6 @@
 
 using namespace std;
 
-#define LINE_SPACING 30
 #define ITEMS_PERPAGE 10 //TODO: Calculate items per page by ( pListItem->Height() / CGUIControl::Height() )
 
 #define CONTROL_LEBEL_ITEM 2
@@ -21,12 +20,14 @@ CGUIListItem::~CGUIListItem()
 {
 }
 
-CGUIControlList::CGUIControlList(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, std::string strFont, DWORD dwColor, DWORD dwSelectedColor)
+CGUIControlList::CGUIControlList(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, int iLineSpacing, std::string strFont, DWORD dwColor, unsigned int iSize, DWORD dwSelectedColor)
 : CGUIControl(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight)
 {
 	m_iCursor = 0;
 	m_iOffset = 0;
+	m_iLineSpacing = iLineSpacing;
 	m_pFont = g_XBoxGUI.GetFontManager().GetFont(strFont);
+	m_iFontSize = iSize;
 	m_dwColor = dwColor;
 	m_dwSelectedColor = dwSelectedColor;
 }
@@ -51,11 +52,11 @@ void CGUIControlList::Render()
 			if(m_pFont)
 			{
 				if(i == m_iCursor && HasFocus())
-					m_pFont->Render(m_iPosX, iYPos, 15, m_dwSelectedColor, pListItem->GetName());
+					m_pFont->Render(m_iPosX, iYPos, m_iFontSize, m_dwSelectedColor, pListItem->GetName());
 				else
-					m_pFont->Render(m_iPosX, iYPos, 15, m_dwColor, pListItem->GetName());
+					m_pFont->Render(m_iPosX, iYPos, m_iFontSize, m_dwColor, pListItem->GetName());
 			}
-			iYPos += LINE_SPACING;
+			iYPos += m_iLineSpacing;
 		}
 	}
 

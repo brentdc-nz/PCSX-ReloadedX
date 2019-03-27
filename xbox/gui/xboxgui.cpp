@@ -185,8 +185,31 @@ void CXBoxGUI::SetStartWindow(int iStartWindow)
 void CXBoxGUI::LoadSkin(std::string strSkinName)
 {
 	m_dwSkinTime = 0;
+	
+	std::string strSkinRes;
 
-	m_strMediaDir = "D:\\skins\\" + strSkinName + "\\";
+	// We force this config back to 480P in main() if component
+	// cables are not detected so there is no need to check here	
+	switch(g_XboxConfigs.GetInt("video.resolution"))
+	{
+		case RESOLUTION_1080I: // Not used, here for testing
+		strSkinRes = "1080i";
+		break;		
+		
+		case RESOLUTION_720P:
+		strSkinRes = "720p";
+		break;
+	
+		case RESOLUTION_480P:
+		strSkinRes = "480p";
+		break;
+		
+		default:
+		strSkinRes = "480p";
+		break;		
+	}
+	
+	m_strMediaDir = "D:\\skins\\" + strSkinName + "\\" + strSkinRes + "\\";
 
 	UnloadSkin();
 
@@ -233,6 +256,11 @@ int CloseXBoxGUI()
 void SetGUID3DDevice(LPDIRECT3DDEVICE8 pD3DDevice, D3DPRESENT_PARAMETERS PresentParams)
 {
 	g_XBoxGUI.SetD3DDevice(pD3DDevice, PresentParams);
+}
+
+int IsHDEnabled()
+{
+	return g_XBoxGUI.bIsHDEnabled();
 }
 
 int IsXBoxGUIActive()

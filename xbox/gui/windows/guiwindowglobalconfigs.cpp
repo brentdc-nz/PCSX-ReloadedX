@@ -125,7 +125,7 @@ bool CGUIWindowGlobalConfigs::SetupConfigControls() // If our configs go over a 
 
 		if(pConfig)
 		{
-			if(pConfig->GetConfigType() != GLOBAL)
+			if(pConfig->GetConfigType() != GLOBAL_CFG)
 				continue;
 
 			if(pConfig->GetDataType() == CFG_BOOL)
@@ -148,7 +148,7 @@ bool CGUIWindowGlobalConfigs::SetupConfigControls() // If our configs go over a 
 				CConfigInt* pConfigInt = (CConfigInt*)(*it).second;
 
 				pNewCtrl = new CGUIControlSpinInt(iID, GetID(), pCtrlDefaultCheckbox->GetPosX(), iPosY, pCtrlDefaultSpin->GetWidth(), pCtrlDefaultSpin->GetHeight(), pCtrlDefaultSpin->GetFont()
-					                              , pConfig->GetDisplayText(), pCtrlDefaultSpin->GetColor(), pCtrlDefaultSpin->GetFocusImage(), pCtrlDefaultSpin->GetSpinUp()
+					                              , pCtrlDefaultSpin->GetFontSize(), pConfig->GetDisplayText(), pCtrlDefaultSpin->GetColor(), pCtrlDefaultSpin->GetFocusImage(), pCtrlDefaultSpin->GetSpinUp()
 											      , pCtrlDefaultSpin->GetSpinUpFocus(), pCtrlDefaultSpin->GetSpinDown(), pCtrlDefaultSpin->GetSpinDownFocus(), pCtrlDefaultSpin->GetSpinWidth()
 											      , pCtrlDefaultSpin->GetSpinHeight());
 
@@ -175,7 +175,7 @@ bool CGUIWindowGlobalConfigs::SetupConfigControls() // If our configs go over a 
 				CConfigString* pConfigString = (CConfigString*)(*it).second;
 
 				pNewCtrl = new CGUIControlSpinString(iID, GetID(), pCtrlDefaultCheckbox->GetPosX(), iPosY, pCtrlDefaultSpin->GetWidth(), pCtrlDefaultSpin->GetHeight(), pCtrlDefaultSpin->GetFont()
-					                                , pConfig->GetDisplayText(), pCtrlDefaultSpin->GetColor(), pCtrlDefaultSpin->GetFocusImage(), pCtrlDefaultSpin->GetSpinUp()
+					                                , pCtrlDefaultSpin->GetFontSize(), pConfig->GetDisplayText(), pCtrlDefaultSpin->GetColor(), pCtrlDefaultSpin->GetFocusImage(), pCtrlDefaultSpin->GetSpinUp()
 											        , pCtrlDefaultSpin->GetSpinUpFocus(), pCtrlDefaultSpin->GetSpinDown(), pCtrlDefaultSpin->GetSpinDownFocus(), pCtrlDefaultSpin->GetSpinWidth()
 											        , pCtrlDefaultSpin->GetSpinHeight());
 
@@ -229,7 +229,7 @@ void CGUIWindowGlobalConfigs::SaveConfigs() //TODO: Change to saving on closing 
 
 		if(pConfig)
 		{
-			if(pConfig->GetConfigType() != GLOBAL)
+			if(pConfig->GetConfigType() != GLOBAL_CFG)
 				continue;
 
 			 //TODO: Change to sending a message to get the value for these!
