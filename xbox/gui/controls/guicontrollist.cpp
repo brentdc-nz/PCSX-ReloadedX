@@ -6,8 +6,6 @@
 
 using namespace std;
 
-#define ITEMS_PERPAGE 10 //TODO: Calculate items per page by ( pListItem->Height() / CGUIControl::Height() )
-
 #define CONTROL_LEBEL_ITEM 2
 
 CGUIListItem::CGUIListItem(std::string strName, bool bIsDirectory)
@@ -20,11 +18,12 @@ CGUIListItem::~CGUIListItem()
 {
 }
 
-CGUIControlList::CGUIControlList(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, int iLineSpacing, std::string strFont, DWORD dwColor, unsigned int iSize, DWORD dwSelectedColor)
+CGUIControlList::CGUIControlList(int iControlID, int iWindowID, int iPosX, int iPosY, int iWidth, int iHeight, int iLineSpacing, int iItemsPerPage, std::string strFont, DWORD dwColor, unsigned int iSize, DWORD dwSelectedColor)
 : CGUIControl(iControlID, iWindowID, iPosX, iPosY, iWidth, iHeight)
 {
 	m_iCursor = 0;
 	m_iOffset = 0;
+	m_iItemsPerPage = iItemsPerPage; // TODO: Calculate from item size and control height
 	m_iLineSpacing = iLineSpacing;
 	m_pFont = g_XBoxGUI.GetFontManager().GetFont(strFont);
 	m_iFontSize = iSize;
@@ -39,9 +38,9 @@ CGUIControlList::~CGUIControlList()
 void CGUIControlList::Render()
 {
 	int iYPos = m_iPosY;
-	int iSize = ITEMS_PERPAGE; //TODO: Calculate items per page by ( pListItem->Height() / CGUIControl::Height() )
+	int iSize = m_iItemsPerPage;
 
-	if(m_vecItems.size() < ITEMS_PERPAGE)
+	if(m_vecItems.size() < (unsigned int)m_iItemsPerPage)
 		iSize = m_vecItems.size();
 
 	for(int i = m_iOffset; i < iSize+m_iOffset; i++)
@@ -77,7 +76,7 @@ bool CGUIControlList::OnKey(int iKey)
 		{
 			m_iCursor++;
 
-			if(m_iCursor >= ITEMS_PERPAGE+m_iOffset)
+			if(m_iCursor >= m_iItemsPerPage+m_iOffset)
 				m_iOffset++;
 		}
 		return true;

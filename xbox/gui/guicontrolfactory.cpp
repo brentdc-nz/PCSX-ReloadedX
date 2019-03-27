@@ -105,6 +105,7 @@ CGUIControl* CGUIControlFactory::Create(int iParentID, TiXmlElement* pControlNod
 	{
 		int iSize = 15;
 		int iLineSpacing = 30;
+		int iItemsPerPage = 10; // TODO: Calculate from item size and control height
 		string strFont;
 		DWORD dwColor = 0, dwSelectedColor = 0;
 
@@ -113,8 +114,9 @@ CGUIControl* CGUIControlFactory::Create(int iParentID, TiXmlElement* pControlNod
 		GetString(pControlNode, "font", strFont);
 		GetInt(pControlNode, "size", iSize);
 		GetInt(pControlNode, "linespacing", iLineSpacing);
+		GetInt(pControlNode, "itemsperpage", iItemsPerPage);
 
-		pControl = new CGUIControlList(iID, iParentID, iPosX, iPosY, iWidth, iHeight, iLineSpacing, strFont, dwColor, iSize, dwSelectedColor);
+		pControl = new CGUIControlList(iID, iParentID, iPosX, iPosY, iWidth, iHeight, iLineSpacing, iItemsPerPage, strFont, dwColor, iSize, dwSelectedColor);
 	}
 	else if(strType == "checkbox")
 	{
