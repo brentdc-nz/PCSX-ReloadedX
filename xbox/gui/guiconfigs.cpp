@@ -898,7 +898,7 @@ const char* XboxConfigs_GetString(const char *strConfig)
 	return g_XboxConfigs.GetStringC(strConfig);
 }
 
-void XboxConfigs_GetScreenSize(int *iWidth, int *iHelight)
+void XboxConfigs_GetScreenSize(int *iWidth, int *iHeight)
 {
-	g_XboxConfigs.GetScreenSize(iWidth, iHelight);
+	g_XboxConfigs.GetScreenSize(iWidth, iHeight);
 }

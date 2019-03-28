@@ -184,7 +184,7 @@ public:
 	const std::map<std::string, CConfig*> GetConfigs(int iCategory) const;
 	CConfig* GetConfig(const char* strConfig);
 
-	void GetScreenSize(int *iWith, int *iHeight);
+	void GetScreenSize(int *iWidth, int *iHeight);
 
 	typedef std::map<std::string, CConfig*>::iterator mapIter;
 	typedef std::map<std::string, CConfig*> CfgMap;
@@ -213,7 +213,7 @@ BOOL XboxConfigs_GetBool(const char *strConfig);
 int XboxConfigs_GetInt(const char *strConfig);
 void XboxConfigs_SetInt(const char *strConfig, int iValue);
 const char* XboxConfigs_GetString(const char *strConfig);
-void XboxConfigs_GetScreenSize(int *iWidth, int *iHelight);
+void XboxConfigs_GetScreenSize(int *iWidth, int *iHeight);
 
 #ifdef __cplusplus
 }
