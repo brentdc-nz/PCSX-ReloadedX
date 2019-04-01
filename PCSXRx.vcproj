@@ -370,6 +370,9 @@
 						RelativePath=".\xbox\gui\guifontmanager.cpp">
 					</File>
 					<File
+						RelativePath=".\xbox\gui\guiingameosd.cpp">
+					</File>
+					<File
 						RelativePath=".\xbox\gui\guimessage.cpp">
 					</File>
 					<File
@@ -700,6 +703,9 @@
 					</File>
 					<File
 						RelativePath=".\xbox\gui\guifontmanager.h">
+					</File>
+					<File
+						RelativePath=".\xbox\gui\guiingameosd.h">
 					</File>
 					<File
 						RelativePath=".\xbox\gui\guimessage.h">

@@ -740,7 +740,9 @@ int GLinitialize()
   {
    ulKeybits|=KEY_SHOWFPS;                             // -> ok, turn display on
    szDispBuf[0]=0;
+#ifndef _XBOX 
    BuildDispMenu(0);
+#endif  
   }
  
  bIsFirstFrame = FALSE;                                // we have survived the first frame :)

@@ -1,5 +1,5 @@
-#ifndef H_XBOXGUI
-#define H_XBOXGUI
+#ifndef H_CXBOXGUI
+#define H_CXBOXGUI
 
 #include <xtl.h>
 #include "..\fakeglx\fakeglx09.h"
@@ -10,6 +10,7 @@
 #include "guifontmanager.h"
 #include "guiwindowmanager.h"
 #include "guitexturemanager.h"
+#include "guiingameosd.h"
 
 class CXBoxGUI
 {
@@ -46,6 +47,8 @@ public:
 	void DelaySkinLoad();
 	std::string GetMediaDir() { return m_strMediaDir; };
 
+	CGUIInGameOSD m_InGameOSD;
+
 private:
 	CGUIFontManager		m_GUIFontManager;
 	CGUIWindowManager	m_GUIWindowManager;
@@ -65,6 +68,9 @@ private:
 
 	std::string m_strMediaDir;
 	DWORD m_dwSkinTime;
+
+	int m_iCurrentResolution;
+	DWORD m_dwResChangeTime;
 };
 
 extern CXBoxGUI g_XBoxGUI;
@@ -83,9 +89,10 @@ void SetGUID3DDevice(LPDIRECT3DDEVICE8 pD3DDevice, D3DPRESENT_PARAMETERS Present
 int IsXBoxGUIActive();
 int IsHDEnabled();
 void SetXBoxGUIStartWindow(int iStartWindow);
+void DrawXboxIngameOSD(char* strFps);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif //H_XBOXGUI
+#endif //H_CXBOXGUI

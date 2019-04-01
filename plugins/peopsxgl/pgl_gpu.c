@@ -23,6 +23,7 @@
 
 #ifdef _XBOX
 #include "pgl_export.h"
+#include "..\..\xbox\gui\xboxgui.h"
 #endif
 
 #if defined (_MACGL)
@@ -1605,8 +1606,13 @@ void updateDisplay(void)                               // UPDATE DISPLAY
 
  if(ulKeybits&KEY_SHOWFPS)                             // wanna see FPS?
   {
+#ifndef _XBOX
    sprintf(szDispBuf,"%06.1f",fps_cur);
    DisplayText();                                      // -> show it
+#else 
+   sprintf(szDispBuf,"FPS = %.0f",fps_cur);
+   DrawXboxIngameOSD(szDispBuf);                       // -> show it
+#endif  
   }
 
  //----------------------------------------------------//
@@ -1762,7 +1768,12 @@ void updateFrontDisplay(void)
  bRenderFrontBuffer=FALSE;
 
  if(gTexPicName) DisplayPic();
+
+#ifndef _XBOX
  if(ulKeybits&KEY_SHOWFPS) DisplayText();
+#else
+ if(ulKeybits&KEY_SHOWFPS) DrawXboxIngameOSD(szDispBuf);
+#endif
 
 #ifdef _WINDOWS
   {                                                    // windows: 

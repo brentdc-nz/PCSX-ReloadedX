@@ -31,7 +31,8 @@ bool CXboxConfigs::Load()
 	//
 
 	AddBool("core.showbiosscreen", "Show Bios Screen", true, GLOBAL_CFG);
-	AddBool("video.showfps", "Show FPS Counter", false, GLOBAL_CFG);
+	AddBool("video.showfps", "Show FPS", false, GLOBAL_CFG);
+	AddBool("video.showfreememory", "Show Free Memory", false, GLOBAL_CFG);
 	AddBool("video.keepaspectratio", "Keep Aspect Ratio", false, GLOBAL_CFG);
 
 	AddInt("video.vsync", "VSync", VSYNC_ON, GLOBAL_CFG);

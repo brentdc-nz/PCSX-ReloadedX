@@ -200,6 +200,8 @@ void KillDisplayLists(void)
 // display text/infos in gpu menu
 ////////////////////////////////////////////////////////////////////////
 
+#ifndef _XBOX // Not needed we use our own OSD code on Xbox
+
 #ifdef OWNSCALE
 #define DRAWTEXCHAR glTexCoord2f(fX1/256.0f,fY2/256.0f);glVertex3f(fXS1,fYS2,1.0f);glTexCoord2f(fX1/256.0f,fY1/256.0f);glVertex3f(fXS1,fYS1,1.0f);glTexCoord2f(fX2/256.0f,fY1/256.0f);glVertex3f(fXS2,fYS1,1.0f);glTexCoord2f(fX2/256.0f,fY2/256.0f);glVertex3f(fXS2,fYS2,1.0f);
 #else
@@ -529,6 +531,7 @@ void DisplayText(void)
  glEnable(GL_ALPHA_TEST);                              // repair needed states
  glEnable(GL_SCISSOR_TEST);                       
 }
+#endif //_XBOX
  
 ////////////////////////////////////////////////////////////////////////
 
@@ -569,6 +572,7 @@ void HideText(void)
 // Build Menu buffer (== Dispbuffer without FPS)
 ////////////////////////////////////////////////////////////////////////
 
+#ifndef _XBOX
 void BuildDispMenu(int iInc)
 {
  if(!(ulKeybits&KEY_SHOWFPS)) return;                  // mmm, cheater ;)
@@ -581,11 +585,13 @@ void BuildDispMenu(int iInc)
  if(gTexPicName) ShowTextGpuPic();                     // windows: show the gpu info as well
 #endif
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////
 // gpu menu actions...
 ////////////////////////////////////////////////////////////////////////
 
+#ifndef _XBOX
 void SwitchDispMenu(int iStep)
 {
  if(!(ulKeybits&KEY_SHOWFPS)) return;                   // tststs
@@ -676,6 +682,7 @@ void SwitchDispMenu(int iStep)
 
  BuildDispMenu(0);                                     // update info
 }
+#endif //_XBOX
 
 ///////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////

@@ -15,15 +15,17 @@ CGUIFont::CGUIFont(std::string strFontName, std::string strFilename, DWORD dwSty
 	m_dwStyles = dwStyles;
 
 	m_bResoucesAlocated = false;
+	m_bFullPath = false;
 }
 
 CGUIFont::~CGUIFont()
 {
 }
 
-bool CGUIFont::Load()
+bool CGUIFont::Load(bool bFullPath)
 {
 	m_pd3dDevice = g_XBoxGUI.GetD3DDevice();
+	m_bFullPath = bFullPath;
 
 	AlocateResources();
 
@@ -38,7 +40,13 @@ void CGUIFont::AlocateResources()
 	if(!m_pd3dDevice)
 		return;
 	
-	string strPath = g_XBoxGUI.GetMediaDir()+"fonts\\"+m_sFontFile;
+	string strPath;
+	
+	if(!m_bFullPath)
+		strPath = g_XBoxGUI.GetMediaDir()+"fonts\\"+m_sFontFile;
+	else
+		strPath = m_sFontFile;
+
 #if 1
 	// Convert to wide string
 	std::wstring wsTmp = std::wstring(strPath.begin(), strPath.end());

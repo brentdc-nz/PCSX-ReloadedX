@@ -18,6 +18,7 @@ CXBoxGUI::CXBoxGUI()
 	m_bGUIStatesCaptured = false;
 	m_bInGameStatesCaptured = false;
 	m_dwSkinTime = 0;
+	m_dwResChangeTime = 0;
 	m_strMediaDir = "";
 	m_surfPreview = NULL;
 	m_iStartWindow = WINDOW_HOME;
@@ -34,6 +35,8 @@ bool CXBoxGUI::Initialize()
 		SysMessage("Can't start the GUI, no D3D device.\n");
 		return false;
 	}
+
+	m_InGameOSD.DeInitialize(); // Release any ingame OSD stuff
 
 	// Change D3D device parameters here, valid only for the GUI
 	m_PresentParams.MultiSampleType = D3DMULTISAMPLE_NONE; // AA Screws up fonts in the GUI!
@@ -66,8 +69,9 @@ bool CXBoxGUI::Initialize()
 	m_GUIWindowManager.ActivateWindow(m_iStartWindow);
 	
 	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-
 	m_pD3DDevice->ApplyStateBlock(m_dwGUIRenderStates);
+
+	m_iCurrentResolution = g_XboxConfigs.GetInt("video.resolution");
 
 	m_bGUIActive = true;
 
@@ -84,6 +88,38 @@ void CXBoxGUI::Run()
 	// Check if we need to load a new skin
 	if(m_dwSkinTime && GetTickCount() >= m_dwSkinTime)
 		ReloadSkin();
+
+	// Check if the resoultion has changed
+	if(g_XboxConfigs.GetInt("video.resolution") != m_iCurrentResolution)
+	{
+		m_dwResChangeTime = GetTickCount() + 2000;
+		m_iCurrentResolution = g_XboxConfigs.GetInt("video.resolution");
+	}
+
+//	WIP: Rather than the quick and dirty method of reloading the xbe 
+//       reset the device with the new resolution and reload the skin
+	if(m_dwResChangeTime && GetTickCount() >= m_dwResChangeTime)
+#if 1
+		XLaunchNewImage("D:\\default.xbe", NULL); // TODO: Clean up properly before reloading the xbe
+#endif
+#if 0 // Reset the device with the new resolution and reload skin (WIP not working properly yet)
+	{
+		int iScrWidth, iScrHeight;
+
+		g_XboxConfigs.GetScreenSize(&iScrWidth, &iScrHeight);
+
+		m_PresentParams.BackBufferWidth = iScrWidth;
+		m_PresentParams.BackBufferHeight = iScrHeight;
+
+		m_pD3DDevice->Reset(&m_PresentParams);
+
+//		D3D_PostResetRestore();
+
+		ReloadSkin();
+
+		m_dwResChangeTime = 0;
+	}
+#endif
 
 	Render();
 }
@@ -163,6 +199,9 @@ bool CXBoxGUI::Close()
 	// Reset the device in order to use the changed params
 	m_pD3DDevice->Reset(&m_PresentParams);
 
+	if(g_XboxConfigs.GetBool("video.showfps") || g_XboxConfigs.GetBool("video.showfreememory"))
+		m_InGameOSD.Initialize();
+
 	return true;
 }
 
@@ -180,7 +219,6 @@ void CXBoxGUI::SetStartWindow(int iStartWindow)
 	// Validity is checked in CWindowManager
 	m_iStartWindow = iStartWindow;
 }
-
 
 void CXBoxGUI::LoadSkin(std::string strSkinName)
 {
@@ -271,4 +309,9 @@ int IsXBoxGUIActive()
 void SetXBoxGUIStartWindow(int iStartWindow)
 {
 	g_XBoxGUI.SetStartWindow(iStartWindow);
+}
+
+void DrawXboxIngameOSD(char* strFps)
+{
+	g_XBoxGUI.m_InGameOSD.Render(strFps);
 }
