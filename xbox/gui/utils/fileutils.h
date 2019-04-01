@@ -15,7 +15,8 @@ public:
 		DIRECTORY = 1<<0,
 		CUE_FILE =  1<<1,
 		BIN_FILE =  1<<2,
-		ISO_FILE =  1<<3
+		IMG_FILE =  1<<3,
+		ISO_FILE =  1<<4
 	};
 };
 

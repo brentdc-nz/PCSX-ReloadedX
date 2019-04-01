@@ -34,7 +34,8 @@ void CFileUtils::GetFilesInDirectory(std::string strPath, std::vector<std::strin
 
 					if((iFileTypes & BIN_FILE) && (len >= 4 && !strcmp(wfd.cFileName + len - 4, ".bin")) // TODO: Add more file types!
 					 ||(iFileTypes & ISO_FILE) && (len >= 4 && !strcmp(wfd.cFileName + len - 4, ".iso"))
-					 ||(iFileTypes & CUE_FILE) && (len >= 4 && !strcmp(wfd.cFileName + len - 4, ".cue")))		
+					 ||(iFileTypes & IMG_FILE) && (len >= 4 && !strcmp(wfd.cFileName + len - 4, ".img"))
+					 ||(iFileTypes & CUE_FILE) && (len >= 4 && !strcmp(wfd.cFileName + len - 4, ".cue")))
 						vecFiles.push_back(wfd.cFileName);
 				}
 			}

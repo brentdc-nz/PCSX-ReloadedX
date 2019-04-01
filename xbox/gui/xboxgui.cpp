@@ -89,7 +89,7 @@ void CXBoxGUI::Run()
 	if(m_dwSkinTime && GetTickCount() >= m_dwSkinTime)
 		ReloadSkin();
 
-	// Check if the resoultion has changed
+	// Check if the resolution has changed
 	if(g_XboxConfigs.GetInt("video.resolution") != m_iCurrentResolution)
 	{
 		m_dwResChangeTime = GetTickCount() + 2000;

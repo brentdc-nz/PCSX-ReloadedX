@@ -114,7 +114,7 @@ bool CGUIWindowGames::GetPSXImages()
 	int iID = 0;
 
 	std::vector<std::string> vecCDImages;
-	CFileUtils::GetFilesInDirectory(CDIMAGE_PATH, vecCDImages, CFileUtils::ISO_FILE | CFileUtils::CUE_FILE);
+	CFileUtils::GetFilesInDirectory(CDIMAGE_PATH, vecCDImages, CFileUtils::ISO_FILE | CFileUtils::CUE_FILE | CFileUtils::BIN_FILE | CFileUtils::IMG_FILE);
 
 	for(int i=0; i < (int)vecCDImages.size(); i++)
 	{
