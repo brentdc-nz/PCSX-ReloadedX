@@ -10,6 +10,7 @@
 #include "guifontmanager.h"
 #include "guiwindowmanager.h"
 #include "guitexturemanager.h"
+#include "guibgmusic.h"
 #include "guiingameosd.h"
 
 class CXBoxGUI
@@ -50,6 +51,8 @@ public:
 	CGUIInGameOSD m_InGameOSD;
 
 private:
+	void CheckGUIOptionChanges();
+
 	CGUIFontManager		m_GUIFontManager;
 	CGUIWindowManager	m_GUIWindowManager;
 	CGUITextureManager  m_GUITextureManager;
@@ -57,6 +60,8 @@ private:
 	LPDIRECT3DDEVICE8 m_pD3DDevice;
 	D3DPRESENT_PARAMETERS m_PresentParams;
 	bool m_bGUIActive;
+
+	CGUIBGMusic m_GUIBGMusic;
 
 	DWORD m_dwGUIRenderStates;
 	DWORD m_dwInGameRenderStates;

@@ -2,7 +2,7 @@
 #include "guiconfigs.h"
 #include "utils\stringutils.h"
 
-#define DEBUG_FONT_PATH "D:\\assets\\FixedFont.ttf"
+#define DEBUG_FONT_PATH "D:\\assets\\fixedfont.ttf"
 
 CGUIInGameOSD::CGUIInGameOSD()
 {

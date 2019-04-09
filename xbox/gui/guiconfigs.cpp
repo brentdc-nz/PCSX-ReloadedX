@@ -53,6 +53,8 @@ bool CXboxConfigs::Load()
 	AddString("core.biosfile", "Bios File", "scph1001.bin", GLOBAL_CFG);
 	PopulateBiosFiles();
 
+	AddBool("sound.guibgmusic", "GUI Background Music", true, GLOBAL_CFG);
+
 	//
 	// Individual game configs
 	//

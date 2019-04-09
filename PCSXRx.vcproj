@@ -355,6 +355,9 @@
 					Name="gui"
 					Filter="">
 					<File
+						RelativePath=".\xbox\gui\guibgmusic.cpp">
+					</File>
+					<File
 						RelativePath=".\xbox\gui\guiconfigs.cpp">
 					</File>
 					<File
@@ -689,6 +692,9 @@
 				<Filter
 					Name="gui"
 					Filter="">
+					<File
+						RelativePath=".\xbox\gui\guibgmusic.h">
+					</File>
 					<File
 						RelativePath=".\xbox\gui\guiconfigs.h">
 					</File>

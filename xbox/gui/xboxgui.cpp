@@ -85,6 +85,19 @@ void CXBoxGUI::Run()
 	if(GetGUIXBoxInput(&iKey))
 		m_GUIWindowManager.OnKey(iKey);
 
+	CheckGUIOptionChanges();
+
+	Render();
+}
+
+void CXBoxGUI::CheckGUIOptionChanges()
+{
+	// Check if we should be playing background music
+	if(g_XboxConfigs.GetBool("sound.guibgmusic") && !m_GUIBGMusic.IsPlaying())
+		m_GUIBGMusic.StartMusic();
+	else if(!g_XboxConfigs.GetBool("sound.guibgmusic") && m_GUIBGMusic.IsPlaying())
+		m_GUIBGMusic.StopMusic();
+
 	// Check if we need to load a new skin
 	if(m_dwSkinTime && GetTickCount() >= m_dwSkinTime)
 		ReloadSkin();
@@ -120,8 +133,6 @@ void CXBoxGUI::Run()
 		m_dwResChangeTime = 0;
 	}
 #endif
-
-	Render();
 }
 
 void CXBoxGUI::Render()
@@ -198,6 +209,9 @@ bool CXBoxGUI::Close()
 
 	// Reset the device in order to use the changed params
 	m_pD3DDevice->Reset(&m_PresentParams);
+
+	// Release the background music if enabled
+	m_GUIBGMusic.Release();
 
 	if(g_XboxConfigs.GetBool("video.showfps") || g_XboxConfigs.GetBool("video.showfreememory"))
 		m_InGameOSD.Initialize();
