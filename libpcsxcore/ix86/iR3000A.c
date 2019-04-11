@@ -81,7 +81,7 @@ static void (*recCP0[32])();
 static void (*recCP2[64])();
 static void (*recCP2BSC[32])();
 
-#define DYNAREC_BLOCK 50
+#define DYNAREC_BLOCK 5//50
 
 static void MapConst(int reg, u32 _const) {
 	iRegs[reg].k = _const;
@@ -479,23 +479,23 @@ static void recExecuteBlock() {
 }
 
 static void recClear(u32 Addr, u32 Size) {
-	u32 bank,offset;
+	u32 bank,offset,drecBlockSize;
 
 	bank = Addr >> 24;
 	offset = Addr & 0xffffff;
 
+	drecBlockSize = DYNAREC_BLOCK * 4;
 
 	// Pitfall 3D - clear dynarec slots that contain 'stale' ram data
 	// - fixes stage 1 loading crash
 	if( bank == 0x80 || bank == 0xa0 || bank == 0x00 ) {
 		offset &= 0x1fffff;
 
-		if( offset >= DYNAREC_BLOCK * 4 )
-			memset((void*)PC_REC(Addr - DYNAREC_BLOCK * 4), 0, DYNAREC_BLOCK * 4);
+		if( offset >= drecBlockSize )
+			memset((void*)PC_REC(Addr - drecBlockSize), 0, drecBlockSize);
 		else
 			memset((void*)PC_REC(Addr - offset), 0, offset);
 	}
-	
 	
 	memset((void*)PC_REC(Addr), 0, Size * 4);
 }
