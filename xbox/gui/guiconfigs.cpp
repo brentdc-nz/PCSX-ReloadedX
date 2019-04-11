@@ -101,7 +101,7 @@ bool CXboxConfigs::Load()
 	AddInt("video.hirestextures", "Hi-Res Textures", 0, GAME_CFG);
 	AddIntOption("video.hirestextures", "None (standard)", 0);
 	AddIntOption("video.hirestextures", "2xSal (alot of VRam required)", 1);
-	AddIntOption("video.hirestextures", "Streteched (filtering required)", 2);
+	AddIntOption("video.hirestextures", "Stretched (filtering required)", 2);
 
 	AddBool("video.usefastmdec", "Use fast Mdec", true, GAME_CFG);
 
