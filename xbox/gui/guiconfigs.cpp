@@ -65,14 +65,14 @@ bool CXboxConfigs::Load()
 
 	// Video Configs
 
-	AddInt("video.antialiasing", "Anti-aliasing", 2, GAME_CFG);
+	AddInt("video.antialiasing", "Anti-Aliasing", 2, GAME_CFG);
 	AddIntOption("video.antialiasing", "None", MULTISAMPLE_NONE);
 	AddIntOption("video.antialiasing", "2x", MULTISAMPLE_2);
 	AddIntOption("video.antialiasing", "4x", MULTISAMPLE_4);
 
 	AddBool("video.frameskip", "Use Frameskip", false, GAME_CFG);
 
-	AddInt("video.offscreendrawing", "Off-Sceen drawing", 2, GAME_CFG);
+	AddInt("video.offscreendrawing", "Off-Sceen Drawing", 2, GAME_CFG);
 	AddIntOption("video.offscreendrawing", "Fastest(Most glicthes)", 0);
 	AddIntOption("video.offscreendrawing", "Minimum(Missing screens)", 1);
 	AddIntOption("video.offscreendrawing", "Standard(Ok for most games)", 2);
@@ -81,10 +81,10 @@ bool CXboxConfigs::Load()
 
 	AddInt("video.texturefiltering", "Texture Filtering", 2, GAME_CFG);
 	AddIntOption("video.texturefiltering", "None", 0);
-	AddIntOption("video.texturefiltering", "Standard(Glicthes can happen)", 1);
+	AddIntOption("video.texturefiltering", "Standard(Glitches can happen)", 1);
 	AddIntOption("video.texturefiltering", "Extended(Removes back borders)", 2);
-	AddIntOption("video.texturefiltering", "Standard(w/o Sprtes - Unfiltered 2D)", 3);
-	AddIntOption("video.texturefiltering", "Extended(w/o Sprtes - Unfiltered 2D)", 4);
+	AddIntOption("video.texturefiltering", "Standard(w/o Sprites - Unfiltered 2D)", 3);
+	AddIntOption("video.texturefiltering", "Extended(w/o Sprites - Unfiltered 2D)", 4);
 	AddIntOption("video.texturefiltering", "Standard + filtered sprites", 5);
 	AddIntOption("video.texturefiltering", "Extended + filtered sprites", 6);
 
@@ -96,14 +96,14 @@ bool CXboxConfigs::Load()
 	AddIntOption("video.vramsize", "16mb", 16);
 	AddIntOption("video.vramsize", "32mb", 32);
 
-	AddBool("video.useframelimit", "Use frame limit", true, GAME_CFG);
+	AddBool("video.useframelimit", "Use Frame Limit", true, GAME_CFG);
 
 	AddInt("video.hirestextures", "Hi-Res Textures", 0, GAME_CFG);
 	AddIntOption("video.hirestextures", "None (standard)", 0);
 	AddIntOption("video.hirestextures", "2xSal (alot of VRam required)", 1);
 	AddIntOption("video.hirestextures", "Stretched (filtering required)", 2);
 
-	AddBool("video.usefastmdec", "Use fast Mdec", true, GAME_CFG);
+	AddBool("video.usefastmdec", "Use Fast Mdec", true, GAME_CFG);
 
 	AddInt("video.framebufferupload", "Framebuffer Upload", 0, GAME_CFG);
 	AddIntOption("video.framebufferupload", "Minimum(fast detection)", 0);
