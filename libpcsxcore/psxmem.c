@@ -292,7 +292,7 @@ void psxMemWrite32(u32 mem, u32 value) {
 	char *p;
 	u32 t;
 
-	
+	size_t memWLUTSize = 0x80 * sizeof(void *);
 	psxRegs.cycle += 1;
 
 
@@ -330,9 +330,9 @@ void psxMemWrite32(u32 mem, u32 value) {
 					case 0x800: case 0x804:
 						if (writeok == 0) break;
 						writeok = 0;
-						memset(psxMemWLUT + 0x0000, 0, 0x80 * sizeof(void *));
-						memset(psxMemWLUT + 0x8000, 0, 0x80 * sizeof(void *));
-						memset(psxMemWLUT + 0xa000, 0, 0x80 * sizeof(void *));
+						memset(psxMemWLUT + 0x0000, 0, memWLUTSize);
+						memset(psxMemWLUT + 0x8000, 0, memWLUTSize);
+						memset(psxMemWLUT + 0xa000, 0, memWLUTSize);
 
 						psxRegs.ICache_valid = FALSE;
 						break;
@@ -340,8 +340,8 @@ void psxMemWrite32(u32 mem, u32 value) {
 						if (writeok == 1) break;
 						writeok = 1;
 						for (i = 0; i < 0x80; i++) psxMemWLUT[i + 0x0000] = (void *)&psxM[(i & 0x1f) << 16];
-						memcpy(psxMemWLUT + 0x8000, psxMemWLUT, 0x80 * sizeof(void *));
-						memcpy(psxMemWLUT + 0xa000, psxMemWLUT, 0x80 * sizeof(void *));
+						memcpy(psxMemWLUT + 0x8000, psxMemWLUT, memWLUTSize);
+						memcpy(psxMemWLUT + 0xa000, psxMemWLUT, memWLUTSize);
 						break;
 					default:
 #ifdef PSXMEM_LOG
