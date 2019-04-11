@@ -96,7 +96,7 @@ D3DRECT g_ScissorRect;
 // Utilities
 // fd: Macros are evil!
 //#define BYTE_CLAMP(i) (int) ((((i) > 255) ? 255 : (((i) < 0) ? 0 : (i)))) 
-__inline byte BYTE_CLAMP(int n)
+__forceinline byte BYTE_CLAMP(int n)
 {
 	if (n&(~0xFF))
 		return (-n)>>31;
@@ -158,7 +158,7 @@ int d3d_TextureExtensionNumber = 1;
 // opengl specified up to 32 TMUs, D3D only allows up to 8 stages
 // XBOX: Only 4 stages available, max value is therefore 3 -> see docs IDirect3DDevice8::SetTextureStageState
 
-#define D3D_MAX_TMUS	4//8
+#define D3D_MAX_TMUS	2//8
 
 typedef struct gl_combine_s
 {
@@ -994,7 +994,7 @@ int d3d_NumVerts = 0;
 // this should be a multiple of 12 to support both GL_QUADS and GL_TRIANGLES
 // it should also be large enough to hold the biggest tristrip or fan in use in the engine
 // individual quads or tris can be submitted in batches
-#define D3D_MAX_VERTEXES	600
+#define D3D_MAX_VERTEXES	12//600
 
 typedef struct gl_texcoord_s
 {
@@ -1011,7 +1011,7 @@ typedef struct gl_xyz_s
 
 // defaults that are picked up by each glVertex call
 D3DCOLOR d3d_CurrentColor = 0xffffffff;
-gl_texcoord_t d3d_CurrentTexCoord[D3D_MAX_TMUS] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}/*, {0, 0}, {0, 0}, {0, 0}, {0, 0}*/};
+gl_texcoord_t d3d_CurrentTexCoord[D3D_MAX_TMUS] = {{0, 0}, {0, 0}/*, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}*/};
 gl_xyz_t d3d_CurrentNormal = {0, 1, 0};
 
 // this may be a little wasteful as it's a full sized vertex for 8 TMUs
@@ -1117,7 +1117,7 @@ void GL_SubmitVertexes (void)
 			// explicitly disable alpha and color ops in this and subsequent stages
 			D3D_SetTextureState (i, D3DTSS_COLOROP, D3DTOP_DISABLE);
 			D3D_SetTextureState (i, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
-
+			D3D_SetTexture (i, NULL);
 			// done
 			break;
 		}
@@ -1370,7 +1370,7 @@ void glBegin (GLenum mode)
 	d3d_PrimitiveMode = mode;
 
 	// begin a new primitive
-	d3d_NumVerts = 0;
+	//d3d_NumVerts = 0;
 }
 
 
@@ -2883,6 +2883,10 @@ BOOL WINAPI wglMakeCurrent (HDC hdc, HGLRC hglrc)
 	// because we want to push out further too, we pick an intermediate value as our new default
 	D3D_SetRenderState (D3DRS_ZBIAS, 0);
 
+	// fd perf test
+	_controlfp(_PC_24,_MCW_PC);
+	D3D_SetRenderState(D3DRS_SWATHWIDTH, D3DSWATH_8);
+
 	// Apply visual improvements
 	IDirect3DDevice8_SetFlickerFilter(d3d_Device, 1);
 	IDirect3DDevice8_SetSoftDisplayFilter(d3d_Device, TRUE);
@@ -3169,7 +3173,7 @@ void glReadPixels (GLint x, GLint y, GLsizei width, GLsizei height, GLenum forma
 	// because we don't have a lockable backbuffer we instead copy it off to an image surface
 	// this will also handle translation between different backbuffer formats
 	hr = IDirect3DSurface8_GetDesc (bbsurf, &desc);
-	hr = IDirect3DDevice8_CreateImageSurface (d3d_Device, desc.Width, desc.Height, /*D3DFMT_R8G8B8*/D3DFMT_LIN_X8R8G8B8, &locksurf); //CHECKME: Linear/Compressed format ?
+	hr = IDirect3DDevice8_CreateImageSurface (d3d_Device, desc.Width, desc.Height, D3DFMT_X8R8G8B8/*D3DFMT_LIN_X8R8G8B8*/, &locksurf); //CHECKME: Linear/Compressed format ?
 	hr = D3DXLoadSurfaceFromSurface (locksurf, NULL, NULL, bbsurf, NULL, NULL, D3DX_FILTER_NONE, 0);
 
 	// now we have a surface we can lock
