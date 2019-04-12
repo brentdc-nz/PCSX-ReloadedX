@@ -1188,7 +1188,7 @@ static int left_R, delta_left_R, right_R, delta_right_R;
 static int left_G, delta_left_G, right_G, delta_right_G;
 static int left_B, delta_left_B, right_B, delta_right_B;
 
-#ifdef _MSC_VER
+#if 1 //_X86_ASM //def _MSC_VER
 
 #pragma warning  (disable : 4035)
 
