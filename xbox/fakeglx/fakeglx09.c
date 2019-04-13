@@ -93,8 +93,9 @@ D3DVIEWPORT8 d3d_Viewport;
 BOOL g_bScissorTest = FALSE;
 D3DRECT g_ScissorRect;
 
-// Utilities
-// fd: Macros are evil!
+// cache float size
+float g_fSize16 = sizeof (float) * 16;
+
 //#define BYTE_CLAMP(i) (int) ((((i) > 255) ? 255 : (((i) < 0) ? 0 : (i)))) 
 __forceinline byte BYTE_CLAMP(int n)
 {
@@ -158,8 +159,8 @@ int d3d_TextureExtensionNumber = 1;
 // opengl specified up to 32 TMUs, D3D only allows up to 8 stages
 // XBOX: Only 4 stages available, max value is therefore 3 -> see docs IDirect3DDevice8::SetTextureStageState
 
-#define D3D_MAX_TMUS	2//8
-
+#define D3D_MAX_TMUS	1//8
+/*
 typedef struct gl_combine_s
 {
 	DWORD colorop;
@@ -174,7 +175,7 @@ typedef struct gl_combine_s
 	DWORD colorscale;
 	DWORD alphascale;
 } gl_combine_t;
-
+*/
 typedef struct gl_tmustate_s
 {
 	d3d_texture_t *boundtexture;
@@ -208,8 +209,8 @@ int D3D_TMUForTexture (GLenum texture)
 	{
 	case GLD3D_TEXTURE0: return 0;
 	case GLD3D_TEXTURE1: return 1;
-	case GLD3D_TEXTURE2: return 2;
-	case GLD3D_TEXTURE3: return 3;
+	//case GLD3D_TEXTURE2: return 2;
+	//case GLD3D_TEXTURE3: return 3;
 	//case GLD3D_TEXTURE4: return 4;
 	//case GLD3D_TEXTURE5: return 5;
 	//case GLD3D_TEXTURE6: return 6;
@@ -345,7 +346,7 @@ void glLoadIdentity (void)
 
 void glLoadMatrixf (const GLfloat *m)
 {
-	memcpy (d3d_CurrentMatrix->stack[d3d_CurrentMatrix->stackdepth].m, m, sizeof (float) * 16);
+	memcpy (d3d_CurrentMatrix->stack[d3d_CurrentMatrix->stackdepth].m, m, g_fSize16);
 	d3d_CurrentMatrix->dirty = TRUE;
 }
 
@@ -1011,15 +1012,15 @@ typedef struct gl_xyz_s
 
 // defaults that are picked up by each glVertex call
 D3DCOLOR d3d_CurrentColor = 0xffffffff;
-gl_texcoord_t d3d_CurrentTexCoord[D3D_MAX_TMUS] = {{0, 0}, {0, 0}/*, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}*/};
-gl_xyz_t d3d_CurrentNormal = {0, 1, 0};
+gl_texcoord_t d3d_CurrentTexCoord[D3D_MAX_TMUS] = {{0, 0}/*, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}*/};
+//gl_xyz_t d3d_CurrentNormal = {0, 1, 0};
 
 // this may be a little wasteful as it's a full sized vertex for 8 TMUs
 // we'll fix it if it becomes a problem (it's not like Quake stresses the GPU too much anyway)
 typedef struct gl_vertex_s
 {
 	gl_xyz_t position;
-	gl_xyz_t normal;
+	//gl_xyz_t normal;
 	D3DCOLOR c;
 	gl_texcoord_t st[D3D_MAX_TMUS];
 } gl_vertex_t;
@@ -1038,9 +1039,9 @@ void GL_SubmitVertexes (void)
 	{
 		D3DFVF_TEX0,
 		D3DFVF_TEX1,
-		D3DFVF_TEX2,
-		D3DFVF_TEX3,
-		D3DFVF_TEX4
+//		D3DFVF_TEX2,
+//		D3DFVF_TEX3,
+//		D3DFVF_TEX4
 //		D3DFVF_TEX5,
 //		D3DFVF_TEX6,
 //		D3DFVF_TEX7,
@@ -1105,7 +1106,7 @@ void GL_SubmitVertexes (void)
 	D3D_CheckDirtyMatrix (&d3d_ProjectionMatrix);
 
 	// initial vertex shader (will be added to as TMUs accumulate)
-	d3d_VertexShader = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE;
+	d3d_VertexShader = D3DFVF_XYZ /*| D3DFVF_NORMAL */| D3DFVF_DIFFUSE;
 	d3d_TexCoordSizes = 0;
 
 	// set up textures
@@ -1254,9 +1255,9 @@ void glVertex3f (GLfloat x, GLfloat y, GLfloat z)
 	d3d_Vertexes[d3d_NumVerts].position.y = y;
 	d3d_Vertexes[d3d_NumVerts].position.z = z;
 
-	d3d_Vertexes[d3d_NumVerts].normal.x = d3d_CurrentNormal.x;
-	d3d_Vertexes[d3d_NumVerts].normal.y = d3d_CurrentNormal.y;
-	d3d_Vertexes[d3d_NumVerts].normal.z = d3d_CurrentNormal.z;
+//	d3d_Vertexes[d3d_NumVerts].normal.x = d3d_CurrentNormal.x;
+//	d3d_Vertexes[d3d_NumVerts].normal.y = d3d_CurrentNormal.y;
+//	d3d_Vertexes[d3d_NumVerts].normal.z = d3d_CurrentNormal.z;
 
 	d3d_Vertexes[d3d_NumVerts].c = d3d_CurrentColor;
 
@@ -1358,9 +1359,9 @@ void glColor4ub (GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha)
 
 void glNormal3f (GLfloat nx, GLfloat ny, GLfloat nz)
 {
-	d3d_CurrentNormal.x = nx;
-	d3d_CurrentNormal.y = ny;
-	d3d_CurrentNormal.z = nz;
+//	d3d_CurrentNormal.x = nx;
+//	d3d_CurrentNormal.y = ny;
+//	d3d_CurrentNormal.z = nz;
 }
 
 
@@ -3557,7 +3558,7 @@ void glGetFloatv (GLenum pname, GLfloat *params)
 	switch (pname)
 	{
 	case GL_MODELVIEW_MATRIX:
-		memcpy (params, d3d_ModelViewMatrix.stack[d3d_ModelViewMatrix.stackdepth].m, sizeof (float) * 16);
+		memcpy (params, d3d_ModelViewMatrix.stack[d3d_ModelViewMatrix.stackdepth].m, g_fSize16);
 		break;
 
 	case GLD3D_MAX_TEXTURE_MAX_ANISOTROPY_EXT:
