@@ -121,6 +121,41 @@ void UpdateGlobalTP(unsigned short gdata)
  STATUSREG|=(gdata & 0x07ff);                          // set the necessary bits
 }
 
+#if 1 //_X86_ASM
+unsigned long DoubleBGR2RGB (unsigned long BGR)
+{
+    __asm
+    {
+        mov eax, BGR                /* this can hold the G value */
+        mov ebx, eax                /* this can hold the R value */
+        mov edx, eax                /* this can hold the B value */
+        and ebx, 000000ffh          /* mask the R value */
+        shl ebx, 1
+        test ebx, 00000100h
+        jz    RSKIP
+        mov ebx, 000000ffh
+
+RSKIP: 
+        and eax, 0000ff00h          /* mask the G value */
+        shl eax, 1
+        test eax, 00010000h
+        jz    GSKIP
+        mov eax, 0000ff00h
+
+GSKIP: 
+        and edx, 00ff0000h          /* mask the B value */
+        shl edx, 1
+        test edx, 01000000h
+        jz    BSKIP
+        mov edx, 00ff0000h
+
+BSKIP: 
+        or  eax, ebx                /* add R to G value */
+        or  eax, edx                /* add B to RG value */
+    }
+    /* Result returned in EAX */
+}
+#else
 unsigned int DoubleBGR2RGB (unsigned int BGR)
 {
  unsigned int ebx,eax,edx;
@@ -136,11 +171,33 @@ unsigned int DoubleBGR2RGB (unsigned int BGR)
 
  return (ebx|eax|edx);
 }
+#endif
 
+#if 0 //_X86_ASM
+unsigned short BGR24to16 (unsigned long BGR)
+{
+    __asm
+    {
+        mov eax, BGR                /* this can hold the G value */
+        mov ebx, eax                /* this can hold the R value */
+        mov edx, eax                /* this can hold the B value */
+        shr ebx, 3                  /* move the R value */
+        and edx, 00f80000h          /* mask the B value */
+        shr edx, 9                  /* move the B value */
+        and eax, 00f800h            /* mask the G value */
+        shr eax, 6                  /* move the G value */
+        and ebx, 0000001fh          /* mask the R value */
+        or  eax, ebx                /* add R to G value */
+        or  eax, edx                /* add B to RG value */
+    }
+    /* Result returned in AX */
+}
+#else
 unsigned short BGR24to16 (uint32_t BGR)
 {
  return ((BGR>>3)&0x1f)|((BGR&0xf80000)>>9)|((BGR&0xf800)>>6);
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////
 // OpenGL primitive drawing commands

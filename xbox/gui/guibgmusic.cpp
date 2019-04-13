@@ -23,7 +23,7 @@ void CGUIBGMusic::Initialize()
 		return;
 
 	// Initialize DirectMusic
-    if(!m_bDXMusicAllocated)
+	if(!m_bDXMusicAllocated)
 	{
 		// Docs say this is done once per XBE run
 		// seems strange as it's released aswell
@@ -41,12 +41,12 @@ void CGUIBGMusic::Initialize()
 		m_bDXMusicAllocated = true;
 	}
 
-    // Create loader object
-    DirectMusicCreateInstance(CLSID_DirectMusicLoader, NULL,
+	// Create loader object
+	DirectMusicCreateInstance(CLSID_DirectMusicLoader, NULL,
                               IID_IDirectMusicLoader8, (VOID**)&m_pDXMusicLoader);
 
-    // Create performance object
-    DirectMusicCreateInstance(CLSID_DirectMusicPerformance, NULL,
+	// Create performance object
+	DirectMusicCreateInstance(CLSID_DirectMusicPerformance, NULL,
                               IID_IDirectMusicPerformance8, (VOID**)&m_pDXMusicPerformance);
 
 	m_pDXMusicPerformance->InitAudioX(DMUS_APATH_SHARED_STEREO, 64, 0, NULL);	
