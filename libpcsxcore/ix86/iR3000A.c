@@ -81,7 +81,7 @@ static void (*recCP0[32])();
 static void (*recCP2[64])();
 static void (*recCP2BSC[32])();
 
-#define DYNAREC_BLOCK 5//50
+#define DYNAREC_BLOCK 10//50
 
 static void MapConst(int reg, u32 _const) {
 	iRegs[reg].k = _const;
