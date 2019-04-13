@@ -45,7 +45,7 @@ u32 *psxRecLUT;
 #define PC_REC16(x) (*(u16*)PC_REC(x))
 #define PC_REC32(x) (*(u32*)PC_REC(x))
 
-#define RECMEM_SIZE		(8 * 1024 * 1024)
+#define RECMEM_SIZE		(1 * 1024 * 1024)//8 * 1024 * 1024
 
 static char *recMem;	/* the recompiled blocks will be here */
 static char *recRAM;	/* and the ptr to the blocks here */
