@@ -3173,7 +3173,7 @@ void glReadPixels (GLint x, GLint y, GLsizei width, GLsizei height, GLenum forma
 	// because we don't have a lockable backbuffer we instead copy it off to an image surface
 	// this will also handle translation between different backbuffer formats
 	hr = IDirect3DSurface8_GetDesc (bbsurf, &desc);
-	hr = IDirect3DDevice8_CreateImageSurface (d3d_Device, desc.Width, desc.Height, D3DFMT_X8R8G8B8/*D3DFMT_LIN_X8R8G8B8*/, &locksurf); //CHECKME: Linear/Compressed format ?
+	hr = IDirect3DDevice8_CreateImageSurface (d3d_Device, desc.Width, desc.Height, /*D3DFMT_R8G8B8*/D3DFMT_LIN_X8R8G8B8, &locksurf); //CHECKME: Linear/Compressed format ?
 	hr = D3DXLoadSurfaceFromSurface (locksurf, NULL, NULL, bbsurf, NULL, NULL, D3DX_FILTER_NONE, 0);
 
 	// now we have a surface we can lock
