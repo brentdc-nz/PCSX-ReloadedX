@@ -2762,10 +2762,13 @@ void D3D_SetupPresentParams (int width, int height, int bpp, BOOL windowed)
 	}
 	else // No component cables detected
 	{
-		// Fallback to standard setup (480i)
+		if(videoFlags & XC_VIDEO_FLAGS_HDTV_480p)
+			d3d_PresentParams.Flags = D3DPRESENTFLAG_PROGRESSIVE;
+		else
+			d3d_PresentParams.Flags = D3DPRESENTFLAG_INTERLACED;
+
 		d3d_PresentParams.BackBufferWidth = width = 640;
 		d3d_PresentParams.BackBufferHeight = height = 480;
-		d3d_PresentParams.Flags = D3DPRESENTFLAG_INTERLACED;
 	}
 }
 

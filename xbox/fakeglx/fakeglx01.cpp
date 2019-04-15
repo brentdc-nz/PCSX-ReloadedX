@@ -1319,10 +1319,13 @@ private:
 		}
 		else // No component cables
 		{
-			// Fallback to standard setup (480i)
+			if(videoFlags & XC_VIDEO_FLAGS_HDTV_480p)
+				params.Flags = D3DPRESENTFLAG_PROGRESSIVE;
+			else
+				params.Flags = D3DPRESENTFLAG_INTERLACED;
+
 			params.BackBufferWidth = g_iWidth = 640;
 			params.BackBufferHeight = g_iHeight = 480;
-			params.Flags = D3DPRESENTFLAG_INTERLACED;
 		}
 
 		// Create the Direct3D device.

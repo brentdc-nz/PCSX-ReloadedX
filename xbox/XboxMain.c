@@ -263,10 +263,10 @@ int main()
 	}
 
 #ifdef _XBOX // 128mb modded Xboxes needs this to fucntion correctly
-	lpBuffer.dwLength = sizeof( MEMORYSTATUS );
-	GlobalMemoryStatus( &lpBuffer );
+	lpBuffer.dwLength = sizeof(MEMORYSTATUS);
+	GlobalMemoryStatus(&lpBuffer);
 
-	if( lpBuffer.dwTotalPhys > 67108864 ) // Check if > 64mb
+	if(lpBuffer.dwTotalPhys > 67108864) // Check if > 64mb
 	{
 		__asm
 		{
@@ -279,17 +279,18 @@ int main()
 #endif
 	if (SysInit() == -1) return 1;
 
-#ifdef _XBOX // We need to do this here for the GUI
+#ifdef _XBOX 
 	if(!IsHDEnabled())
 	{
-		// No component cables so force to 480p
+		// No component cables so force to 480i
 		SysMessage("Component cables not detected forcing to 480p.\n");
-		XboxConfigs_SetInt("video.resolution", RESOLUTION_480P);
+		XboxConfigs_SetInt("video.resolution", RESOLUTION_480P); // Becomes 480i with no component cables
 	}
 
 	XboxConfigs_GetScreenSize(&iScrWidth, &iScrHeight);
 	D3D_SetMode(iScrWidth, iScrHeight, IsHDEnabled());
 
+	// We need to do this here for the GUI
 	wglCreateContext(NULL);
 	wglMakeCurrent(NULL, NULL);
 #endif
