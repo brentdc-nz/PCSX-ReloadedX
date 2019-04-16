@@ -173,7 +173,7 @@ unsigned int DoubleBGR2RGB (unsigned int BGR)
 }
 #endif
 
-#if 0 //_X86_ASM
+#if 1 //_X86_ASM
 unsigned short BGR24to16 (unsigned long BGR)
 {
     __asm

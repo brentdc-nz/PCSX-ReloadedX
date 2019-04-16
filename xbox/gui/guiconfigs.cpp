@@ -88,6 +88,8 @@ bool CXboxConfigs::Load()
 	AddIntOption("video.texturefiltering", "Standard + filtered sprites", 5);
 	AddIntOption("video.texturefiltering", "Extended + filtered sprites", 6);
 
+	AddBool("video.advancedblend", "Use Advanced Blend", false, GAME_CFG);
+
 	AddInt("video.vramsize", "VRam Size", 0, GAME_CFG);
 	AddIntOption("video.vramsize", "Autodetect", 0);
 	AddIntOption("video.vramsize", "2mb", 2);
@@ -207,6 +209,7 @@ void CXboxConfigs::AddBool(std::string strConfig, std::string strDisplayText, bo
 void CXboxConfigs::SetBool(const char *strConfig, const bool bValue)
 {
 	mapIter it = m_ConfigsMap.find(strConfig);
+
 	if (it != m_ConfigsMap.end())
 	{
 		((CConfigBool*)(*it).second)->SetValue(bValue);
@@ -298,6 +301,7 @@ void CXboxConfigs::AddStringOption(std::string strConfig, std::string strDisplay
 void CXboxConfigs::SetString(const char *strConfig, const std::string strValue)
 {
 	mapIter it = m_ConfigsMap.find(strConfig);
+
 	if (it != m_ConfigsMap.end())
 	{
 		((CConfigString*)(*it).second)->SetValue(strValue);

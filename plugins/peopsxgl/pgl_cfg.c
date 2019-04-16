@@ -230,7 +230,7 @@ void PGL_ReadConfig(void) // read config (linux file)
 //iUseScanLines=0; // Not needed on XBox, if we want scanlines we will use a D3D shader
  bFullVRam=FALSE;
  iFilterType = XboxConfigs_GetInt("video.texturefiltering");
- bAdvancedBlend=FALSE;
+ bAdvancedBlend = XboxConfigs_GetBool("video.advancedblend"); //=FALSE;
  bDrawDither=FALSE;
  bUseLines=FALSE;
  bUseFrameLimit = XboxConfigs_GetBool("video.useframelimit"); //=TRUE;
