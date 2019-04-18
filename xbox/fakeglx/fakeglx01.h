@@ -1012,6 +1012,13 @@ typedef int	BOOL;
 #define GL_VERSION                        0x1F02
 #define GL_EXTENSIONS                     0x1F03
 
+/* For glBlendEquationExt extension */
+#define GL_FUNC_ADD_EXT 0x8006
+#define GL_FUNC_SUBTRACT_EXT 0x800A
+#define GL_FUNC_REVERSE_SUBTRACT_EXT 0x800B
+#define GL_MIN_EXT 0x8007
+#define GL_MAX_EXT 0x8008
+
 // Used by the D3DQuake author in gl_draw.c
 #define    D3D_TEXTURE_MAXANISOTROPY 0xf70001
 
@@ -1026,6 +1033,7 @@ HGLRC/*WINAPI*/wglCreateContext(/*maindc*/);
 BOOL /*WINAPI*/ wglMakeCurrent(/*HDC hdc, HGLRC hglrc*/);
 BOOL /*WINAPI*/ wglDeleteContext(/*HGLRC hglrc*/);
 BOOL /*WINAPI*/ FakeSwapBuffers();
+PROC APIENTRY wglGetProcAddress(LPCSTR strExtension); // Leave APIENTRY for function pointer
 
 void /*APIENTRY*/ glClearColor (GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
 void /*APIENTRY*/ glCullFace (GLenum mode);
@@ -1073,7 +1081,7 @@ void /*APIENTRY*/ glColor4ubv (const GLubyte *v);
 void /*APIENTRY*/ glColor3ubv (const GLubyte *v);
 void /*APIENTRY*/ glHint (GLenum target, GLenum mode);
 const GLubyte* /*APIENTRY*/ glGetString (GLenum name);
-PROC /*APIENTRY*/ wglGetProcAddress(LPCSTR s);
+
 
 void D3D_SetMode(int iWidth, int iHeight, BOOL bHDEnabled/* int bpp, int zbpp*/);
 void D3D_SetGammaRamp(const unsigned char* gammaTable);

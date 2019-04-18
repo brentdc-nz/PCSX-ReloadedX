@@ -3811,6 +3811,42 @@ void WINAPI GL_MultiTexCoord1f (GLenum target, GLfloat s)
 	d3d_CurrentTexCoord[TMU].t = 0;
 }
 
+/*
+===================================================================================================================
+
+			Blend Equation Extension
+
+===================================================================================================================
+*/
+
+void WINAPI glBlendEquationExtFgl(GLenum mode)
+{
+	switch(mode)
+	{
+	case GL_FUNC_ADD_EXT:
+ 		D3D_SetRenderState (D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		break;
+
+	case GL_FUNC_SUBTRACT_EXT:
+		D3D_SetRenderState (D3DRS_BLENDOP, D3DBLENDOP_SUBTRACT);
+		break;
+
+	case D3DBLENDOP_REVSUBTRACT:
+		D3D_SetRenderState (D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+		break;
+
+	case GL_MIN_EXT:
+		D3D_SetRenderState (D3DRS_BLENDOP, D3DBLENDOP_MIN);
+		break;
+
+	case GL_MAX_EXT:
+		D3D_SetRenderState (D3DRS_BLENDOP, D3DBLENDOP_MAX);
+		break;
+
+	default:
+		SysMessage ("glBlendEquationExt: unknown mode");
+	}
+}
 
 /*
 ===================================================================================================================
@@ -3829,6 +3865,7 @@ static char *GL_VersionString = "1.1";
 static char *GL_ExtensionString =
 "GL_ARB_multitexture \
 GL_ARB_texture_env_add \
+GL_EXT_blend_subtract \
 GL_EXT_texture_filter_anisotropic ";
 
 D3DADAPTER_IDENTIFIER8 d3d_AdapterID;
@@ -3846,6 +3883,7 @@ const GLubyte *glGetString (GLenum name)
 	case GL_VERSION:
 		return (const GLubyte*)GL_VersionString;
 	case GL_EXTENSIONS:
+
 	default:
 		return (const GLubyte*)GL_ExtensionString;
 	}
@@ -3873,11 +3911,12 @@ gld3d_entrypoint_t d3d_EntryPoints[] =
 	{"glMultiTexCoord2fARB", (PROC) GL_MultiTexCoord2f},
 	{"glClientActiveTexture", (PROC) GL_ClientActiveTexture},
 	{"glClientActiveTextureARB", (PROC) GL_ClientActiveTexture},
+	{"glBlendEquationEXT", (PROC) glBlendEquationExtFgl},
 	{NULL, NULL}
 };
 
 
-PROC WINAPI wglGetProcAddress (LPCSTR s)
+PROC APIENTRY wglGetProcAddress (LPCSTR strExtension)
 {
 	int i;
 
@@ -3887,7 +3926,7 @@ PROC WINAPI wglGetProcAddress (LPCSTR s)
 		// no more entrypoints
 		if (!d3d_EntryPoints[i].funcname) break;
 
-		if (!strcmp (s, d3d_EntryPoints[i].funcname))
+		if (!strcmp (strExtension, d3d_EntryPoints[i].funcname))
 		{
 			return d3d_EntryPoints[i].funcproc;
 		}

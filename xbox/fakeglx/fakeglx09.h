@@ -1117,6 +1117,13 @@ typedef void GLvoid;
 #define GL_COLOR_INDEX12_EXT 0x80E6
 #define GL_COLOR_INDEX16_EXT 0x80E7
 
+/* For glBlendEquationExt extension */
+#define GL_FUNC_ADD_EXT 0x8006
+#define GL_FUNC_SUBTRACT_EXT 0x800A
+#define GL_FUNC_REVERSE_SUBTRACT_EXT 0x800B
+#define GL_MIN_EXT 0x8007
+#define GL_MAX_EXT 0x8008
+
 /* WIN_draw_range_elements */
 #define GL_MAX_ELEMENTS_VERTICES_WIN 0x80E8
 #define GL_MAX_ELEMENTS_INDICES_WIN 0x80E9
@@ -1496,7 +1503,7 @@ BOOL WINAPI wglDeleteContext (HGLRC hglrc);
 HGLRC WINAPI wglGetCurrentContext (VOID);
 HDC WINAPI wglGetCurrentDC (VOID);
 BOOL WINAPI wglMakeCurrent (HDC hdc, HGLRC hglrc);
-PROC WINAPI wglGetProcAddress (LPCSTR s);
+PROC APIENTRY wglGetProcAddress (LPCSTR strExtension);
 
 // override SPF
 BOOL WINAPI SetPixelFormat (HDC hdc, int format, CONST /*PIXELFORMATDESCRIPTOR*/int * ppfd);

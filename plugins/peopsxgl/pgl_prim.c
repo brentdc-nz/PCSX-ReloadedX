@@ -441,7 +441,7 @@ void SetSemiTrans(void)
  if(TransSets[GlobalTextABR].srcFac!=obm1 || 
     TransSets[GlobalTextABR].dstFac!=obm2)
   {
-   if(glBlendEquationEXTEx==NULL) // NULL on XBox
+   if(glBlendEquationEXTEx==NULL) // We use this extension on Xbox via FGLx
     {
      obm1=TransSets[GlobalTextABR].srcFac;
      obm2=TransSets[GlobalTextABR].dstFac;

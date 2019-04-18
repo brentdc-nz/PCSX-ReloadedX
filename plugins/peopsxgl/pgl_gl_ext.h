@@ -23,7 +23,7 @@
 #define FUNC_ADD_EXT             0x8006
 #define FUNC_REVERSESUBTRACT_EXT 0x800B
 
-#ifdef _WINDOWS
+#if defined (_WINDOWS) || (_XBOX)
 typedef void (APIENTRY * PFNGLBLENDEQU) (GLenum mode);
 typedef void (APIENTRY * PFNGLCOLORTABLEEXT)
     (GLenum target, GLenum internalFormat, GLsizei width, GLenum format,

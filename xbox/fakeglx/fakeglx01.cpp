@@ -1586,6 +1586,37 @@ public:
 		// Does not, by itself, dirty the render state
 	}
 
+	void glBlendEquationExt(GLenum mode)
+	{
+		SetRenderStateDirty();
+
+		switch(mode)
+		{
+		case GL_FUNC_ADD_EXT:
+ 			m_pD3DDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+			break;
+
+		case GL_FUNC_SUBTRACT_EXT:
+			m_pD3DDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_SUBTRACT);
+			break;
+
+		case D3DBLENDOP_REVSUBTRACT:
+			m_pD3DDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+			break;
+
+		case GL_MIN_EXT:
+			m_pD3DDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_MIN);
+			break;
+
+		case GL_MAX_EXT:
+			m_pD3DDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_MAX);
+			break;
+
+		default:
+			LocalDebugBreak();
+		}
+	}
+
 	void glBlendFunc (GLenum sfactor, GLenum dfactor)
 	{
 		if ( m_glBlendFuncSFactor != sfactor || m_glBlendFuncDFactor != dfactor ) 
@@ -2834,6 +2865,7 @@ private:
 				m_extensions = " GL_EXT_texture_object ";
 			}
 		}
+		m_extensions =+ " GL_EXT_blend_subtract ";
 	}
 
 	DWORD D3DFloatToDWORD (float f)
@@ -3594,30 +3626,36 @@ static void /*APIENTRY*/ SelectTextureSGIS(GLenum target)
 	gFakeGL->glSelectTextureSGIS(target);
 }
 
+void WINAPI glBlendEquationExtFgl(GLenum mode)
+{
+	gFakeGL->glBlendEquationExt(mode);
+}
+
 // type cast unsafe conversion from 
 #pragma warning( push )
 #pragma warning( disable : 4191)
 
-PROC /*APIENTRY*/ wglGetProcAddress(LPCSTR s)
+PROC APIENTRY wglGetProcAddress(LPCSTR strExtension)
 {
-	static LPCSTR kBindTextureEXT = "glBindTextureEXT";
-	static LPCSTR kMTexCoord2fSGIS = "glMTexCoord2fSGIS"; // Multitexture
-	static LPCSTR kSelectTextureSGIS = "glSelectTextureSGIS";
-
-	if ( strncmp(s, kBindTextureEXT, sizeof(kBindTextureEXT)-1) == 0)
+	if(strExtension == "glBindTextureEXT")
 	{
 		return (PROC) BindTextureExt;
 	}
-	else if ( strncmp(s, kMTexCoord2fSGIS, sizeof(kMTexCoord2fSGIS)-1) == 0)
+	else if(strExtension == "glMTexCoord2fSGIS") // Multitexture
 	{
 		return (PROC) MTexCoord2fSGIS;
 	}
-	else if ( strncmp(s, kSelectTextureSGIS, sizeof(kSelectTextureSGIS)-1) == 0)
+	else if(strExtension == "glSelectTextureSGIS")
 	{
 		return (PROC) SelectTextureSGIS;
 	}
-	// LocalDebugBreak();
-	return 0;
+	else if(strExtension == "glBlendEquationEXT")
+	{
+		return (PROC) glBlendEquationExtFgl;
+	}
+
+	//LocalDebugBreak();
+	return NULL;
 }
 
 #pragma warning( pop )

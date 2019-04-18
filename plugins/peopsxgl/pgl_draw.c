@@ -130,7 +130,7 @@ BOOL           bGteAccuracy;
 // OGL extension support
 
 int                iForceVSync=-1;
-int                iUseExts=0;
+int                iUseExts=1;
 BOOL               bGLExt;
 BOOL               bGLFastMovie=FALSE;
 BOOL               bGLSoft;
@@ -201,14 +201,13 @@ BOOL bSetupPixelFormat(HDC hDC)
 // Get extension infos (f.e. pal textures / packed pixels)
 ////////////////////////////////////////////////////////////////////////
 
-void GetExtInfos(void) // On XBox we dont use/have these extensions                         
+void GetExtInfos(void)                       
 {
  BOOL bPacked=FALSE;                                   // default: no packed pixel support
 
  bGLExt=FALSE;                                         // default: no extensions
  bGLFastMovie=FALSE;
 
-#ifndef _XBOX
  if(strstr((char *)glGetString(GL_EXTENSIONS),         // packed pixels available?
     "GL_EXT_packed_pixels"))                          
   bPacked=TRUE;                                        // -> ok
@@ -228,15 +227,13 @@ void GetExtInfos(void) // On XBox we dont use/have these extensions
      strstr((char *)glGetString(GL_EXTENSIONS),        // -> check clamp support, if yes: use it
      "GL_SGIS_texture_edge_clamp")))
       iClampType=GL_TO_EDGE_CLAMP;
- else 
-#endif //_XBOX	 
-	 iClampType=GL_CLAMP;
+ else 	 
+	iClampType=GL_CLAMP;
 
 #if !defined (_MACGL) // OSX > 10.4.3 defines this
  glColorTableEXTEx=(PFNGLCOLORTABLEEXT)NULL;           // init ogl palette func pointer
 #endif
 
-#ifndef _XBOX
 #ifndef __sun
  if(iGPUHeight!=1024 &&                                // no pal textures in ZN mode (height=1024)! 
     strstr((char *)glGetString(GL_EXTENSIONS),         // otherwise: check ogl support
@@ -244,25 +241,20 @@ void GetExtInfos(void) // On XBox we dont use/have these extensions
   {
    iUsePalTextures=1;                                  // -> wow, supported, get func pointer
 
-#ifdef _WINDOWS
+#if defined (_WINDOWS) || (_XBOX)
    glColorTableEXTEx=(PFNGLCOLORTABLEEXT)wglGetProcAddress("glColorTableEXT");
 #elif defined (_MACGL)
     // no prob, done already in OSX > 10.4.3
 #else
    glColorTableEXTEx=(PFNGLCOLORTABLEEXT)glXGetProcAddress("glColorTableEXT");
 #endif
-#endif //_XBOX
 
    // NULL on XBox
    if(glColorTableEXTEx==NULL) iUsePalTextures=0;      // -> ha, cheater... no func, no support
 
-#ifndef _XBOX
   }
  else iUsePalTextures=0;
-#else
- iUsePalTextures=0;
 #endif
-#endif //_XBOX
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -277,7 +269,6 @@ void SetExtGLFuncs(void)
 
  //----------------------------------------------------//
 
-#ifndef _XBOX // We don't have any of these extensions on XBox atm
 #ifdef _WINDOWS
  if((iForceVSync>=0) &&                                // force vsync?
     strstr((char *)glGetString(GL_EXTENSIONS),         // and extension available?
@@ -289,14 +280,15 @@ void SetExtGLFuncs(void)
    if(wglSwapIntervalEXT) wglSwapIntervalEXT(iForceVSync);
   }
 #endif
+
 #ifdef _MACGL
  SetVSync(iForceVSync);
 #endif
- if(iUseExts && !(dwActFixes&1024) &&                  // extensions wanted? and not turned off by game fix?
+ if(iUseExts && !(dwActFixes&1024) &&             // extensions wanted? and not turned off by game fix?
     strstr((char *)glGetString(GL_EXTENSIONS),         // and blend_subtract available?
     "GL_EXT_blend_subtract"))
      {                                                 // -> get ogl blend function pointer
-#ifdef _WINDOWS
+#if defined (_WINDOWS) || defined(_XBOX)
       glBlendEquationEXTEx=(PFNGLBLENDEQU)wglGetProcAddress("glBlendEquationEXT");
 #elif defined(_MACGL)
     // no prob, OSX > 10.4.3 has this
@@ -312,7 +304,6 @@ void SetExtGLFuncs(void)
    glBlendEquationEXTEx=(PFNGLBLENDEQU)NULL;           // -> no more blend function pointer
 #endif
   }
-#endif
 
  //----------------------------------------------------//
 
