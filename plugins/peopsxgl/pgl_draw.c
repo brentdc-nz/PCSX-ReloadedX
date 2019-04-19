@@ -241,7 +241,7 @@ void GetExtInfos(void)
   {
    iUsePalTextures=1;                                  // -> wow, supported, get func pointer
 
-#if defined (_WINDOWS) || (_XBOX)
+#if defined(_WINDOWS) || defined(_XBOX)
    glColorTableEXTEx=(PFNGLCOLORTABLEEXT)wglGetProcAddress("glColorTableEXT");
 #elif defined (_MACGL)
     // no prob, done already in OSX > 10.4.3
@@ -284,11 +284,11 @@ void SetExtGLFuncs(void)
 #ifdef _MACGL
  SetVSync(iForceVSync);
 #endif
- if(iUseExts && !(dwActFixes&1024) &&             // extensions wanted? and not turned off by game fix?
+ if(iUseExts && !(dwActFixes&1024) &&                  // extensions wanted? and not turned off by game fix?
     strstr((char *)glGetString(GL_EXTENSIONS),         // and blend_subtract available?
     "GL_EXT_blend_subtract"))
      {                                                 // -> get ogl blend function pointer
-#if defined (_WINDOWS) || defined(_XBOX)
+#if defined(_WINDOWS) || defined(_XBOX)
       glBlendEquationEXTEx=(PFNGLBLENDEQU)wglGetProcAddress("glBlendEquationEXT");
 #elif defined(_MACGL)
     // no prob, OSX > 10.4.3 has this

@@ -1082,13 +1082,11 @@ void /*APIENTRY*/ glColor3ubv (const GLubyte *v);
 void /*APIENTRY*/ glHint (GLenum target, GLenum mode);
 const GLubyte* /*APIENTRY*/ glGetString (GLenum name);
 
-
 void D3D_SetMode(int iWidth, int iHeight, BOOL bHDEnabled/* int bpp, int zbpp*/);
 void D3D_SetGammaRamp(const unsigned char* gammaTable);
 void D3D_InitSetForce16BitTextures(int force16bitTextures);
 void D3D_Hint_GenerateMipMaps(int value);
 float D3D_GetD3DDriverVersion();
-
 
 /*
 ===================================================================================================================
