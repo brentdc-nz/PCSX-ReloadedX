@@ -30,7 +30,7 @@ bool CGUIWindowGames::OnMessage(CGUIMessage message)
 		case GUI_MSG_WINDOW_INIT:
 		{
 			// Populate the list with images
-			if(!GetPSXImages())
+			if(!GetDirectory(CDIMAGE_PATH, true))
 				SysMessage("Unable to load CD Images.\n");
 			break;
 		}
@@ -45,25 +45,46 @@ bool CGUIWindowGames::OnMessage(CGUIMessage message)
 
 				if(pItem)
 				{
-					// If we don't have a config for this game open the config window
-					if(!g_XboxConfigs.LoadGameConfigs(pItem->GetName()))
+					if(pItem->IsDirectory())
 					{
-						std::string strGameFilename = pItem->GetName(); // Store it now as we are decativating the window
+						std::string strDirName = pItem->GetName();
+						std::string strFullPath = pItem->GetFullPath();
 
-						g_XboxConfigs.LoadGameConfigs("default"); // Load our defaults to use for new configs created
+						pCtrlPSXCDList->Clear(); // Clear out our current items
 
-						g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
-
-						CGUIMessage msg(GUI_MSG_FILENAME, GetID(), 0, strGameFilename);
-						g_XBoxGUI.SendMessage(msg);
+						if(strDirName == "\\..") // HACK: Need a better way to identify
+						{
+							if(strFullPath == "D:\\psxcds\\") // Check if it's the root dir
+								GetDirectory(CDIMAGE_PATH, true);
+							else
+								GetDirectory(strFullPath);
+						}
+						else
+							GetDirectory(strFullPath);
 					}
 					else
 					{
-						string strPath = CDIMAGE_PATH + pItem->GetName();
-						RunCommand(ID_FILE_RUN_ISO, strPath.c_str());
-					}
+						// If we don't have a config for this game open the config window
+						if(!g_XboxConfigs.LoadGameConfigs(pItem->GetName()))
+						{
+							// Store the strings now as we are decativating the window
+							std::string strGameFilename = pItem->GetName();
+							std::string strGameFullPath = pItem->GetFullPath();
 
-					return true;
+							g_XboxConfigs.LoadGameConfigs("default"); // Load our defaults to use for new configs created
+
+							g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
+
+							CGUIMessage msg(GUI_MSG_FILENAME, GetID(), 0, strGameFilename, strGameFullPath);
+							g_XBoxGUI.SendMessage(msg);
+						}
+						else
+						{
+							string strPath = pItem->GetFullPath();
+							RunCommand(ID_FILE_RUN_ISO, strPath.c_str());
+						}
+						return true;
+					}
 				}
 			}
 		}
@@ -76,7 +97,7 @@ bool CGUIWindowGames::OnKey(int iKey)
 {
 	if(iKey == K_XBOX_Y)
 	{
-		std::string strFilename;
+		std::string strFilename, strGameFullPath;
 
 		CGUIControlList* pControlPSXCDImages = NULL;
 		pControlPSXCDImages = (CGUIControlList*)GetControl(CONTROL_LIST_IMAGES);
@@ -85,7 +106,11 @@ bool CGUIWindowGames::OnKey(int iKey)
 		{
 			CGUIListItem* pItem = pControlPSXCDImages->GetSelectedItem();
 			if(pItem)
-				strFilename = pItem->GetName(); // Store it before we close the current window
+			{
+				// Store the strings before we close the current window
+				strFilename = pItem->GetName();
+				strGameFullPath = pItem->GetFullPath();
+			}
 		
 			if(!g_XboxConfigs.LoadGameConfigs(pItem->GetName()))
 				g_XboxConfigs.LoadGameConfigs("default");
@@ -94,7 +119,7 @@ bool CGUIWindowGames::OnKey(int iKey)
 
 		g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
 
-		CGUIMessage msg(GUI_MSG_FILENAME, GetID(), 0, strFilename);
+		CGUIMessage msg(GUI_MSG_FILENAME, GetID(), 0, strFilename, strGameFullPath);
 		g_XBoxGUI.SendMessage(msg);
 
 		return true;
@@ -103,7 +128,7 @@ bool CGUIWindowGames::OnKey(int iKey)
 	return CGUIWindow::OnKey(iKey);
 }
 
-bool CGUIWindowGames::GetPSXImages()
+bool CGUIWindowGames::GetDirectory(std::string strPath, bool bIsRoot)
 {
 	CGUIControlList* pControlPSXCDImages = NULL;
 	pControlPSXCDImages = (CGUIControlList*)GetControl(CONTROL_LIST_IMAGES);
@@ -111,16 +136,27 @@ bool CGUIWindowGames::GetPSXImages()
 	if(!pControlPSXCDImages)
 		return false;
 
-	int iID = 0;
+	std::vector<PairStrBool> vecCDImages;
+	CFileUtils::GetFilesInDirectory(strPath, vecCDImages, CFileUtils::DIRECTORY | CFileUtils::ISO_FILE | CFileUtils::CUE_FILE | CFileUtils::BIN_FILE | CFileUtils::IMG_FILE);
 
-	std::vector<std::string> vecCDImages;
-	CFileUtils::GetFilesInDirectory(CDIMAGE_PATH, vecCDImages, CFileUtils::ISO_FILE | CFileUtils::CUE_FILE | CFileUtils::BIN_FILE | CFileUtils::IMG_FILE);
-
-	for(int i=0; i < (int)vecCDImages.size(); i++)
+	if(!bIsRoot) // If directory add a entry to return to the parent
 	{
-		iID++;
-		CGUIListItem* pNewItem = new CGUIListItem(vecCDImages[i]); // Released in CGUIListItem::Cleanup()	
-		pControlPSXCDImages->AddItem(pNewItem);
+		// Get the parent directory then add it in
+		std::string strParentDir = strPath.substr(0, strPath.find_last_of("\\/"));
+		pControlPSXCDImages->AddItem(new CGUIListItem("\\..", strParentDir, true));
+	}
+
+	for(int i=0; i < (int)vecCDImages.size(); i++) // These are released in CGUIListItem::Cleanup()
+	{
+		CGUIListItem* pNewItem = NULL;
+
+		if(vecCDImages[i].second)
+			pNewItem = new CGUIListItem("(DIR) "+vecCDImages[i].first, strPath+"\\"+vecCDImages[i].first, vecCDImages[i].second);
+		else
+			pNewItem = new CGUIListItem(vecCDImages[i].first, strPath+"\\"+vecCDImages[i].first, vecCDImages[i].second);
+
+		if(pNewItem)
+			pControlPSXCDImages->AddItem(pNewItem);
 	}
 
 	return true;

@@ -13,7 +13,7 @@ public:
 	virtual bool OnKey(int iKey);
 
 private:
-	bool GetPSXImages();
+	bool GetDirectory(std::string strPath, bool bIsRoot = false);
 };
 
 #endif //H_CGUIWINDOW_GAMES

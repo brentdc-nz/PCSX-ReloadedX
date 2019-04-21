@@ -3,11 +3,14 @@
 
 #include <vector>
 #include <string>
+#include <utility>
+
+typedef std::pair<std::string, bool> PairStrBool;
 
 class CFileUtils
 {
 public:
-	static void GetFilesInDirectory(std::string strPath, std::vector<std::string> &vecFiles, int iFileTypes);
+	static void GetFilesInDirectory(std::string strPath, std::vector<PairStrBool> &vecFiles, int iFileTypes);
 
 	// TODO: Add more file types!
 	enum FileTypes

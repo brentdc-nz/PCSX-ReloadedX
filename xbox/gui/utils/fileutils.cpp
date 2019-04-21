@@ -3,7 +3,7 @@
 #include <xtl.h>
 #include "stringutils.h"
 
-void CFileUtils::GetFilesInDirectory(std::string strPath, std::vector<std::string> &vecFiles, int iFileTypes)
+void CFileUtils::GetFilesInDirectory(std::string strPath, std::vector<PairStrBool> &vecFiles, int iFileTypes)
 {
 	WIN32_FIND_DATA wfd;
 	HANDLE hFind;
@@ -23,7 +23,7 @@ void CFileUtils::GetFilesInDirectory(std::string strPath, std::vector<std::strin
 			if (wfd.cFileName[0] != 0)
 			{
 				if ((iFileTypes & DIRECTORY) && (wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
-					vecFiles.push_back(wfd.cFileName);
+					vecFiles.push_back(std::make_pair(wfd.cFileName, true));
 				else
 				{
 					size_t len = strlen(wfd.cFileName);
@@ -36,7 +36,7 @@ void CFileUtils::GetFilesInDirectory(std::string strPath, std::vector<std::strin
 					 ||(iFileTypes & ISO_FILE) && (len >= 4 && !strcmp(wfd.cFileName + len - 4, ".iso"))
 					 ||(iFileTypes & IMG_FILE) && (len >= 4 && !strcmp(wfd.cFileName + len - 4, ".img"))
 					 ||(iFileTypes & CUE_FILE) && (len >= 4 && !strcmp(wfd.cFileName + len - 4, ".cue")))
-						vecFiles.push_back(wfd.cFileName);
+						vecFiles.push_back(std::make_pair(wfd.cFileName, false));
 				}
 			}
 		}

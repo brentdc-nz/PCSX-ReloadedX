@@ -8,9 +8,10 @@ using namespace std;
 
 #define CONTROL_LEBEL_ITEM 2
 
-CGUIListItem::CGUIListItem(std::string strName, bool bIsDirectory)
+CGUIListItem::CGUIListItem(std::string strName, std::string strFullPath, bool bIsDirectory)
 {
 	m_strName = strName;
+	m_strFullPath = strFullPath;
 	m_bIsDirectory = bIsDirectory;
 }
 
@@ -37,6 +38,9 @@ CGUIControlList::~CGUIControlList()
 
 void CGUIControlList::Render()
 {
+	if(m_vecItems.size() == 0)
+		return;
+
 	int iYPos = m_iPosY;
 	int iSize = m_iItemsPerPage;
 
@@ -129,7 +133,7 @@ int CGUIControlList::GetSize()
 	return m_vecItems.size();
 }
 
-void CGUIControlList::FreeResources()
+void CGUIControlList::Clear()
 {
 	for(int i = 0; i < (int)m_vecItems.size(); i++)
 	{
@@ -140,7 +144,14 @@ void CGUIControlList::FreeResources()
 			delete pListItem;
 	}
 
+	m_iCursor = m_iOffset = 0;
+
 	m_vecItems.clear();
+}
+
+void CGUIControlList::FreeResources()
+{
+	Clear();
 
 	CGUIControl::FreeResources();
 }

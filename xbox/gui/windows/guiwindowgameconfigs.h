@@ -19,6 +19,7 @@ private:
 	void SaveConfigs();
 	std::vector <int>m_vecOptionControls;
 	std::string m_strActiveGame;
+	std::string m_strActiveGamePath;
 	int m_ConfigCat;
 };
 

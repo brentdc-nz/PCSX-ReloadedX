@@ -26,10 +26,10 @@ public:
 
 	bool IsGUIActive() { return m_bGUIActive; };
 
-	void SetD3DDevice(LPDIRECT3DDEVICE8 pD3DDevice, D3DPRESENT_PARAMETERS PresentParams) { m_pD3DDevice = pD3DDevice; m_PresentParams = PresentParams; }
-	LPDIRECT3DDEVICE8 GetD3DDevice() { return m_pD3DDevice; }
-	bool bIsHDEnabled() { return (XGetAVPack() == XC_AV_PACK_HDTV) && (XGetVideoFlags() & XC_VIDEO_FLAGS_HDTV_720p); }
-	D3DPRESENT_PARAMETERS GetPresentParameters() const { return m_PresentParams; }
+	void SetD3DDevice(LPDIRECT3DDEVICE8 pD3DDevice, D3DPRESENT_PARAMETERS PresentParams) { m_pD3DDevice = pD3DDevice; m_PresentParams = PresentParams; };
+	LPDIRECT3DDEVICE8 GetD3DDevice() { return m_pD3DDevice; };
+	bool bIsHDEnabled() { return (XGetAVPack() == XC_AV_PACK_HDTV) && (XGetVideoFlags() & XC_VIDEO_FLAGS_HDTV_720p); };
+	D3DPRESENT_PARAMETERS GetPresentParameters() const { return m_PresentParams; };
 
 	D3DSurface* GetPreviewSurface();
 

@@ -9,13 +9,16 @@
 class CGUIListItem
 {
 public:
-	CGUIListItem(std::string strName, bool bIsDirectory = false);
+	CGUIListItem(std::string strName, std::string strFullPath, bool bIsDirectory = false);
 	~CGUIListItem();
 
 	std::string GetName() { return m_strName; };
-
+	std::string GetFullPath() { return m_strFullPath; };
+	bool IsDirectory() { return m_bIsDirectory; };
+	
 private:
 	std::string m_strName;
+	std::string m_strFullPath;
 	bool m_bIsDirectory;
 };
 
@@ -31,6 +34,7 @@ public:
 	bool AddItem(CGUIListItem* pItem);
 	CGUIListItem* GetSelectedItem();
 	int GetSize();
+	void Clear();
 	virtual void FreeResources();
 
 private:

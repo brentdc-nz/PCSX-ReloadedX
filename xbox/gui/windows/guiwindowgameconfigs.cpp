@@ -22,6 +22,7 @@ CGUIWindowGameConfigs::CGUIWindowGameConfigs(int iWindowID, std::string strXMLFi
 : CGUIWindow(iWindowID, strXMLFile)
 {
 	m_strActiveGame = "";
+	m_strActiveGamePath = "";
 	m_ConfigCat = CFG_VIDEO;
 }
 
@@ -36,8 +37,7 @@ bool CGUIWindowGameConfigs::OnKey(int iKey)
 		SaveConfigs();
 		g_XboxConfigs.SaveGameConfigs(m_strActiveGame);
 
-		std::string strPath = CDIMAGE_PATH + m_strActiveGame;
-		RunCommand(ID_FILE_RUN_ISO, strPath.c_str());
+		RunCommand(ID_FILE_RUN_ISO, m_strActiveGamePath.c_str());
 		return true;
 	}
 
@@ -107,6 +107,7 @@ bool CGUIWindowGameConfigs::OnMessage(CGUIMessage message)
 		case GUI_MSG_FILENAME:
 		{
 			m_strActiveGame = message.GetStringParam1();
+			m_strActiveGamePath = message.GetStringParam2();
 
 			CGUIControlLabel* pCtrl = (CGUIControlLabel*)GetControl(CONTROL_TITLE_LABEL);
 			if(pCtrl)

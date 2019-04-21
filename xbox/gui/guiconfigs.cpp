@@ -830,7 +830,7 @@ void CXboxConfigs::GetScreenSize(int *iWidth, int *iHeight)
 
 void CXboxConfigs::PopulateSkins()
 {
-	std::vector<std::string> vecSkins;
+	std::vector<PairStrBool> vecSkins;
 
 	// Find all the directories in the skin folder
 	CFileUtils::GetFilesInDirectory(SKINS_PATH, vecSkins, CFileUtils::DIRECTORY);	
@@ -839,7 +839,7 @@ void CXboxConfigs::PopulateSkins()
 	for(int i = 0; i < (int)vecSkins.size(); i++)
 	{
 		std::string strFilename;
-		strFilename = SKINS_PATH+vecSkins[i]+"\\skininfo.xml";
+		strFilename = SKINS_PATH+vecSkins[i].first+"\\skininfo.xml";
 
 		TiXmlDocument xmlDoc;
 		if (!xmlDoc.LoadFile(strFilename.c_str()))
@@ -859,18 +859,18 @@ void CXboxConfigs::PopulateSkins()
 		std::string strName = pChild->Value();
 
 		if(strName=="name")
-			AddStringOption("gui.skin", pChild->FirstChild()->Value(), vecSkins[i]);
+			AddStringOption("gui.skin", pChild->FirstChild()->Value(), vecSkins[i].first);
 	}
 	vecSkins.clear();
 }
 
 void CXboxConfigs::PopulateBiosFiles()
 {
-	std::vector<std::string> vecBiosFiles;
+	std::vector<PairStrBool> vecBiosFiles;
 	CFileUtils::GetFilesInDirectory(BIOS_FILE_PATH, vecBiosFiles, CFileUtils::BIN_FILE);
 
 	for(int i=0; i < (int)vecBiosFiles.size(); i++)
-		AddStringOption("core.biosfile", vecBiosFiles[i], vecBiosFiles[i]);
+		AddStringOption("core.biosfile", vecBiosFiles[i].first, vecBiosFiles[i].first);
 }
 
 //==================================================================================
