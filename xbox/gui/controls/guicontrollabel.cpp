@@ -20,7 +20,7 @@ CGUIControlLabel::~CGUIControlLabel()
 
 bool CGUIControlLabel::AllocateResources()
 {
-	m_pFont = g_XBoxGUI.GetFontManager().GetFont(m_strFont);
+	m_pFont = g_XboxGUI.GetFontManager().GetFont(m_strFont);
 
 	if(!m_pFont)
 		return false;

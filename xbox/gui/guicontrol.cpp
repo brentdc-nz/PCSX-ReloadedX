@@ -100,7 +100,7 @@ void CGUIControl::OnUp()
 	{
 		SetFocus(false);
 		CGUIMessage msg(GUI_MSG_SETFOCUS, GetID(), m_iControlUp);
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 	}
 }
 
@@ -110,7 +110,7 @@ void CGUIControl::OnDown()
 	{
 		SetFocus(false);
 		CGUIMessage msg(GUI_MSG_SETFOCUS, GetID(), m_iControlDown);
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 	}
 }
 
@@ -120,7 +120,7 @@ void CGUIControl::OnLeft()
 	{
 		SetFocus(false);
 		CGUIMessage msg(GUI_MSG_SETFOCUS, GetID(), m_iControlLeft);
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 	}
 }
 
@@ -130,6 +130,6 @@ void CGUIControl::OnRight()
 	{
 		SetFocus(false);
 		CGUIMessage msg(GUI_MSG_SETFOCUS, GetID(), m_iControlRight);
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 	}
 }

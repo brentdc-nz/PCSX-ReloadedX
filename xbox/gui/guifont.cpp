@@ -24,7 +24,7 @@ CGUIFont::~CGUIFont()
 
 bool CGUIFont::Load(bool bFullPath)
 {
-	m_pd3dDevice = g_XBoxGUI.GetD3DDevice();
+	m_pd3dDevice = g_XboxGUI.GetD3DDevice();
 	m_bFullPath = bFullPath;
 
 	AlocateResources();
@@ -43,7 +43,7 @@ void CGUIFont::AlocateResources()
 	string strPath;
 	
 	if(!m_bFullPath)
-		strPath = g_XBoxGUI.GetMediaDir()+"fonts\\"+m_sFontFile;
+		strPath = g_XboxGUI.GetMediaDir()+"fonts\\"+m_sFontFile;
 	else
 		strPath = m_sFontFile;
 

@@ -12,7 +12,6 @@ Knowen bugs:
 - Fix rumble, it currently works but has a bug that causes it to say on sometimes.
 
 Main remaining tasks:
-- Get support for sub-directories.
 - Explore speed optimizations further. 
 - Get built in cheats working.
 - Get save states working.

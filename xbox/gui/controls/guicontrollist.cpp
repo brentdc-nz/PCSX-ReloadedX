@@ -26,7 +26,7 @@ CGUIControlList::CGUIControlList(int iControlID, int iWindowID, int iPosX, int i
 	m_iOffset = 0;
 	m_iItemsPerPage = iItemsPerPage; // TODO: Calculate from item size and control height
 	m_iLineSpacing = iLineSpacing;
-	m_pFont = g_XBoxGUI.GetFontManager().GetFont(strFont);
+	m_pFont = g_XboxGUI.GetFontManager().GetFont(strFont);
 	m_iFontSize = iSize;
 	m_dwColor = dwColor;
 	m_dwSelectedColor = dwSelectedColor;
@@ -67,7 +67,7 @@ void CGUIControlList::Render()
 	// Update our selection label
 	string strLabel = CStringUtils::IntToString(m_iCursor+1) + " of " + CStringUtils::IntToString(m_vecItems.size());
 	CGUIMessage msg(GUI_MSG_SET_LABEL, GetID(), CONTROL_LEBEL_ITEM, strLabel);
-	g_XBoxGUI.SendMessage(msg);
+	g_XboxGUI.SendMessage(msg);
 
 	CGUIControl::Render();
 }
@@ -104,7 +104,7 @@ bool CGUIControlList::OnKey(int iKey)
 	if(iKey == K_XBOX_A)
 	{
 		CGUIMessage msg(GUI_MSG_CLICKED, GetParentID(), GetID());
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 		return true;
 	}
 

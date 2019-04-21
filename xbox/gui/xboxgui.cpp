@@ -10,9 +10,9 @@
 #include "windows\guiwindowgameconfigs.h"
 #include "windows\guiwindowglobalconfigs.h"
 
-CXBoxGUI g_XBoxGUI;
+CXboxGUI g_XboxGUI;
 
-CXBoxGUI::CXBoxGUI()
+CXboxGUI::CXboxGUI()
 {
 	m_bGUIActive = false;
 	m_bGUIStatesCaptured = false;
@@ -24,11 +24,11 @@ CXBoxGUI::CXBoxGUI()
 	m_iStartWindow = WINDOW_HOME;
 }
 
-CXBoxGUI::~CXBoxGUI()
+CXboxGUI::~CXboxGUI()
 {
 }
 
-bool CXBoxGUI::Initialize()
+bool CXboxGUI::Initialize()
 {
 	if(!m_pD3DDevice)
 	{
@@ -78,7 +78,7 @@ bool CXBoxGUI::Initialize()
 	return true;
 }
 
-void CXBoxGUI::Run()
+void CXboxGUI::Run()
 {
 	int iKey;
 
@@ -90,7 +90,7 @@ void CXBoxGUI::Run()
 	Render();
 }
 
-void CXBoxGUI::CheckGUIOptionChanges()
+void CXboxGUI::CheckGUIOptionChanges()
 {
 	// Check if we should be playing background music
 	if(g_XboxConfigs.GetBool("sound.guibgmusic") && !m_GUIBGMusic.IsPlaying())
@@ -135,7 +135,7 @@ void CXBoxGUI::CheckGUIOptionChanges()
 #endif
 }
 
-void CXBoxGUI::Render()
+void CXboxGUI::Render()
 {
 	m_pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);	
 
@@ -144,7 +144,7 @@ void CXBoxGUI::Render()
 	m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }
 
-bool CXBoxGUI::Close()
+bool CXboxGUI::Close()
 {
 	UnloadSkin();
 
@@ -219,7 +219,7 @@ bool CXBoxGUI::Close()
 	return true;
 }
 
-D3DSurface* CXBoxGUI::GetPreviewSurface() //TODO: Pass by reference and return a bool
+D3DSurface* CXboxGUI::GetPreviewSurface() //TODO: Pass by reference and return a bool
 {
 	// Check if we have an in-game capture yet
 	if(m_bInGameStatesCaptured)
@@ -228,13 +228,13 @@ D3DSurface* CXBoxGUI::GetPreviewSurface() //TODO: Pass by reference and return a
 	return NULL;
 }
 
-void CXBoxGUI::SetStartWindow(int iStartWindow)
+void CXboxGUI::SetStartWindow(int iStartWindow)
 {
 	// Validity is checked in CWindowManager
 	m_iStartWindow = iStartWindow;
 }
 
-void CXBoxGUI::LoadSkin(std::string strSkinName)
+void CXboxGUI::LoadSkin(std::string strSkinName)
 {
 	m_dwSkinTime = 0;
 	
@@ -270,20 +270,20 @@ void CXBoxGUI::LoadSkin(std::string strSkinName)
 	m_GUIWindowManager.Initialize();
 }
 
-void CXBoxGUI::UnloadSkin()
+void CXboxGUI::UnloadSkin()
 {
 	m_GUIWindowManager.DeInitialize();
 	m_GUIFontManager.Cleanup();
 	m_GUITextureManager.ReleaseAllTextures();
 }
 
-void CXBoxGUI::ReloadSkin()
+void CXboxGUI::ReloadSkin()
 {
 	LoadSkin(g_XboxConfigs.GetString("gui.skin"));
 	m_GUIWindowManager.ActivateWindow(WINDOW_GLOBAL_CONFIGS);
 }
 
-void CXBoxGUI::DelaySkinLoad()
+void CXboxGUI::DelaySkinLoad()
 {
 	m_dwSkinTime = GetTickCount() + 2000;
 }
@@ -292,40 +292,40 @@ void CXBoxGUI::DelaySkinLoad()
 
 int InitializeXBoxGUI()
 {
-	return g_XBoxGUI.Initialize();
+	return g_XboxGUI.Initialize();
 }
 
 void RunXBoxGUI()
 {
-	g_XBoxGUI.Run();
+	g_XboxGUI.Run();
 }
 
 int CloseXBoxGUI()
 {
-	return g_XBoxGUI.Close();
+	return g_XboxGUI.Close();
 }
 
 void SetGUID3DDevice(LPDIRECT3DDEVICE8 pD3DDevice, D3DPRESENT_PARAMETERS PresentParams)
 {
-	g_XBoxGUI.SetD3DDevice(pD3DDevice, PresentParams);
+	g_XboxGUI.SetD3DDevice(pD3DDevice, PresentParams);
 }
 
 int IsHDEnabled()
 {
-	return g_XBoxGUI.bIsHDEnabled();
+	return g_XboxGUI.bIsHDEnabled();
 }
 
 int IsXBoxGUIActive()
 {
-	return g_XBoxGUI.IsGUIActive();
+	return g_XboxGUI.IsGUIActive();
 }
 
 void SetXBoxGUIStartWindow(int iStartWindow)
 {
-	g_XBoxGUI.SetStartWindow(iStartWindow);
+	g_XboxGUI.SetStartWindow(iStartWindow);
 }
 
 void DrawXboxIngameOSD(char* strFps)
 {
-	g_XBoxGUI.m_InGameOSD.Render(strFps);
+	g_XboxGUI.m_InGameOSD.Render(strFps);
 }

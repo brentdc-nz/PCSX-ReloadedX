@@ -13,11 +13,11 @@
 #include "guibgmusic.h"
 #include "guiingameosd.h"
 
-class CXBoxGUI
+class CXboxGUI
 {
 public:
-	CXBoxGUI();
-	~CXBoxGUI();
+	CXboxGUI();
+	~CXboxGUI();
 
 	bool Initialize();
 	void Run();
@@ -78,7 +78,7 @@ private:
 	DWORD m_dwResChangeTime;
 };
 
-extern CXBoxGUI g_XBoxGUI;
+extern CXboxGUI g_XboxGUI;
 
 #endif
 

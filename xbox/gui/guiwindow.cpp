@@ -23,7 +23,7 @@ CGUIWindow::~CGUIWindow()
 
 void CGUIWindow::Initialize()
 {
-//	if(!g_XBoxGUI.GetWindowManager().IsInitialized())
+//	if(!g_XboxGUI.GetWindowManager().IsInitialized())
 //		return;
 
 	LoadXML(m_strXMLFile);
@@ -36,7 +36,7 @@ bool CGUIWindow::LoadXML(std::string strXMLFile)
 
 	TiXmlDocument xmlDoc;
 
-	std::string strPath(g_XBoxGUI.GetMediaDir());
+	std::string strPath(g_XboxGUI.GetMediaDir());
 	strPath += strXMLFile;
 
 	if(!xmlDoc.LoadFile(strPath.c_str()))
@@ -153,13 +153,13 @@ bool CGUIWindow::OnKey(int iKey)
 	{    // Set the default control to focus then
 		
 //		CGUIMessage msg(GUI_MSG_SETFOCUS, GetID(), m_iDefaultCOntrolID); //FIXME
-//		g_XBoxGUI.SendMessage(msg);
+//		g_XboxGUI.SendMessage(msg);
 	}
 
 	// Default behaviour
 	if(iKey == K_XBOX_B)
 	{
-		g_XBoxGUI.GetWindowManager().PreviousWindow();
+		g_XboxGUI.GetWindowManager().PreviousWindow();
 		return true;
 	}	
 

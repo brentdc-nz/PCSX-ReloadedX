@@ -90,7 +90,7 @@ bool CGUIControlSpin::OnKey(int iKey)
 	if(iKey == K_XBOX_A)
 	{
 		CGUIMessage msg(GUI_MSG_CLICKED, GetParentID(), GetID());
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 
 		return true;
 	}
@@ -218,7 +218,7 @@ bool CGUIControlSpinInt::OnKey(int iKey)
 	}
 
 	CGUIMessage msg(GUI_MSG_UPDATED, GetParentID(), GetID());
-	g_XBoxGUI.SendMessage(msg);
+	g_XboxGUI.SendMessage(msg);
 
 	return CGUIControlSpin::OnKey(iKey);
 }
@@ -340,7 +340,7 @@ bool CGUIControlSpinString::OnKey(int iKey)
 	}
 
 	CGUIMessage msg(GUI_MSG_UPDATED, GetParentID(), GetID());
-	g_XBoxGUI.SendMessage(msg);
+	g_XboxGUI.SendMessage(msg);
 
 	return CGUIControlSpin::OnKey(iKey);
 }

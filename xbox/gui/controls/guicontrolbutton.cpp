@@ -67,10 +67,10 @@ bool CGUIControlButton::OnKey(int iKey)
 void CGUIControlButton::OnClick()
 {
 	if(m_iLinkedWindow != WINDOW_INVALID)
-		g_XBoxGUI.ActivateWindow(m_iLinkedWindow);
+		g_XboxGUI.ActivateWindow(m_iLinkedWindow);
 	else
 	{
 		CGUIMessage msg(GUI_MSG_CLICKED, GetParentID(), GetID());
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 	}
 }

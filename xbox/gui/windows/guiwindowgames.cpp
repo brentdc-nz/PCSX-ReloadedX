@@ -12,7 +12,7 @@
 using namespace std;
 
 // Control(s) 
-#define CONTROL_LIST_IMAGES           1
+#define CONTROL_LIST_PSXIMAGES	1
 
 CGUIWindowGames::CGUIWindowGames(int iWindowID, std::string strXMLFile) 
 : CGUIWindow(iWindowID, strXMLFile)
@@ -37,9 +37,9 @@ bool CGUIWindowGames::OnMessage(CGUIMessage message)
 
 		case GUI_MSG_CLICKED:
 		{
-			if(message.GetControlID() == CONTROL_LIST_IMAGES) // A PSX CD image has been clicked
+			if(message.GetControlID() == CONTROL_LIST_PSXIMAGES) // A PSX CD image has been clicked
 			{
-				CGUIControlList* pCtrlPSXCDList = (CGUIControlList*)GetControl(CONTROL_LIST_IMAGES);
+				CGUIControlList* pCtrlPSXCDList = (CGUIControlList*)GetControl(CONTROL_LIST_PSXIMAGES);
 
 				CGUIListItem* pItem = pCtrlPSXCDList->GetSelectedItem();
 
@@ -54,7 +54,7 @@ bool CGUIWindowGames::OnMessage(CGUIMessage message)
 
 						if(strDirName == "\\..") // HACK: Need a better way to identify
 						{
-							if(strFullPath == "D:\\psxcds\\") // Check if it's the root dir
+							if(strFullPath == CDIMAGE_PATH) // Check if it's the root dir
 								GetDirectory(CDIMAGE_PATH, true);
 							else
 								GetDirectory(strFullPath);
@@ -73,10 +73,10 @@ bool CGUIWindowGames::OnMessage(CGUIMessage message)
 
 							g_XboxConfigs.LoadGameConfigs("default"); // Load our defaults to use for new configs created
 
-							g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
+							g_XboxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
 
 							CGUIMessage msg(GUI_MSG_FILENAME, GetID(), 0, strGameFilename, strGameFullPath);
-							g_XBoxGUI.SendMessage(msg);
+							g_XboxGUI.SendMessage(msg);
 						}
 						else
 						{
@@ -100,7 +100,7 @@ bool CGUIWindowGames::OnKey(int iKey)
 		std::string strFilename, strGameFullPath;
 
 		CGUIControlList* pControlPSXCDImages = NULL;
-		pControlPSXCDImages = (CGUIControlList*)GetControl(CONTROL_LIST_IMAGES);
+		pControlPSXCDImages = (CGUIControlList*)GetControl(CONTROL_LIST_PSXIMAGES);
 	
 		if(pControlPSXCDImages)
 		{
@@ -117,10 +117,10 @@ bool CGUIWindowGames::OnKey(int iKey)
 
 		}
 
-		g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
+		g_XboxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
 
 		CGUIMessage msg(GUI_MSG_FILENAME, GetID(), 0, strFilename, strGameFullPath);
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 
 		return true;
 	}
@@ -131,7 +131,7 @@ bool CGUIWindowGames::OnKey(int iKey)
 bool CGUIWindowGames::GetDirectory(std::string strPath, bool bIsRoot)
 {
 	CGUIControlList* pControlPSXCDImages = NULL;
-	pControlPSXCDImages = (CGUIControlList*)GetControl(CONTROL_LIST_IMAGES);
+	pControlPSXCDImages = (CGUIControlList*)GetControl(CONTROL_LIST_PSXIMAGES);
 
 	if(!pControlPSXCDImages)
 		return false;

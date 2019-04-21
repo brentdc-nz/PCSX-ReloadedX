@@ -23,12 +23,12 @@ bool CGUIControlImage::AllocateResources()
 	if(m_bResoucesAlocated)
 		return true;
 
-	m_pd3dDevice = g_XBoxGUI.GetD3DDevice();
+	m_pd3dDevice = g_XboxGUI.GetD3DDevice();
 
 	if(!m_pd3dDevice)
 		return false;
 
-	g_XBoxGUI.GetTextureManager().LoadTexture(m_strFilename);
+	g_XboxGUI.GetTextureManager().LoadTexture(m_strFilename);
 
 	// Create the vertex buffer from our device
 	m_pd3dDevice->CreateVertexBuffer(4 * sizeof(CUSTOM_IMAGE_VERTEX), 0, CUSTOMFVF, D3DPOOL_DEFAULT, &m_pVertexBuffer);
@@ -76,7 +76,7 @@ void CGUIControlImage::Render()
 	m_pd3dDevice->SetVertexShader(CUSTOMFVF);
 
 	// Set our texture
-	m_pd3dDevice->SetTexture(0, g_XBoxGUI.GetTextureManager().GetTexture(m_strFilename));
+	m_pd3dDevice->SetTexture(0, g_XboxGUI.GetTextureManager().GetTexture(m_strFilename));
 
 	m_pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, true );
 

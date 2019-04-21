@@ -62,7 +62,7 @@ bool CGUIControlCheckbox::OnKey(int iKey)
 		Selected(!m_bSelected); // Toggle it
 
 		CGUIMessage msg(GUI_MSG_UPDATED, GetParentID(), GetID());
-		g_XBoxGUI.SendMessage(msg);
+		g_XboxGUI.SendMessage(msg);
 
 		return true;
 	}

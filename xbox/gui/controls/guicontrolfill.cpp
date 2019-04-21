@@ -18,7 +18,7 @@ bool CGUIControlFill::AllocateResources()
 	if(m_bResoucesAlocated)
 		return true;
 
-	m_pd3dDevice = g_XBoxGUI.GetD3DDevice();
+	m_pd3dDevice = g_XboxGUI.GetD3DDevice();
 
 	if(!m_pd3dDevice)
 		return false;

@@ -14,7 +14,7 @@ CGUIFontManager::~CGUIFontManager()
 
 void CGUIFontManager::Initialize()
 {
-	string strFilename = g_XBoxGUI.GetMediaDir();
+	string strFilename = g_XboxGUI.GetMediaDir();
 	strFilename += "fonts.xml";
 
 	TiXmlDocument xmlDoc;

@@ -25,7 +25,7 @@ bool CGUIWindowHome::OnMessage(CGUIMessage message)
 		{
 			// Set the version number
 			CGUIMessage msg(GUI_MSG_SET_LABEL, GetID(), CONTROL_LABEL_VERSION, XBOX_VERSION);
-			g_XBoxGUI.SendMessage(msg);
+			g_XboxGUI.SendMessage(msg);
 			break;
 		}
 

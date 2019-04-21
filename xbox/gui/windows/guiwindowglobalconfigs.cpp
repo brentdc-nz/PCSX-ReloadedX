@@ -53,7 +53,7 @@ bool CGUIWindowGlobalConfigs::OnMessage(CGUIMessage message)
 			if(pSkinCtrl)
 			{
 				if(pSkinCtrl->GetSelectedValue() != g_XboxConfigs.GetString(pConfig->GetConfigName().c_str()))
-					g_XBoxGUI.DelaySkinLoad();
+					g_XboxGUI.DelaySkinLoad();
 			}
 
 			SaveConfigs(); //TODO: Save on window close rather than click
@@ -162,11 +162,11 @@ bool CGUIWindowGlobalConfigs::SetupConfigControls() // If our configs go over a 
 					for (mapOptionsIter it = mapOptions.begin(); it != mapOptions.end(); it++)
 					{
 						CGUIMessage msg(GUI_MSG_ADD_ITEM, GetID(), iID, (*it).first, (*it).second);
-						g_XBoxGUI.SendMessage(msg);
+						g_XboxGUI.SendMessage(msg);
 					}
 
 					CGUIMessage msg(GUI_MSG_SET_ITEM, GetID(), iID, g_XboxConfigs.GetInt(pConfig->GetConfigName().c_str()));
-					g_XBoxGUI.SendMessage(msg);
+					g_XboxGUI.SendMessage(msg);
 				}
 			}
 
@@ -189,11 +189,11 @@ bool CGUIWindowGlobalConfigs::SetupConfigControls() // If our configs go over a 
 					for (mapOptionsIter it = mapOptions.begin(); it != mapOptions.end(); it++)
 					{
 						CGUIMessage msg(GUI_MSG_ADD_ITEM, GetID(), iID, (*it).second, (*it).first);
-						g_XBoxGUI.SendMessage(msg);
+						g_XboxGUI.SendMessage(msg);
 					}
 			
 					CGUIMessage msg(GUI_MSG_SET_ITEM, GetID(), iID, g_XboxConfigs.GetString(pConfig->GetConfigName().c_str()));
-					g_XBoxGUI.SendMessage(msg);
+					g_XboxGUI.SendMessage(msg);
 				}
 			}
 			

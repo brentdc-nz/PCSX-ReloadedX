@@ -68,7 +68,7 @@ bool CGUIWindowGameConfigs::OnMessage(CGUIMessage message)
 				m_ConfigCat = CFG_VIDEO;
 				g_XboxConfigs.SaveGameConfigs(m_strActiveGame);
 
-				g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
+				g_XboxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
 				return true;
 			}
 
@@ -78,7 +78,7 @@ bool CGUIWindowGameConfigs::OnMessage(CGUIMessage message)
 				m_ConfigCat = CFG_SOUND;
 				g_XboxConfigs.SaveGameConfigs(m_strActiveGame);
 
-				g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
+				g_XboxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
 				return true;
 			}
 
@@ -88,7 +88,7 @@ bool CGUIWindowGameConfigs::OnMessage(CGUIMessage message)
 				m_ConfigCat = CFG_CORE;
 				g_XboxConfigs.SaveGameConfigs(m_strActiveGame);
 
-				g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
+				g_XboxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
 				return true;
 			}
 
@@ -98,7 +98,7 @@ bool CGUIWindowGameConfigs::OnMessage(CGUIMessage message)
 				m_ConfigCat = CFG_CONTROLS;
 				g_XboxConfigs.SaveGameConfigs(m_strActiveGame);
 
-				g_XBoxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
+				g_XboxGUI.ActivateWindow(WINDOW_GAME_CONFIGS);
 				return true;
 			}
 			break;
@@ -197,11 +197,11 @@ bool CGUIWindowGameConfigs::SetupConfigControls() // If our configs go over a on
 					for (mapOptionsIter it = mapOptions.begin(); it != mapOptions.end(); it++)
 					{
 						CGUIMessage msg(GUI_MSG_ADD_ITEM, GetID(), iID, (*it).first, (*it).second);
-						g_XBoxGUI.SendMessage(msg);
+						g_XboxGUI.SendMessage(msg);
 					}
 
 					CGUIMessage msg(GUI_MSG_SET_ITEM, GetID(), iID, g_XboxConfigs.GetInt(pConfig->GetConfigName().c_str()));
-					g_XBoxGUI.SendMessage(msg);
+					g_XboxGUI.SendMessage(msg);
 				}
 			}
 
@@ -224,11 +224,11 @@ bool CGUIWindowGameConfigs::SetupConfigControls() // If our configs go over a on
 					for (mapOptionsIter it = mapOptions.begin(); it != mapOptions.end(); it++)
 					{
 						CGUIMessage msg(GUI_MSG_ADD_ITEM, GetID(), iID, (*it).second, (*it).first);
-						g_XBoxGUI.SendMessage(msg);
+						g_XboxGUI.SendMessage(msg);
 					}
 			
 					CGUIMessage msg(GUI_MSG_SET_ITEM, GetID(), iID, g_XboxConfigs.GetString(pConfig->GetConfigName().c_str()));
-					g_XBoxGUI.SendMessage(msg);
+					g_XboxGUI.SendMessage(msg);
 				}
 			}
 			
