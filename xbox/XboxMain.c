@@ -22,13 +22,15 @@
 
 #include "input\sysxboxinput.h"
 #include "gui\xboxgui.h"
+#include "gui\guiwindowkeys.h"
 #include "gui\guiconfigs.h"
 
 // For shutting down the Xbox
 VOID WINAPI HalWriteSMBusValue(BYTE, BYTE, BOOL, BYTE);
 
 int iRunning = 0;
-int iPSXIamgeLoaded = 0;
+int iPSXGameLoaded = 0;
+int iStartWindow = WINDOW_INVALID;
 char PcsxrDir[MAXPATHLEN];
 
 int SysInit()
@@ -148,7 +150,7 @@ int RunCommand(int iCommand, const char* strIsoFile)
 			return TRUE;	
 
 		case ID_EMULATOR_RUN:
-			if(iPSXIamgeLoaded)
+			if(iPSXGameLoaded)
 			{
 				CloseXBoxGUI();
 				OpenPlugins(/*hWnd*/);
@@ -159,9 +161,48 @@ int RunCommand(int iCommand, const char* strIsoFile)
 			}
 			return FALSE;
 
+		case ID_FILE_RUN_CD:
+			CloseXBoxGUI();
+			iPSXGameLoaded = TRUE;
+			SetIsoFile(NULL);
+			LoadPlugins();
+
+			if (OpenPlugins(/*hWnd*/) == -1)
+			{
+				ClosePlugins(FALSE);
+				iStartWindow = DIALOG_CDBOOTFAIL;
+				SysRunGUI();
+				return TRUE;
+			}
+
+			if (CheckCdrom() == -1)
+			{
+				ClosePlugins(FALSE);
+				iStartWindow = DIALOG_CDBOOTFAIL;
+				SysRunGUI();
+				SysMessage(_("The CD does not appear to be a valid Playstation CD"));
+				return TRUE;
+			}
+					
+			// Auto-detect: region first, then rcnt reset
+			SysReset();
+
+			if (LoadCdrom() == -1)
+			{
+				ClosePlugins(FALSE);
+				iStartWindow = DIALOG_CDBOOTFAIL;
+				SysRunGUI();
+				SysMessage(_("Could not load CD-ROM!"));
+				return TRUE;
+			}
+			
+			iRunning = 1;
+			psxCpu->Execute();
+			return TRUE;
+	
 		case ID_FILE_RUN_ISO:
 			CloseXBoxGUI();
-			iPSXIamgeLoaded = TRUE;
+			iPSXGameLoaded = TRUE;
 			SetIsoFile(strIsoFile);
 
 			LoadPlugins();
@@ -215,6 +256,12 @@ void SysRunGUI()
 	{
 		RunXBoxGUI();
 		SysUpdate();
+
+		if(iStartWindow != WINDOW_INVALID)
+		{
+			XboxGUIActivateWindow(iStartWindow);
+			iStartWindow = WINDOW_INVALID;
+		}
 	}
 }
 
@@ -223,7 +270,7 @@ int main()
 	MEMORYSTATUS lpBuffer;
 	int iScrWidth, iScrHeight;
 	iRunning = 0;
-	iPSXIamgeLoaded = 0;
+	iPSXGameLoaded = 0;
 
 #ifndef _XBOX
 	GetCurrentDirectory(256, PcsxrDir);

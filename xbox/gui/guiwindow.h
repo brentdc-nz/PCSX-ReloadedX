@@ -14,12 +14,14 @@ public:
 	int GetID() {return m_iID;};
 	void SetID(int iID) {m_iID = iID; };
 	
+	virtual bool IsDialog() const { return false; };
 	void Initialize();
 	virtual bool LoadXML(std::string strXMLFile);
 	virtual bool AllocateResources();
 	virtual void FreeResources(bool bClearControls = false);
 	void ClearAll();
 	virtual bool OnKey(int iKey);
+	virtual bool OnBack();
 	virtual bool OnMessage(CGUIMessage message);
 	virtual void Render();
 

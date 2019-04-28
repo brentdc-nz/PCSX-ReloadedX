@@ -89,6 +89,7 @@ extern "C"
 
 int InitializeXBoxGUI();
 void RunXBoxGUI();
+void XboxGUIActivateWindow(int iWindowID);
 int CloseXBoxGUI();
 void SetGUID3DDevice(LPDIRECT3DDEVICE8 pD3DDevice, D3DPRESENT_PARAMETERS PresentParams);
 int IsXBoxGUIActive();

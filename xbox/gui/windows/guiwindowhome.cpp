@@ -1,9 +1,11 @@
 #include "..\..\xbox.h"
 #include "..\xboxgui.h"
-#include "guiwindowhome.h"
+#include "..\guiwindowkeys.h"
 #include "..\..\..\libpcsxcore\system.h"
+#include "guiwindowhome.h"
 
 // Controls
+#define CONTROL_BUTTON_BOOTPSXCD   2
 #define CONTROL_BUTTON_SHUTDOWN    4
 #define CONTROL_BUTTON_QUITDASH    5
 #define CONTROL_LABEL_VERSION      6
@@ -41,7 +43,13 @@ bool CGUIWindowHome::OnMessage(CGUIMessage message)
 			{
 				SysClose(TRUE);
 				break;
-			}		
+			}	
+
+			if(message.GetControlID() == CONTROL_BUTTON_BOOTPSXCD)
+			{
+				g_XboxGUI.ActivateWindow(DIALOG_CDINFO);
+				break;
+			}				
 		}
 	}
 

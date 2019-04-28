@@ -1,6 +1,7 @@
 #include "guiwindowmanager.h"
 #include "guiwindowkeys.h"
 #include "guimessage.h"
+#include "guidialog.h"
 
 using namespace std;
 
@@ -35,6 +36,31 @@ void CGUIWindowManager::AddWindow(CGUIWindow* pWindow)
 	m_mapWindows.insert(pair<int, CGUIWindow*>(pWindow->GetID(), pWindow));
 }
 
+void CGUIWindowManager::RouteToWindow(CGUIWindow* pDialog)
+{
+	// Just to be sure: Unroute this window,
+	// we may have routed to it before
+	RemoveDialog(pDialog->GetID());
+
+	m_activeDialogs.push_back(pDialog);
+}
+
+void CGUIWindowManager::RemoveDialog(int iID)
+{
+	vector<CGUIWindow*>::iterator it = m_activeDialogs.begin();
+
+	while (it != m_activeDialogs.end())
+	{
+		CGUIWindow* pWindow = *it;
+		if (pWindow->GetID() == iID)
+		{
+			m_activeDialogs.erase(it);
+			it = m_activeDialogs.end();
+		}
+		else it++;
+	}
+}
+
 void CGUIWindowManager::DeInitialize()
 {
 	for (WindowMap::iterator it = m_mapWindows.begin(); it != m_mapWindows.end(); it++)
@@ -46,6 +72,26 @@ void CGUIWindowManager::DeInitialize()
 	}
 
 	m_bInitialized = false;
+}
+
+// Removes and deletes the window
+void CGUIWindowManager::Delete(int iID)
+{
+	CGUIWindow *pWindow = GetWindow(iID);
+
+	if (pWindow)
+	{
+		Remove(iID);
+		delete pWindow;
+	}
+}
+
+void CGUIWindowManager::Remove(int iID)
+{
+	WindowMap::iterator it = m_mapWindows.find(iID);
+	
+	if (it != m_mapWindows.end())
+		m_mapWindows.erase(it);
 }
 
 void CGUIWindowManager::ClearWindowHistory()
@@ -82,6 +128,13 @@ void CGUIWindowManager::ActivateWindow(int iWindowID)
 	if (!pNewWindow)
 	{ 
 		// Nothing to see here - move along
+		return;
+	}
+	else if (pNewWindow->IsDialog())
+	{ 
+		// If we have a dialog, we do a DoModal() rather than activate the window
+		if (!((CGUIDialog*)pNewWindow)->IsRunning())
+				((CGUIDialog *)pNewWindow)->DoModal(GetActiveWindow(), iWindowID);
 		return;
 	}
 
@@ -153,6 +206,27 @@ void CGUIWindowManager::PreviousWindow()
 
 bool CGUIWindowManager::OnKey(int iKey)
 {
+	unsigned int topWindow = m_activeDialogs.size();
+
+	CGUIWindow* pDialog = NULL;
+
+	while (topWindow)
+	{
+		pDialog = m_activeDialogs[--topWindow];
+
+		if(pDialog)
+		{
+			if (pDialog->OnKey(iKey))
+				return true;
+		}
+
+		if (topWindow > m_activeDialogs.size())
+			topWindow = m_activeDialogs.size();
+	}
+
+	if(m_activeDialogs.size() != 0)
+		return true;
+
 	CGUIWindow* pWindow = GetWindow(GetActiveWindow());
 	
 	if (pWindow)
@@ -163,6 +237,24 @@ bool CGUIWindowManager::OnKey(int iKey)
 
 bool CGUIWindowManager::OnMessage(CGUIMessage message)
 {
+	unsigned int topWindow = m_activeDialogs.size();
+
+	CGUIWindow* pDialog = NULL;
+
+	while(topWindow)
+	{
+		pDialog = m_activeDialogs[--topWindow];
+
+		if(pDialog)
+		{
+			if (pDialog->OnMessage(message))
+				return true;;
+		}
+
+		if (topWindow > m_activeDialogs.size())
+			topWindow = m_activeDialogs.size();
+	}
+
 	CGUIWindow* pWindow = GetWindow(GetActiveWindow());
 
 	if(pWindow)
@@ -177,8 +269,22 @@ void CGUIWindowManager::Render()
 	
 	if (pWindow)
 	{
-//		pWindow->ClearBackground(); //TODO
+//		pWindow->ClearBackground(); // TODO
 		pWindow->Render();
+	}
+
+	RenderDialogs();
+}
+
+void CGUIWindowManager::RenderDialogs()
+{
+	// Iterate through and render if they're running
+	for (unsigned int i = 0; i < m_activeDialogs.size(); i++)
+	{
+		CGUIDialog *pDialog = (CGUIDialog *)m_activeDialogs[i];
+
+		if (pDialog->IsRunning())
+			pDialog->Render();
 	}
 }
 

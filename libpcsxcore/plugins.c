@@ -285,20 +285,22 @@ static int LoadGPUplugin(const char *GPUdll) {
 	GPU_dmaChain = &Plugin_GPUdmaChain;
 	GPU_updateLace = &Plugin_GPUupdateLace;
 	GPU_keypressed = &Plugin_GPUkeypressed;
-	GPU_displayText = &GPU__displayText;//Dummy - Not required
-	GPU_makeSnapshot = &GPU__makeSnapshot;//Dummy - Not required
 	GPU_freeze = &Plugin_GPUfreeze;
-	GPU_getScreenPic = &GPU__getScreenPic;//Dummy - Not required
-	GPU_showScreenPic = &GPU__showScreenPic;//Dummy - Not required
-	GPU_clearDynarec = &GPU__clearDynarec;//Dummy - Not required
 	GPU_hSync = &Plugin_GPUhSync;
 	GPU_vBlank = &Plugin_GPUvBlank;
 	GPU_visualVibration = &Plugin_GPUvisualVibration;
 	GPU_cursor = &Plugin_GPUcursor;
 	GPU_addVertex = &Plugin_GPUaddVertex;
 	GPU_configure = &Plugin_GPUconfigure;
-	GPU_test = &GPU__test; // dummy
-	GPU_about = &GPU__about; // dummy
+
+	// Dummy unrequired functions
+	GPU_displayText = &GPU__displayText;
+	GPU_makeSnapshot = &GPU__makeSnapshot;
+	GPU_getScreenPic = &GPU__getScreenPic;
+	GPU_showScreenPic = &GPU__showScreenPic;
+	GPU_clearDynarec = &GPU__clearDynarec;
+	GPU_test = &GPU__test;
+	GPU_about = &GPU__about;
 #endif //_HARDLINKED
 
 	return 0;
@@ -339,7 +341,6 @@ long CALLBACK CDR__setfilename(char*filename) { return 0; }
 #endif //_HARDLINKED
 
 static int LoadCDRplugin(const char *CDRdll) {
-
 	if (CDRdll == NULL) {
 		cdrIsoInit();
 		return 0;
@@ -373,7 +374,27 @@ static int LoadCDRplugin(const char *CDRdll) {
 	LoadCdrSym0(setfilename, "CDRsetfilename");
 	LoadCdrSymN(readCDDA, "CDRreadCDDA");
 	LoadCdrSymN(getTE, "CDRgetTE");
-#endif
+#else
+	CDR_init = &Plugin_CDRinit;
+	CDR_shutdown = &Plugin_CDRshutdown;
+	CDR_open = &Plugin_CDRopen;
+	CDR_close = &Plugin_CDRclose;
+	CDR_getTN = &Plugin_CDRgetTN;
+	CDR_getTD = &Plugin_CDRgetTD;
+	CDR_readTrack = &Plugin_CDRreadTrack;
+	CDR_getBuffer = &Plugin_CDRgetBuffer;
+	CDR_getBufferSub = &Plugin_CDRgetBufferSub;
+	CDR_play = &Plugin_CDRplay;
+	CDR_stop = &Plugin_CDRstop;
+	CDR_getStatus = &Plugin_CDRgetStatus;
+
+	// Dummy unrequired functions
+	CDR_getDriveLetter = CDR__getDriveLetter;
+	CDR_configure = CDR__configure;
+	CDR_test = CDR__test;
+	CDR_about = CDR__about;
+	CDR_setfilename = CDR__setfilename;
+#endif //_HARDLINKED
 
 	return 0;
 }
@@ -431,9 +452,6 @@ static int LoadSPUplugin(const char *SPUdll) {
 	SPU_shutdown = &Plugin_SPUshutdown;
 	SPU_open = &Plugin_SPUopen;
 	SPU_close = &Plugin_SPUclose;
-	SPU_configure = &SPU__configure; //Dummy - Not required
-	SPU_about = &SPU__about; //Dummy - Not required
-	SPU_about = &SPU__test; //Dummy - Not required
 	SPU_writeRegister = &Plugin_SPUwriteRegister;
 	SPU_readRegister = &Plugin_SPUreadRegister;
 	SPU_readDMA = &Plugin_SPUreadDMA;
@@ -445,6 +463,11 @@ static int LoadSPUplugin(const char *SPUdll) {
 	SPU_registerCallback = &Plugin_SPUregisterCallback;
 	SPU_async = &Plugin_SPUasync;
 	SPU_playCDDAchannel = &Plugin_SPUplayCDDAchannel;
+
+	// Dummy unrequired functions
+	SPU_configure = &SPU__configure;
+	SPU_about = &SPU__about;
+	SPU_about = &SPU__test;
 #endif //_HARDLINKED
 
 	return 0;
@@ -863,7 +886,7 @@ int LoadPlugins() {
 		sprintf(Plugin, "%s/%s", Config.PluginsDir, Config.Cdr);\
 		if (LoadCDRplugin(Plugin) == -1) return -1;
 #else
-		if (LoadCDRplugin("") == -1) return -1;
+		if (LoadCDRplugin("StaticCDPlugin") == -1) return -1;
 #endif
 	}
 
@@ -1006,7 +1029,7 @@ const char *GetIsoFile(void) {
 }
 
 boolean UsingIso(void) {
-	return (IsoFile[0] != '\0' || Config.Cdr[0] == '\0');
+	return (IsoFile[0] != '\0' /*|| Config.Cdr[0] == '\0'*/);
 }
 
 void SetCdOpenCaseTime(s64 time) {

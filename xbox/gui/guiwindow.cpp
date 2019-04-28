@@ -158,12 +158,15 @@ bool CGUIWindow::OnKey(int iKey)
 
 	// Default behaviour
 	if(iKey == K_XBOX_B)
-	{
-		g_XboxGUI.GetWindowManager().PreviousWindow();
-		return true;
-	}	
+		return OnBack();
 
 	return false;
+}
+
+bool CGUIWindow::OnBack()
+{
+	g_XboxGUI.GetWindowManager().PreviousWindow();
+	return true;
 }
 
 bool CGUIWindow::OnMessage(CGUIMessage message)

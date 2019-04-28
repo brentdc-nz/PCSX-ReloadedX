@@ -367,6 +367,9 @@
 						RelativePath=".\xbox\gui\guicontrolfactory.cpp">
 					</File>
 					<File
+						RelativePath=".\xbox\gui\guidialog.cpp">
+					</File>
+					<File
 						RelativePath=".\xbox\gui\guifont.cpp">
 					</File>
 					<File
@@ -439,6 +442,16 @@
 						</File>
 						<File
 							RelativePath=".\xbox\gui\windows\guiwindowhome.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="dialogs"
+						Filter="">
+						<File
+							RelativePath=".\xbox\gui\dialogs\guidialogcdbootfail.cpp">
+						</File>
+						<File
+							RelativePath=".\xbox\gui\dialogs\guidialogcdinfo.cpp">
 						</File>
 					</Filter>
 				</Filter>
@@ -617,6 +630,40 @@
 						RelativePath=".\plugins\PadSSSPSX\pin_PadSSSPSX.c">
 					</File>
 				</Filter>
+				<Filter
+					Name="cdrPeops"
+					Filter="">
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_cdda.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_cdr.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_cdrPeops.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_generic.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_ioctrl.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_ppf.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_read.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_scsi.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_sub.c">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_toc.c">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -626,9 +673,6 @@
 			<Filter
 				Name="xbox"
 				Filter="">
-				<File
-					RelativePath=".\xbox\glue\sys\mman.h">
-				</File>
 				<File
 					RelativePath=".\xbox\xbox.h">
 				</File>
@@ -703,6 +747,9 @@
 					</File>
 					<File
 						RelativePath=".\xbox\gui\guicontrolfactory.h">
+					</File>
+					<File
+						RelativePath=".\xbox\gui\guidialog.h">
 					</File>
 					<File
 						RelativePath=".\xbox\gui\guifont.h">
@@ -782,6 +829,16 @@
 							RelativePath=".\xbox\gui\windows\guiwindowhome.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="dialogs"
+						Filter="">
+						<File
+							RelativePath=".\xbox\gui\dialogs\guidialogcdbootfail.h">
+						</File>
+						<File
+							RelativePath=".\xbox\gui\dialogs\guidialogcdinfo.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="tinyxml"
@@ -792,6 +849,23 @@
 					<File
 						RelativePath=".\xbox\tinyxml\tinyxml.h">
 					</File>
+				</Filter>
+				<Filter
+					Name="glue"
+					Filter="">
+					<File
+						RelativePath=".\xbox\glue\stdint.h">
+					</File>
+					<Filter
+						Name="sys"
+						Filter="">
+						<File
+							RelativePath=".\xbox\glue\sys\mman.h">
+						</File>
+						<File
+							RelativePath=".\xbox\glue\sys\undocumented.h">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -983,6 +1057,52 @@
 					</File>
 					<File
 						RelativePath=".\plugins\PadSSSPSX\pin_PadSSSPSX.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="cdrPeops"
+					Filter="">
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_cdda.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_defines.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_export.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_externals.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_generic.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_ioctrl.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_ppf.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_read.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_scsi.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_scsidefs.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_stdafx.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_sub.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_toc.h">
+					</File>
+					<File
+						RelativePath=".\plugins\cdrPeops\pcd_wnaspi32.h">
 					</File>
 				</Filter>
 			</Filter>

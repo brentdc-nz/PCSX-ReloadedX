@@ -85,7 +85,6 @@ int LoadCoreConfig(PcsxConfig *Conf) {
 #ifdef _XBOX
 	strcpy(Config.Bios, XboxConfigs_GetString("core.biosfile"));
 	strcpy(Config.BiosDir, "bios\\"); //Leave hardcoded for now
-
 	Config.PsxAuto = 1;
 	
 	// TODO: Add the other core configs

@@ -30,6 +30,7 @@ extern "C" {
 #include "..\plugins\peopsxgl\pgl_export.h"
 #include "..\plugins\dfsound\psnd_export.h"
 #include "..\plugins\PadSSSPSX\pin_export.h"
+#include "..\plugins\cdrPeops\pcd_export.h"
 #endif
 
 #ifndef _WIN32

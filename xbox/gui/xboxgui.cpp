@@ -10,6 +10,10 @@
 #include "windows\guiwindowgameconfigs.h"
 #include "windows\guiwindowglobalconfigs.h"
 
+// Dialogs
+#include "dialogs\guidialogcdbootfail.h"
+#include "dialogs\guidialogcdinfo.h"
+
 CXboxGUI g_XboxGUI;
 
 CXboxGUI::CXboxGUI()
@@ -63,6 +67,10 @@ bool CXboxGUI::Initialize()
 	m_GUIWindowManager.AddWindow(new CGUIWindowGames(WINDOW_GAMES, "games.xml"));
 	m_GUIWindowManager.AddWindow(new CGUIWindowGlobalConfigs(WINDOW_GLOBAL_CONFIGS, "globalconfigs.xml"));
 	m_GUIWindowManager.AddWindow(new CGUIWindowGameConfigs(WINDOW_GAME_CONFIGS, "gameconfigs.xml"));
+
+	// Dialogs
+	m_GUIWindowManager.AddWindow(new CGUIDialogCDInfo(DIALOG_CDINFO, "dialogcdinfo.xml"));
+	m_GUIWindowManager.AddWindow(new CGUIDialogCDBootFail(DIALOG_CDBOOTFAIL, "dialogcdbootfail.xml"));
 
 	LoadSkin(g_XboxConfigs.GetString("gui.skin"));
 
@@ -213,6 +221,18 @@ bool CXboxGUI::Close()
 	// Release the background music if enabled
 	m_GUIBGMusic.Release();
 
+	// Delete all the old windows and dialogs
+
+	// Windows
+	m_GUIWindowManager.Delete(WINDOW_HOME);
+	m_GUIWindowManager.Delete(WINDOW_GAMES);
+	m_GUIWindowManager.Delete(WINDOW_GLOBAL_CONFIGS);
+	m_GUIWindowManager.Delete(WINDOW_GAME_CONFIGS);
+
+	// Dialogs
+	m_GUIWindowManager.Delete(DIALOG_CDBOOTFAIL);
+	m_GUIWindowManager.Delete(DIALOG_CDINFO);
+
 	if(g_XboxConfigs.GetBool("video.showfps") || g_XboxConfigs.GetBool("video.showfreememory"))
 		m_InGameOSD.Initialize();
 
@@ -298,6 +318,11 @@ int InitializeXBoxGUI()
 void RunXBoxGUI()
 {
 	g_XboxGUI.Run();
+}
+
+void XboxGUIActivateWindow(int iWindowID)
+{
+	g_XboxGUI.ActivateWindow(iWindowID);
 }
 
 int CloseXBoxGUI()
