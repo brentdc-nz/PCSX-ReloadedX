@@ -468,7 +468,7 @@ void SetSemiTrans(void)
 
 void SetScanTrans(void)                                // blending for scan lines
 {
- if(glBlendEquationEXTEx!=NULL) // NULL on XBox
+ if(glBlendEquationEXTEx!=NULL)
   {
    if(obm2==GL_ONE_MINUS_SRC_COLOR)
     glBlendEquationEXTEx(FUNC_ADD_EXT);
@@ -481,7 +481,7 @@ void SetScanTrans(void)                                // blending for scan line
 
 void SetScanTexTrans(void)                             // blending for scan mask texture
 {
- if(glBlendEquationEXTEx!=NULL) // NULL on XBox
+ if(glBlendEquationEXTEx!=NULL)
   {
    if(obm2==GL_ONE_MINUS_SRC_COLOR)
     glBlendEquationEXTEx(FUNC_ADD_EXT);

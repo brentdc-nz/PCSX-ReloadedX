@@ -72,7 +72,7 @@ private:
 	int m_iStartWindow;
 
 	std::string m_strMediaDir;
-	DWORD m_dwSkinTime;
+	DWORD m_dwSkinChangeTime;
 
 	int m_iCurrentResolution;
 	DWORD m_dwResChangeTime;
@@ -87,14 +87,14 @@ extern "C"
 {
 #endif
 
-int InitializeXBoxGUI();
-void RunXBoxGUI();
+int InitializeXboxGUI();
+void RunXboxGUI();
 void XboxGUIActivateWindow(int iWindowID);
-int CloseXBoxGUI();
+int CloseXboxGUI();
 void SetGUID3DDevice(LPDIRECT3DDEVICE8 pD3DDevice, D3DPRESENT_PARAMETERS PresentParams);
-int IsXBoxGUIActive();
+int IsXboxGUIActive();
 int IsHDEnabled();
-void SetXBoxGUIStartWindow(int iStartWindow);
+void SetXboxGUIStartWindow(int iStartWindow);
 void DrawXboxIngameOSD(char* strFps);
 
 #ifdef __cplusplus

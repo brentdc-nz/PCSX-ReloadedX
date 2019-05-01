@@ -38,7 +38,7 @@
 READTRACKFUNC   pReadTrackFunc=NULL;
 GETPTRFUNC      pGetPtrFunc=NULL;
 
-int iUseCaching=2;//3;
+int iUseCaching=2;
 int iTryAsync=0;
 int iBufSel=0;
 

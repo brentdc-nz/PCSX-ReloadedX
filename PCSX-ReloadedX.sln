@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PCSXRx", "PCSXRx.vcproj", "{1BFE1481-EE6C-4357-B3BF-723810014B63}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PCSX-ReloadedX", "PCSX-ReloadedX.vcproj", "{1BFE1481-EE6C-4357-B3BF-723810014B63}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject

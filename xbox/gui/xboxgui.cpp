@@ -21,7 +21,7 @@ CXboxGUI::CXboxGUI()
 	m_bGUIActive = false;
 	m_bGUIStatesCaptured = false;
 	m_bInGameStatesCaptured = false;
-	m_dwSkinTime = 0;
+	m_dwSkinChangeTime = 0;
 	m_dwResChangeTime = 0;
 	m_strMediaDir = "";
 	m_surfPreview = NULL;
@@ -107,7 +107,7 @@ void CXboxGUI::CheckGUIOptionChanges()
 		m_GUIBGMusic.StopMusic();
 
 	// Check if we need to load a new skin
-	if(m_dwSkinTime && GetTickCount() >= m_dwSkinTime)
+	if(m_dwSkinChangeTime && GetTickCount() >= m_dwSkinChangeTime)
 		ReloadSkin();
 
 	// Check if the resolution has changed
@@ -256,7 +256,7 @@ void CXboxGUI::SetStartWindow(int iStartWindow)
 
 void CXboxGUI::LoadSkin(std::string strSkinName)
 {
-	m_dwSkinTime = 0;
+	m_dwSkinChangeTime = 0;
 	
 	std::string strSkinRes;
 
@@ -305,17 +305,17 @@ void CXboxGUI::ReloadSkin()
 
 void CXboxGUI::DelaySkinLoad()
 {
-	m_dwSkinTime = GetTickCount() + 2000;
+	m_dwSkinChangeTime = GetTickCount() + 2000;
 }
 
 //==================================================================================
 
-int InitializeXBoxGUI()
+int InitializeXboxGUI()
 {
 	return g_XboxGUI.Initialize();
 }
 
-void RunXBoxGUI()
+void RunXboxGUI()
 {
 	g_XboxGUI.Run();
 }
@@ -325,7 +325,7 @@ void XboxGUIActivateWindow(int iWindowID)
 	g_XboxGUI.ActivateWindow(iWindowID);
 }
 
-int CloseXBoxGUI()
+int CloseXboxGUI()
 {
 	return g_XboxGUI.Close();
 }
@@ -340,12 +340,12 @@ int IsHDEnabled()
 	return g_XboxGUI.bIsHDEnabled();
 }
 
-int IsXBoxGUIActive()
+int IsXboxGUIActive()
 {
 	return g_XboxGUI.IsGUIActive();
 }
 
-void SetXBoxGUIStartWindow(int iStartWindow)
+void SetXboxGUIStartWindow(int iStartWindow)
 {
 	g_XboxGUI.SetStartWindow(iStartWindow);
 }

@@ -66,8 +66,8 @@ void SysClose(BOOL bShutdown)
 	EmuShutdown();
 	ReleasePlugins();
 
-	if(IsXBoxGUIActive())
-		CloseXBoxGUI();
+	if(IsXboxGUIActive())
+		CloseXboxGUI();
 
 	XboxConfigs_Clear();
 	
@@ -126,7 +126,7 @@ int RunCommand(int iCommand, const char* strIsoFile)
 	switch(iCommand)
 	{
 		case ID_FILE_RUNBIOS: // FIXME
-			CloseXBoxGUI();
+			CloseXboxGUI();
 
 			if (strcmp(Config.Bios, "HLE") == 0)
 			{
@@ -152,7 +152,7 @@ int RunCommand(int iCommand, const char* strIsoFile)
 		case ID_EMULATOR_RUN:
 			if(iPSXGameLoaded)
 			{
-				CloseXBoxGUI();
+				CloseXboxGUI();
 				OpenPlugins(/*hWnd*/);
 				iRunning = 1;
 //				CheatSearchBackupMemory(); // TODO
@@ -162,7 +162,7 @@ int RunCommand(int iCommand, const char* strIsoFile)
 			return FALSE;
 
 		case ID_FILE_RUN_CD:
-			CloseXBoxGUI();
+			CloseXboxGUI();
 			iPSXGameLoaded = TRUE;
 			SetIsoFile(NULL);
 			LoadPlugins();
@@ -201,7 +201,7 @@ int RunCommand(int iCommand, const char* strIsoFile)
 			return TRUE;
 	
 		case ID_FILE_RUN_ISO:
-			CloseXBoxGUI();
+			CloseXboxGUI();
 			iPSXGameLoaded = TRUE;
 			SetIsoFile(strIsoFile);
 
@@ -250,11 +250,11 @@ void SysRunGUI()
 		iRunning = 0;
 	}
 
-	InitializeXBoxGUI();
+	InitializeXboxGUI();
 
 	while(1)
 	{
-		RunXBoxGUI();
+		RunXboxGUI();
 		SysUpdate();
 
 		if(iStartWindow != WINDOW_INVALID)

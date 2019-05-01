@@ -65,7 +65,7 @@ bool CXboxConfigs::Load()
 
 	// Video Configs
 
-	AddInt("video.antialiasing", "Anti-Aliasing", 2, GAME_CFG);
+	AddInt("video.antialiasing", "Anti-Aliasing", MULTISAMPLE_2, GAME_CFG);
 	AddIntOption("video.antialiasing", "None", MULTISAMPLE_NONE);
 	AddIntOption("video.antialiasing", "2x", MULTISAMPLE_2);
 	AddIntOption("video.antialiasing", "4x", MULTISAMPLE_4);

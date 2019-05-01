@@ -122,11 +122,11 @@ void cSysInputXbox::UpdateGamepads()
 			{
 				m_dwSwitchTime = GetTickCount();
 
-				if(IsXBoxGUIActive())
+				if(IsXboxGUIActive())
 					RunCommand(ID_EMULATOR_RUN, "");
 				else
 				{
-//					SetXBoxGUIStartWindow(WINDOW_INGAME_CONFIG); // WIP
+//					SetXboxGUIStartWindow(WINDOW_INGAME_CONFIG); // WIP
 					SysRunGUI();
 				}
 			}
