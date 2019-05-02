@@ -9,8 +9,8 @@ public:
 	CGUIBGMusic();
 	~CGUIBGMusic();
 
-	void StartMusic();
-	void StopMusic();
+	void Start();
+	void Stop();
 	bool IsPlaying() { return m_bPlaying; };
 	void Release();
 

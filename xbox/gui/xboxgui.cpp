@@ -11,6 +11,7 @@
 #include "windows\guiwindowglobalconfigs.h"
 
 // Dialogs
+#include "dialogs\guidialogimageloadfail.h"
 #include "dialogs\guidialogcdbootfail.h"
 #include "dialogs\guidialogcdinfo.h"
 
@@ -70,6 +71,7 @@ bool CXboxGUI::Initialize()
 
 	// Dialogs
 	m_GUIWindowManager.AddWindow(new CGUIDialogCDInfo(DIALOG_CDINFO, "dialogcdinfo.xml"));
+	m_GUIWindowManager.AddWindow(new CGUIDialogImageLoadFail(DIALOG_IMAGELOADFAIL, "dialogimageloadfail.xml"));
 	m_GUIWindowManager.AddWindow(new CGUIDialogCDBootFail(DIALOG_CDBOOTFAIL, "dialogcdbootfail.xml"));
 
 	LoadSkin(g_XboxConfigs.GetString("gui.skin"));
@@ -102,9 +104,9 @@ void CXboxGUI::CheckGUIOptionChanges()
 {
 	// Check if we should be playing background music
 	if(g_XboxConfigs.GetBool("sound.guibgmusic") && !m_GUIBGMusic.IsPlaying())
-		m_GUIBGMusic.StartMusic();
+		m_GUIBGMusic.Start();
 	else if(!g_XboxConfigs.GetBool("sound.guibgmusic") && m_GUIBGMusic.IsPlaying())
-		m_GUIBGMusic.StopMusic();
+		m_GUIBGMusic.Stop();
 
 	// Check if we need to load a new skin
 	if(m_dwSkinChangeTime && GetTickCount() >= m_dwSkinChangeTime)

@@ -57,7 +57,7 @@ void CGUIBGMusic::Initialize()
 	m_bInitialized = true;
 }
 
-void CGUIBGMusic::StartMusic()
+void CGUIBGMusic::Start()
 {
 	if(!m_bInitialized)
 		Initialize();
@@ -70,7 +70,7 @@ void CGUIBGMusic::StartMusic()
 	m_bPlaying = true;
 }
 
-void CGUIBGMusic::StopMusic()
+void CGUIBGMusic::Stop()
 {
 	if(m_bInitialized)
 		m_pDXMusicPerformance->StopEx(NULL, 0, NULL);
@@ -84,7 +84,7 @@ void CGUIBGMusic::Release()
 		return;
 
 	if(IsPlaying())
-		StopMusic();
+		Stop();
 
 	if(m_pDXMusicLoader)
 		m_pDXMusicLoader->Release();

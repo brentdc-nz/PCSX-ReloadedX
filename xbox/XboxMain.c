@@ -107,18 +107,8 @@ void SysMessage(const char *fmt, ...)
 
 void SysUpdate()
 {
-#if 0
-	MEMORYSTATUS stat;
-#endif
-
 	if(CheckQuit())
 		SysClose(FALSE);
-
-#if 0
-	// Check Memory
-	GlobalMemoryStatus(&stat);
-	SysMessage("%4d mb free\n", stat.dwAvailPhys / (1024*1024));
-#endif
 }
 
 int RunCommand(int iCommand, const char* strIsoFile)
@@ -209,12 +199,16 @@ int RunCommand(int iCommand, const char* strIsoFile)
 			if (OpenPlugins() == -1)
 			{
 				ClosePlugins(FALSE);
+				iStartWindow = DIALOG_IMAGELOADFAIL;
+				SysRunGUI();
 				return TRUE;
 			}
 			if (CheckCdrom() == -1)
 			{
 				ClosePlugins(FALSE);
 				SysMessage(_("The CD does not appear to be a valid Playstation CD"));
+				iStartWindow = DIALOG_IMAGELOADFAIL;
+				SysRunGUI();				
 				return TRUE;
 			}
 
@@ -227,6 +221,8 @@ int RunCommand(int iCommand, const char* strIsoFile)
 				{
 					ClosePlugins(FALSE);
 					SysMessage(_("Could not load CD-ROM!"));
+					iStartWindow = DIALOG_IMAGELOADFAIL;
+					SysRunGUI();
 					return TRUE;
 				}
 			}

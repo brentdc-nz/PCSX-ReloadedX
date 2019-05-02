@@ -24,8 +24,8 @@
 // Commands
 #define ID_FILE_RUNBIOS 001
 #define ID_FILE_RUN_ISO 002
-#define ID_EMULATOR_RUN 003
-#define ID_FILE_RUN_CD  004
+#define ID_FILE_RUN_CD  003
+#define ID_EMULATOR_RUN 004
 
 extern char PcsxrDir[256];
 

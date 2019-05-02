@@ -10,6 +10,7 @@
 
 // Dialogs
 #define DIALOG_CDINFO           5
-#define DIALOG_CDBOOTFAIL       6
+#define DIALOG_IMAGELOADFAIL    6
+#define DIALOG_CDBOOTFAIL       7
 
 #endif //H_GUIWINDOWKEYS

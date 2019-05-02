@@ -453,6 +453,9 @@
 						<File
 							RelativePath=".\xbox\gui\dialogs\guidialogcdinfo.cpp">
 						</File>
+						<File
+							RelativePath=".\xbox\gui\dialogs\guidialogimageloadfail.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -837,6 +840,9 @@
 						</File>
 						<File
 							RelativePath=".\xbox\gui\dialogs\guidialogcdinfo.h">
+						</File>
+						<File
+							RelativePath=".\xbox\gui\dialogs\guidialogimageloadfail.cpp">
 						</File>
 					</Filter>
 				</Filter>
