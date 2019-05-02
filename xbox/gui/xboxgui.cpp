@@ -70,8 +70,8 @@ bool CXboxGUI::Initialize()
 	m_GUIWindowManager.AddWindow(new CGUIWindowGameConfigs(WINDOW_GAME_CONFIGS, "gameconfigs.xml"));
 
 	// Dialogs
-	m_GUIWindowManager.AddWindow(new CGUIDialogCDInfo(DIALOG_CDINFO, "dialogcdinfo.xml"));
 	m_GUIWindowManager.AddWindow(new CGUIDialogImageLoadFail(DIALOG_IMAGELOADFAIL, "dialogimageloadfail.xml"));
+	m_GUIWindowManager.AddWindow(new CGUIDialogCDInfo(DIALOG_CDINFO, "dialogcdinfo.xml"));
 	m_GUIWindowManager.AddWindow(new CGUIDialogCDBootFail(DIALOG_CDBOOTFAIL, "dialogcdbootfail.xml"));
 
 	LoadSkin(g_XboxConfigs.GetString("gui.skin"));
@@ -232,8 +232,9 @@ bool CXboxGUI::Close()
 	m_GUIWindowManager.Delete(WINDOW_GAME_CONFIGS);
 
 	// Dialogs
-	m_GUIWindowManager.Delete(DIALOG_CDBOOTFAIL);
+	m_GUIWindowManager.Delete(DIALOG_IMAGELOADFAIL);
 	m_GUIWindowManager.Delete(DIALOG_CDINFO);
+	m_GUIWindowManager.Delete(DIALOG_CDBOOTFAIL);
 
 	if(g_XboxConfigs.GetBool("video.showfps") || g_XboxConfigs.GetBool("video.showfreememory"))
 		m_InGameOSD.Initialize();
