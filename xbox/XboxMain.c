@@ -183,7 +183,7 @@ int RunCommand(int iCommand, const char* strIsoFile)
 				{
 					ClosePlugins(FALSE);
 					SysMessage(_("Could not load CD-ROM!"));
-					iStartWindow = DIALOG_IMAGELOADFAIL;
+					iStartWindow = DIALOG_CDBOOTFAIL;
 					SysRunGUI();
 					return TRUE;
 				}
