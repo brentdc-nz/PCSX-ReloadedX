@@ -151,7 +151,7 @@ int RunCommand(int iCommand, const char* strIsoFile)
 			}
 			return FALSE;
 
-		case ID_FILE_RUN_CD:
+		case ID_CD_RUN:
 			CloseXboxGUI();
 			iPSXGameLoaded = TRUE;
 			SetIsoFile(NULL);
@@ -177,15 +177,18 @@ int RunCommand(int iCommand, const char* strIsoFile)
 			// Auto-detect: region first, then rcnt reset
 			SysReset();
 
-			if (LoadCdrom() == -1)
+			if(!XboxConfigs_GetBool("core.showbiosscreen"))
 			{
-				ClosePlugins(FALSE);
-				iStartWindow = DIALOG_CDBOOTFAIL;
-				SysRunGUI();
-				SysMessage(_("Could not load CD-ROM!"));
-				return TRUE;
+				if (LoadCdrom() == -1)
+				{
+					ClosePlugins(FALSE);
+					SysMessage(_("Could not load CD-ROM!"));
+					iStartWindow = DIALOG_IMAGELOADFAIL;
+					SysRunGUI();
+					return TRUE;
+				}
 			}
-			
+
 			iRunning = 1;
 			psxCpu->Execute();
 			return TRUE;

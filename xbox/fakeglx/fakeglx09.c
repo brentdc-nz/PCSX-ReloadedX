@@ -93,6 +93,8 @@ D3DVIEWPORT8 d3d_Viewport;
 BOOL g_bScissorTest = FALSE;
 D3DRECT g_ScissorRect;
 
+int g_iCurrentTextureID = -1;
+
 // cache float size
 float g_fSize16 = sizeof (float) * 16;
 
@@ -143,8 +145,6 @@ typedef struct d3d_texture_s
 	struct d3d_texture_s *next;
 } d3d_texture_t;
 
-d3d_texture_t *d3d_Textures = NULL;
-
 typedef struct SubImage_s
 {
 	int iTextureNum;
@@ -154,7 +154,7 @@ typedef struct SubImage_s
 
 SubImage_t *SubImageCache = NULL;
 
-int d3d_TextureExtensionNumber = 1;
+unsigned int d3d_TextureExtensionNumber = 1;
 
 // opengl specified up to 32 TMUs, D3D only allows up to 8 stages
 // XBOX: Only 4 stages available, max value is therefore 3 -> see docs IDirect3DDevice8::SetTextureStageState
@@ -1528,6 +1528,170 @@ void glDisableClientState (GLenum array)
 	}
 }
 
+/*
+===================================================================================================================
+
+			TEXTURE HASHMAP
+
+===================================================================================================================
+*/
+
+#define HASHMAP_SIZE 500
+
+struct sNode
+{
+    int iKey;
+    d3d_texture_t* pValue;
+    struct sNode *pNext;
+};
+
+struct sTable
+{
+    int iSize;
+    struct sNode **pList;
+};
+
+struct sTable *g_pTable = NULL;
+
+void HMCreateTable()
+{
+	int i;
+
+    g_pTable = (struct sTable*)malloc(sizeof(struct sTable));
+    g_pTable->iSize = HASHMAP_SIZE;
+	
+    g_pTable->pList = (struct sNode**)malloc(sizeof(struct node*)*HASHMAP_SIZE);
+    
+    for(i = 0; i < HASHMAP_SIZE; i++)
+		g_pTable->pList[i] = NULL;
+}
+
+void HMDeleteTable()
+{
+    if(g_pTable) free(g_pTable);
+}
+
+int HMHashFunc(int iKey)
+{
+    if(iKey < 0)
+        return -(iKey % g_pTable->iSize);
+        
+    return iKey % g_pTable->iSize;
+}
+
+void HMInsertTexture(int iKey, d3d_texture_t* pTexture)
+{
+    int iPos = HMHashFunc(iKey);
+   
+	struct sNode *pList = g_pTable->pList[iPos];
+	struct sNode *pNewNode = NULL;
+	struct sNode *pTemp = pList;
+   
+	while(pTemp)
+    {
+        if(pTemp->iKey == iKey)
+        {
+            pTemp->pValue = pTexture;
+            return;
+        }
+        pTemp = pTemp->pNext;
+    }
+
+    pNewNode = (struct sNode*)malloc(sizeof(struct sNode));
+    pNewNode->iKey = iKey;
+    pNewNode->pValue = pTexture;
+    pNewNode->pNext = pList;
+
+    g_pTable->pList[iPos] = pNewNode;
+}
+
+d3d_texture_t* HMRemoveTexture(int iKey)
+{
+	int iPos = HMHashFunc(iKey);
+	d3d_texture_t* pTexture = NULL;
+	
+	if (g_pTable->pList[iPos] != NULL)
+	{       
+		struct sNode *pPrev = NULL;
+		struct sNode *pCurr = g_pTable->pList[iPos];
+
+		while(pCurr->pNext != NULL && pCurr->iKey != iKey)
+		{
+			pPrev = pCurr;
+			pCurr = pCurr->pNext;
+		}
+
+		if (pCurr->iKey == iKey)
+		{
+			struct sNode *pNextEntry = pCurr->pNext;
+			
+			if (pPrev)
+				pPrev->pNext = pNextEntry;
+			else g_pTable->pList[iPos] = pNextEntry;
+
+			pTexture = pCurr->pValue;
+			if(pCurr) free(pCurr);
+
+			return pTexture;
+		}
+		else if (pCurr->pNext != NULL)
+			return NULL; // Not found!
+	}
+
+	return NULL;
+}
+
+extern void DeleteSubImageCache(int iNum);
+
+void HMRemoveAllTextures()
+{
+	int i;
+
+	for(i = 0; i < g_pTable->iSize; i++)
+	{
+		struct sNode *pList = g_pTable->pList[i];
+		struct sNode *pTemp = pList;
+		
+		while(pTemp)
+		{
+			struct sNode *pCurr = pTemp;
+			pTemp = pTemp->pNext;
+
+			if(pCurr)
+			{
+				DeleteSubImageCache(pCurr->pValue->glnum);
+
+				// Release the texture
+				if(pCurr->pValue->teximg)
+				{
+					IDirect3DTexture8_Release(pCurr->pValue->teximg);
+					pCurr->pValue->teximg = NULL;
+				} 
+
+				free(pCurr);
+				pCurr = NULL;
+			}
+		}
+	}
+}
+
+d3d_texture_t* HMLookupTexture(int iKey)
+{
+    int iPos = HMHashFunc(iKey);
+    
+    struct sNode *pList = g_pTable->pList[iPos];
+    struct sNode *pTemp = pList;
+    
+    while(pTemp)
+    {
+        if(pTemp->iKey == iKey)
+            return pTemp->pValue;
+        
+        pTemp = pTemp->pNext;
+    }
+
+    return NULL;
+}
 
 /*
 ===================================================================================================================
@@ -1537,51 +1701,20 @@ void glDisableClientState (GLenum array)
 ===================================================================================================================
 */
 
-d3d_texture_t *D3D_AllocTexture (void)
+d3d_texture_t *D3D_AllocTexture (int iTextureID)
 {
-	d3d_texture_t *tex;
+	d3d_texture_t *pTex;
 
-	// find a free texture
-	for (tex = d3d_Textures; tex; tex = tex->next)
-	{
-		// if either of these are 0 (or NULL) we just reuse it
-		if (!tex->teximg)
-		{
-			D3D_InitTexture (tex);
-			return tex;
-		}
+	// Clear to 0 is required so that D3D_SAFE_RELEASE is valid
+	pTex = (d3d_texture_t *) malloc(sizeof(d3d_texture_t));
+	memset(pTex, 0, sizeof (d3d_texture_t));
 
-		if (!tex->glnum)
-		{
-			D3D_InitTexture (tex);
-			return tex;
-		}
-	}
+	D3D_InitTexture(pTex);
 
-	// nothing to reuse so create a new one
-	// clear to 0 is required so that D3D_SAFE_RELEASE is valid
-	tex = (d3d_texture_t *) malloc (sizeof (d3d_texture_t));
-	memset (tex, 0, sizeof (d3d_texture_t));
-	D3D_InitTexture (tex);
+	// Add to our hashmap
+	HMInsertTexture(iTextureID, pTex);
 
-	// link in
-	tex->next = d3d_Textures;
-	d3d_Textures = tex;
-
-	// return the new one
-	return tex;
-}
-
-
-void D3D_ReleaseTextures (void)
-{
-	d3d_texture_t *tex;
-
-	// explicitly NULL all textures and force texparams to dirty
-	for (tex = d3d_Textures; tex; tex = tex->next)
-	{
-		D3D_InitTexture (tex);
-	}
+	return pTex;
 }
 
 
@@ -2218,10 +2351,10 @@ void glTexParameterf (GLenum target, GLenum pname, GLfloat param)
 
 void glTexParameteri (GLenum target, GLenum pname, GLint param)
 {
-	if (target != GL_TEXTURE_2D) return;
-	if (!d3d_TMUs[d3d_CurrentTMU].boundtexture) return;
+	if(target != GL_TEXTURE_2D) return;
+	if(!d3d_TMUs[d3d_CurrentTMU].boundtexture) return;
 
-	glTexParameterf (target, pname, param);
+	glTexParameterf(target, pname, param);
 }
 
 SubImage_t* GetSubImageCache(int iTexNum)
@@ -2447,47 +2580,46 @@ void glBindTexture (GLenum target, GLuint texture)
 {
 	d3d_texture_t *tex;
 
-	if (target != GL_TEXTURE_2D) return;
+	if(g_iCurrentTextureID == texture) // Saves speed not binding the same texture
+		return;
 
-	// use no texture
+	if (target != GL_TEXTURE_2D)
+		return;
+
+	// Use no texture
 	if (texture == 0)
 	{
 		d3d_TMUs[d3d_CurrentTMU].boundtexture = NULL;
 		return;
 	}
 
-	// initially nothing
-	d3d_TMUs[d3d_CurrentTMU].boundtexture = NULL;
+	// Find the texture in the hashmap
+	tex = HMLookupTexture(texture);
 
-	// find a texture
-	// these searches could be optimised with another lookup table, but we don't know how big it would need to be
-	for (tex = d3d_Textures; tex; tex = tex->next)
+	if (tex->glnum == texture)
 	{
-		if (tex->glnum == texture)
-		{
-			d3d_TMUs[d3d_CurrentTMU].boundtexture = tex;
-			break;
-		}
+		d3d_TMUs[d3d_CurrentTMU].boundtexture = tex;
+		g_iCurrentTextureID = texture;
 	}
-
-	// did we find it?
+	
+	// Did we find it?
 	if (!d3d_TMUs[d3d_CurrentTMU].boundtexture)
 	{
-		// nope, so fill in a new one (this will make it work with texture_extension_number)
+		// Nope, so fill in a new one (this will make it work with texture_extension_number)
 		// (i don't know if the spec formally allows this but id seem to have gotten away with it...)
-		d3d_TMUs[d3d_CurrentTMU].boundtexture = D3D_AllocTexture ();
+		d3d_TMUs[d3d_CurrentTMU].boundtexture = D3D_AllocTexture(texture);
 
-		// reserve this slot
+		// Reserve this slot
 		d3d_TMUs[d3d_CurrentTMU].boundtexture->glnum = texture;
 
-		// ensure that it won't be reused
+		// Ensure that it won't be reused
 		if (texture > d3d_TextureExtensionNumber) d3d_TextureExtensionNumber = texture;
 	}
 
-	// this should never happen
+	// This should never happen
 	if (!d3d_TMUs[d3d_CurrentTMU].boundtexture) SysMessage ("glBindTexture: out of textures!!!");
 
-	// dirty the params
+	// Dirty the params
 	d3d_TMUs[d3d_CurrentTMU].texparamdirty = TRUE;
 }
 
@@ -2499,9 +2631,9 @@ void glGenTextures (GLsizei n, GLuint *textures)
 	for (i = 0; i < n; i++)
 	{
 		// either take a free slot or alloc a new one
-		d3d_texture_t *tex = D3D_AllocTexture ();
-
+		d3d_texture_t *tex = D3D_AllocTexture(d3d_TextureExtensionNumber);
 		tex->glnum = textures[i] = d3d_TextureExtensionNumber;
+
 		d3d_TextureExtensionNumber++;
 	}
 }
@@ -2510,18 +2642,30 @@ void glGenTextures (GLsizei n, GLuint *textures)
 void glDeleteTextures (GLsizei n, const GLuint *textures)
 {
 	int i;
-	d3d_texture_t *tex;
+	d3d_texture_t *pTex;
 
-	for (tex = d3d_Textures; tex; tex = tex->next)
+	for (i = 0; i < n; i++)
 	{
-		for (i = 0; i < n; i++)
+		pTex = HMLookupTexture(textures[i]);
+		
+		if(pTex)
 		{
-			if (tex->glnum == textures[i])
+			if (pTex->glnum == textures[i])
 			{
-				DeleteSubImageCache(tex->glnum);
+				DeleteSubImageCache(pTex->glnum);
 
-				D3D_InitTexture (tex);
-				break;
+				// Release the texture
+				if(pTex->teximg)
+				{
+					IDirect3DTexture8_Release(pTex->teximg);
+					pTex->teximg = NULL;
+				}  
+				
+				// Remove from the hashmap
+				HMRemoveTexture(pTex->glnum);
+				
+				// Free it now
+				free(pTex);
 			}
 		}
 	}
@@ -2781,7 +2925,6 @@ BOOL WINAPI wglMakeCurrent (HDC hdc, HGLRC hglrc)
 
 	// if we're making NULL current we just return TRUE
 
-   
 	if (!hdc || !hglrc)
 	{
 		// delete the device, the object and all other objects
@@ -2873,8 +3016,7 @@ BOOL WINAPI wglMakeCurrent (HDC hdc, HGLRC hglrc)
 
 	g_bScissorTest = FALSE;
 
-	// this also initializes the texture parameters for us
-	D3D_ReleaseTextures ();
+	HMRemoveAllTextures();
 
 	// initialize state
 	D3D_InitStates ();
@@ -2915,23 +3057,27 @@ HGLRC WINAPI wglCreateContext (HDC hdc)
 		return (HGLRC)0;
 	}
 
+	HMCreateTable();
+
 	return (HGLRC)1;
 }
 
 
 BOOL WINAPI wglDeleteContext (HGLRC hglrc)
 {
-	// release all textures
-	D3D_ReleaseTextures ();
+	// Release all textures
+	HMRemoveAllTextures();
 
-	// release device and object
+	HMDeleteTable();
+
+	// Release device and object
 	if(d3d_Device)
 		IDirect3DDevice8_Release(d3d_Device);
 
 	if(d3d_Object)
 		IDirect3D8_Release(d3d_Object);
 
-	// success
+	// Success
 	return TRUE;
 }
 

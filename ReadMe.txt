@@ -1,5 +1,5 @@
 //
-// PCSX-ReloadedX - Pre-Beta v0.6
+// PCSX-ReloadedX - Pre-Beta v0.7
 //
 
 This is a port of PCSX-Reloaded to Xbox using hardware rendered graphics.

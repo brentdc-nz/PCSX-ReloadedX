@@ -634,37 +634,37 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="cdrPeops"
+					Name="cdrpeops"
 					Filter="">
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_cdda.c">
+						RelativePath=".\plugins\cdrpeops\pcd_cdda.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_cdr.c">
+						RelativePath=".\plugins\cdrpeops\pcd_cdr.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_cdrPeops.c">
+						RelativePath=".\plugins\cdrpeops\pcd_cdrpeops.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_generic.c">
+						RelativePath=".\plugins\cdrpeops\pcd_generic.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_ioctrl.c">
+						RelativePath=".\plugins\cdrpeops\pcd_ioctrl.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_ppf.c">
+						RelativePath=".\plugins\cdrpeops\pcd_ppf.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_read.c">
+						RelativePath=".\plugins\cdrpeops\pcd_read.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_scsi.c">
+						RelativePath=".\plugins\cdrpeops\pcd_scsi.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_sub.c">
+						RelativePath=".\plugins\cdrpeops\pcd_sub.c">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_toc.c">
+						RelativePath=".\plugins\cdrpeops\pcd_toc.c">
 					</File>
 				</Filter>
 			</Filter>
@@ -1066,49 +1066,49 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="cdrPeops"
+					Name="cdrpeops"
 					Filter="">
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_cdda.h">
+						RelativePath=".\plugins\cdrpeops\pcd_cdda.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_defines.h">
+						RelativePath=".\plugins\cdrpeops\pcd_defines.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_export.h">
+						RelativePath=".\plugins\cdrpeops\pcd_export.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_externals.h">
+						RelativePath=".\plugins\cdrpeops\pcd_externals.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_generic.h">
+						RelativePath=".\plugins\cdrpeops\pcd_generic.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_ioctrl.h">
+						RelativePath=".\plugins\cdrpeops\pcd_ioctrl.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_ppf.h">
+						RelativePath=".\plugins\cdrpeops\pcd_ppf.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_read.h">
+						RelativePath=".\plugins\cdrpeops\pcd_read.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_scsi.h">
+						RelativePath=".\plugins\cdrpeops\pcd_scsi.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_scsidefs.h">
+						RelativePath=".\plugins\cdrpeops\pcd_scsidefs.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_stdafx.h">
+						RelativePath=".\plugins\cdrpeops\pcd_stdafx.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_sub.h">
+						RelativePath=".\plugins\cdrpeops\pcd_sub.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_toc.h">
+						RelativePath=".\plugins\cdrpeops\pcd_toc.h">
 					</File>
 					<File
-						RelativePath=".\plugins\cdrPeops\pcd_wnaspi32.h">
+						RelativePath=".\plugins\cdrpeops\pcd_wnaspi32.h">
 					</File>
 				</Filter>
 			</Filter>

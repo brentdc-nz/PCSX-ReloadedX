@@ -98,7 +98,7 @@ class TextureEntry
 public:
 	TextureEntry()
 	{
-		m_id = 0;
+		m_id = -1;
 		m_mipMap = 0;
 		m_format = D3DFMT_UNKNOWN;
 		m_internalFormat = 0;
@@ -108,8 +108,6 @@ public:
 		m_glTexParameter2DWrapS = GL_CLAMP;						//FakeGL 2009 sets it to WRAP -> CLAMP
 		m_glTexParameter2DWrapT = GL_CLAMP;
 		m_maxAnisotropy = 4.0;									//we also can bump up the anisotropy level to make things look nicer
-		
-		m_bReuse = false;
 	}
 	~TextureEntry()
 	{
@@ -130,9 +128,6 @@ public:
 	GLint m_glTexParameter2DWrapS;
 	GLint m_glTexParameter2DWrapT;
 	float m_maxAnisotropy;
-
-	TextureEntry *next;
-	bool m_bReuse;
 };
 
 class TextureTable 
@@ -142,7 +137,6 @@ public:
 	{
 		m_count = 0;
 		m_size = 0;
-		m_textures = NULL;
 
 		m_currentTexture = 0;
 		m_currentID = 0;
@@ -158,73 +152,33 @@ public:
 
 	void GenTextures (GLsizei n, GLuint *textures)
 	{
-		int i;
-
-		for (i = 0; i < n; i++)
+		for (int i = 0; i < n; i++)
 		{
-			// Either take a free slot or alloc a new one
-			TextureEntry* tex = D3D_AllocTexture ();
-
-			tex->m_id = textures[i] = g_iTextureId;
-
-			g_iTextureId++;
-		}
-	}	
-
-	TextureEntry* D3D_AllocTexture()
-	{
-		// find a free texture
-		for (TextureEntry* tex = m_textures; tex; tex = tex->next)
-		{
-			// Checked if flagged for reuse
-			if (tex->m_bReuse)
+			for(int j = 0; j < 4000; j++)
 			{
-				tex->m_bReuse = false;
-				return tex;
+				if(m_texturesArray[j].m_id == -1)
+				{
+					textures[i] = j;
+					break;
+				}
 			}
 		}
-
-		// nothing to reuse so create a new one
-		// clear to 0 is required so that D3D_SAFE_RELEASE is valid
-		tex = new TextureEntry;
-
-		// link in
-		tex->next = m_textures;
-		m_textures = tex;
-
-		// return the new one
-		return tex;
-	}
+	}	
 
 	void BindTexture(GLuint id)
 	{
 		m_currentID = id;
 
-		// initially nothing
-		m_currentTexture = NULL;
-
-		// find a texture
-		// these searches could be optimised with another lookup table, but we don't know how big it would need to be
-		for (TextureEntry* tex = m_textures; tex; tex = tex->next)
+		if(m_texturesArray[id].m_id != -1)
 		{
-			if (tex->m_id == id)
-			{
-				m_currentTexture = tex;
-				break;
-			}
+			m_currentTexture = &m_texturesArray[id];
+			return;
 		}
 
-		// did we find it?
-		if (!m_currentTexture)
-		{
-			// nope, so fill in a new one (this will make it work with texture_extension_number)
-			// (i don't know if the spec formally allows this but id seem to have gotten away with it...)
-			m_currentTexture = D3D_AllocTexture();
+		m_texturesArray[id].m_id = id;
+		m_texturesArray[id].m_mipMap = NULL;
 
-			// reserve this slot
-			m_currentTexture->m_id = id;
-			m_currentTexture->m_mipMap = NULL;
-		}
+		m_currentTexture = &m_texturesArray[id];
 
 		// this should never happen
 		if (!m_currentTexture) LocalDebugBreak(); //glBindTexture: out of textures!!!
@@ -232,34 +186,31 @@ public:
 
 	void ReleaseAllTextures() //Release when quitting the game
 	{
-		for (TextureEntry* tex = m_textures; tex; tex = tex->next)
+		for(int i = 0; i < 4000; i++)
 		{
-			if (tex)
+			if(m_texturesArray[i].m_id != -1)
 			{
-//MARTY FIXME
-//				tex->Release();
-//				tex->m_mipMap = NULL;
-//				delete tex
+				if(m_texturesArray[i].m_mipMap)
+				{
+					m_texturesArray[i].m_mipMap->Release();
+					m_texturesArray[i].m_mipMap = NULL;
+					m_texturesArray[i].m_id = -1;
+				}
 			}
 		}
 	}
 
 	void DeleteTextures(GLsizei n, const GLuint *textures)
 	{
-		for (TextureEntry* tex = m_textures; tex; tex = tex->next)
+		for (int i = 0; i < n; i++)
 		{
-			for (int i = 0; i < n; i++)
+			DeleteSubImageCache(textures[i]);
+
+			if(m_texturesArray[textures[i]].m_mipMap)
 			{
-				if (tex->m_id == textures[i])
-				{
-					DeleteSubImageCache(tex->m_id);
-
-					tex->m_bReuse = true;
-					tex->m_id = 0;
-					tex->Release();
-
-					break;
-				}
+				m_texturesArray[textures[i]].m_mipMap->Release();
+				m_texturesArray[textures[i]].m_mipMap = NULL;
+				m_texturesArray[textures[i]].m_id = -1;
 			}
 		}
 	}
@@ -384,13 +335,7 @@ public:
 		if ( m_currentID == id && m_currentTexture ) 
 			return m_currentTexture;
 		
-		for (TextureEntry* tex = m_textures; tex; tex = tex->next)
-		{
-			if (tex->m_id == id)
-				return tex;
-		}
-
-		return NULL;
+		return &m_texturesArray[id];
 	}
 
 	IDirect3DTexture8*  GetMipMap()
@@ -447,7 +392,7 @@ private:
 	DWORD m_count;
 	DWORD m_size;
 
-	TextureEntry* m_textures;
+	TextureEntry m_texturesArray[4000];
 	TextureEntry* m_currentTexture;
 
 	std::vector<subImage_s*> m_SubImageCache;

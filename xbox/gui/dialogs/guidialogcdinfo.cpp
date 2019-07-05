@@ -16,7 +16,7 @@ bool CGUIDialogCDInfo::OnKey(int iKey)
 	if(iKey == K_XBOX_A)
 	{
 		Close();
-		RunCommand(ID_FILE_RUN_CD, "");
+		RunCommand(ID_CD_RUN, "");
 		return true;
 	}
 
