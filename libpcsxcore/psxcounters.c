@@ -320,8 +320,9 @@ void psxRcntUpdate()
             EmuUpdate();
         }
     }
-
+#ifdef _DEBUG
     DebugVSync();
+#endif
 }
 
 /******************************************************************************/

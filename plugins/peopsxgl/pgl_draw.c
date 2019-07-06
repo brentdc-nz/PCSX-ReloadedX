@@ -48,18 +48,25 @@
 #ifdef OWNSCALE
 
 #define ST_FACSPRITE       255.99f
-#define ST_BFFACSPRITE     0.5f/256.0f
-#define ST_BFFACSPRITESORT 0.333f/256.0f
+//#define ST_BFFACSPRITE     0.5f/256.0f
+#define ST_BFFACSPRITE     0.001953125f
+//#define ST_BFFACSPRITESORT 0.333f/256.0f
+#define ST_BFFACSPRITESORT 0.00130078125f
 
-#define ST_OFFSET          0.5f/256.0f;
+//#define ST_OFFSET          0.5f/256.0f;
+#define ST_OFFSET          0.001953125f;
 
 #define ST_FAC             255.99f
-#define ST_BFFAC           0.5f/256.0f
-#define ST_BFFACSORT       0.333f/256.0f
+//#define ST_BFFAC           0.5f/256.0f
+#define ST_BFFAC           0.001953125f
+//#define ST_BFFACSORT       0.333f/256.0f
+#define ST_BFFACSORT       0.00130078125f
 
 #define ST_FACTRI          255.99f
-#define ST_BFFACTRI        0.5f/256.0f
-#define ST_BFFACTRISORT    0.333f/256.0f
+//#define ST_BFFACTRI        0.5f/256.0f
+#define ST_BFFACTRI        0.001953125f
+//#define ST_BFFACTRISORT    0.333f/256.0f
+#define ST_BFFACTRISORT    0.00130078125f
 
 #define ST_FACVRAMX        255.0f
 #define ST_FACVRAM         256.0f
@@ -607,7 +614,8 @@ int GLinitialize()
 #ifndef OWNSCALE
  glMatrixMode(GL_TEXTURE);                             // init psx tex sow and tow if not "ownscale"
  glLoadIdentity();
- glScalef(1.0f/255.99f,1.0f/255.99f,1.0f);             // geforce precision hack
+ //glScalef(1.0f/255.99f,1.0f/255.99f,1.0f);             // geforce precision hack
+ glScalef(0,0039064025938513223172780186726044f, 0,0039064025938513223172780186726044f, 1.0f);
 #endif 
 
  glMatrixMode(GL_PROJECTION);                          // init projection with psx resolution
@@ -1340,19 +1348,28 @@ void offsetBlk(void)
 
 void assignTextureVRAMWrite(void)
 {
+//fd: avoid divisions whereever possible, precalc everything and never mind the rounding errors
 #ifdef OWNSCALE
 
- vertex[0].sow=0.5f/ ST_FACVRAMX;
- vertex[0].tow=0.5f/ ST_FACVRAM;
+ //vertex[0].sow=0.5f/ ST_FACVRAMX;
+ vertex[0].sow=0.001960784313725490196078431372549f;
+ //vertex[0].tow=0.5f/ ST_FACVRAM;
+ vertex[0].tow=0.001953125f;
 
- vertex[1].sow=(float)gl_ux[1]/ ST_FACVRAMX;
- vertex[1].tow=0.5f/ ST_FACVRAM;
+ //vertex[1].sow=(float)gl_ux[1]/ ST_FACVRAMX;
+ vertex[1].sow=(float)gl_ux[1]*0.003921568627450980392156862745098f;
+ //vertex[1].tow=0.5f/ ST_FACVRAM;
+ vertex[1].tow=0.001953125f;
 
- vertex[2].sow=(float)gl_ux[2]/ ST_FACVRAMX;
- vertex[2].tow=(float)gl_vy[2]/ ST_FACVRAM;
+ //vertex[2].sow=(float)gl_ux[2]/ ST_FACVRAMX;
+ vertex[2].sow=(float)gl_ux[2]*0.003921568627450980392156862745098f;
+ //vertex[2].tow=(float)gl_vy[2]/ ST_FACVRAM;
+ vertex[2].tow=(float)gl_vy[2]*0.00390625f;
 
- vertex[3].sow=0.5f/ ST_FACVRAMX;
- vertex[3].tow=(float)gl_vy[3]/ ST_FACVRAM;
+ //vertex[3].sow=0.5f/ ST_FACVRAMX;
+ vertex[3].sow=0.001960784313725490196078431372549f;
+ //vertex[3].tow=(float)gl_vy[3]/ ST_FACVRAM;
+ vertex[3].tow=(float)gl_vy[3]*0.00390625f;
 
 #else
 
@@ -1427,10 +1444,14 @@ void assignTextureSprite(void)
   {
 #ifdef OWNSCALE
 
-   vertex[0].sow=vertex[3].sow=(float)gl_ux[0]     / ST_FACSPRITE;
-   vertex[1].sow=vertex[2].sow=(float)sSprite_ux2  / ST_FACSPRITE;
-   vertex[0].tow=vertex[1].tow=(float)gl_vy[0]     / ST_FACSPRITE;
-   vertex[2].tow=vertex[3].tow=(float)sSprite_vy2  / ST_FACSPRITE;
+   //vertex[0].sow=vertex[3].sow=(float)gl_ux[0]     / ST_FACSPRITE;
+   vertex[0].sow=vertex[3].sow=(float)gl_ux[0]*0.0039064025938513223172780186726044f;
+   //vertex[1].sow=vertex[2].sow=(float)sSprite_ux2  / ST_FACSPRITE;
+   vertex[1].sow=vertex[2].sow=(float)sSprite_ux2*0.0039064025938513223172780186726044f;
+   //vertex[0].tow=vertex[1].tow=(float)gl_vy[0]     / ST_FACSPRITE;
+   vertex[0].tow=vertex[1].tow=(float)gl_vy[0]*0.0039064025938513223172780186726044f;
+   //vertex[2].tow=vertex[3].tow=(float)sSprite_vy2  / ST_FACSPRITE;
+   vertex[2].tow=vertex[3].tow=(float)sSprite_vy2*0.0039064025938513223172780186726044f;
 
 #else
  
@@ -1485,13 +1506,13 @@ void assignTexture3(void)
  else
   {
 #ifdef OWNSCALE
-   vertex[0].sow=(float)gl_ux[0] / ST_FACTRI;
-   vertex[0].tow=(float)gl_vy[0] / ST_FACTRI;
-   vertex[1].sow=(float)gl_ux[1] / ST_FACTRI;
+   vertex[0].sow=(float)gl_ux[0]*0.0039064025938513223172780186726044f; // ST_FACTRI;
+   vertex[0].tow=(float)gl_vy[0]*0.0039064025938513223172780186726044f; // ST_FACTRI;
+   vertex[1].sow=(float)gl_ux[1]*0.0039064025938513223172780186726044f; // ST_FACTRI;
 
-   vertex[1].tow=(float)gl_vy[1] / ST_FACTRI;
-   vertex[2].sow=(float)gl_ux[2] / ST_FACTRI;
-   vertex[2].tow=(float)gl_vy[2] / ST_FACTRI;
+   vertex[1].tow=(float)gl_vy[1]*0.0039064025938513223172780186726044f; // ST_FACTRI;
+   vertex[2].sow=(float)gl_ux[2]*0.0039064025938513223172780186726044f; // ST_FACTRI;
+   vertex[2].tow=(float)gl_vy[2]*0.0039064025938513223172780186726044f; // ST_FACTRI;
 #else
    vertex[0].sow=gl_ux[0];
    vertex[0].tow=gl_vy[0];
@@ -1552,14 +1573,14 @@ void assignTexture4(void)
  else
   {
 #ifdef OWNSCALE
-   vertex[0].sow=(float)gl_ux[0] / ST_FAC;
-   vertex[0].tow=(float)gl_vy[0] / ST_FAC;
-   vertex[1].sow=(float)gl_ux[1] / ST_FAC;
-   vertex[1].tow=(float)gl_vy[1] / ST_FAC;
-   vertex[2].sow=(float)gl_ux[2] / ST_FAC;
-   vertex[2].tow=(float)gl_vy[2] / ST_FAC;
-   vertex[3].sow=(float)gl_ux[3] / ST_FAC;
-   vertex[3].tow=(float)gl_vy[3] / ST_FAC;
+   vertex[0].sow=(float)gl_ux[0]*0.0039064025938513223172780186726044f; // ST_FAC;
+   vertex[0].tow=(float)gl_vy[0]*0.0039064025938513223172780186726044f; // ST_FAC;
+   vertex[1].sow=(float)gl_ux[1]*0.0039064025938513223172780186726044f; // ST_FAC;
+   vertex[1].tow=(float)gl_vy[1]*0.0039064025938513223172780186726044f; // ST_FAC;
+   vertex[2].sow=(float)gl_ux[2]*0.0039064025938513223172780186726044f; // ST_FAC;
+   vertex[2].tow=(float)gl_vy[2]*0.0039064025938513223172780186726044f; // ST_FAC;
+   vertex[3].sow=(float)gl_ux[3]*0.0039064025938513223172780186726044f; // ST_FAC;
+   vertex[3].tow=(float)gl_vy[3]*0.0039064025938513223172780186726044f; // ST_FAC;
 #else
    vertex[0].sow=gl_ux[0];
    vertex[0].tow=gl_vy[0];
