@@ -72,7 +72,7 @@
 				Optimization="3"
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE"
+				PreprocessorDefinitions="NDEBUG;PROFILE;_XBOX;_HARDLINKED;_USEFAKEGLX_09;_MSC_VER_;__i386__"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="TRUE"
