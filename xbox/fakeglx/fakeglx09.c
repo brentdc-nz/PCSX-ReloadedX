@@ -1540,15 +1540,15 @@ void glDisableClientState (GLenum array)
 
 struct sNode
 {
-    int iKey;
-    d3d_texture_t* pValue;
-    struct sNode *pNext;
+	int iKey;
+	d3d_texture_t* pValue;
+	struct sNode *pNext;
 };
 
 struct sTable
 {
-    int iSize;
-    struct sNode **pList;
+	int iSize;
+	struct sNode **pList;
 };
 
 struct sTable *g_pTable = NULL;
@@ -1557,52 +1557,52 @@ void HMCreateTable()
 {
 	int i;
 
-    g_pTable = (struct sTable*)malloc(sizeof(struct sTable));
-    g_pTable->iSize = HASHMAP_SIZE;
+	g_pTable = (struct sTable*)malloc(sizeof(struct sTable));
+	g_pTable->iSize = HASHMAP_SIZE;
 	
-    g_pTable->pList = (struct sNode**)malloc(sizeof(struct node*)*HASHMAP_SIZE);
+	g_pTable->pList = (struct sNode**)malloc(sizeof(struct node*)*HASHMAP_SIZE);
     
-    for(i = 0; i < HASHMAP_SIZE; i++)
+	for(i = 0; i < HASHMAP_SIZE; i++)
 		g_pTable->pList[i] = NULL;
 }
 
 void HMDeleteTable()
 {
-    if(g_pTable) free(g_pTable);
+	if(g_pTable) free(g_pTable);
 }
 
 int HMHashFunc(int iKey)
 {
-    if(iKey < 0)
-        return -(iKey % g_pTable->iSize);
+	if(iKey < 0)
+		return -(iKey % g_pTable->iSize);
         
-    return iKey % g_pTable->iSize;
+	return iKey % g_pTable->iSize;
 }
 
 void HMInsertTexture(int iKey, d3d_texture_t* pTexture)
 {
-    int iPos = HMHashFunc(iKey);
+	int iPos = HMHashFunc(iKey);
    
 	struct sNode *pList = g_pTable->pList[iPos];
 	struct sNode *pNewNode = NULL;
 	struct sNode *pTemp = pList;
    
 	while(pTemp)
-    {
-        if(pTemp->iKey == iKey)
-        {
-            pTemp->pValue = pTexture;
-            return;
-        }
-        pTemp = pTemp->pNext;
-    }
+	{
+		if(pTemp->iKey == iKey)
+		{
+			pTemp->pValue = pTexture;
+			return;
+		}
+		pTemp = pTemp->pNext;
+	}
 
-    pNewNode = (struct sNode*)malloc(sizeof(struct sNode));
-    pNewNode->iKey = iKey;
-    pNewNode->pValue = pTexture;
-    pNewNode->pNext = pList;
+	pNewNode = (struct sNode*)malloc(sizeof(struct sNode));
+	pNewNode->iKey = iKey;
+	pNewNode->pValue = pTexture;
+	pNewNode->pNext = pList;
 
-    g_pTable->pList[iPos] = pNewNode;
+	g_pTable->pList[iPos] = pNewNode;
 }
 
 d3d_texture_t* HMRemoveTexture(int iKey)
@@ -1630,7 +1630,9 @@ d3d_texture_t* HMRemoveTexture(int iKey)
 			else g_pTable->pList[iPos] = pNextEntry;
 
 			pTexture = pCurr->pValue;
-			if(pCurr) free(pCurr);
+			
+			if(pCurr)
+				free(pCurr);
 
 			return pTexture;
 		}
@@ -1677,20 +1679,20 @@ void HMRemoveAllTextures()
 
 d3d_texture_t* HMLookupTexture(int iKey)
 {
-    int iPos = HMHashFunc(iKey);
+	int iPos = HMHashFunc(iKey);
     
-    struct sNode *pList = g_pTable->pList[iPos];
-    struct sNode *pTemp = pList;
+	struct sNode *pList = g_pTable->pList[iPos];
+	struct sNode *pTemp = pList;
     
-    while(pTemp)
-    {
-        if(pTemp->iKey == iKey)
-            return pTemp->pValue;
+	while(pTemp)
+	{
+		if(pTemp->iKey == iKey)
+			return pTemp->pValue;
         
-        pTemp = pTemp->pNext;
-    }
+		pTemp = pTemp->pNext;
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /*
