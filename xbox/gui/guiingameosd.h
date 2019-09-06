@@ -19,6 +19,7 @@ private:
 	unsigned int m_iFontSize;
 	CGUIFont* m_pDebugFont;
 	bool m_bAllocated;
+	MEMORYSTATUS m_stat;
 };
 
 #endif //H_CGUIINGAMEOSD

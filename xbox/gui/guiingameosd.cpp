@@ -75,11 +75,11 @@ void CGUIInGameOSD::Render(char* strFps)
 	// Check Memory
 	if(g_XboxConfigs.GetBool("video.showfreememory"))
 	{
-		MEMORYSTATUS stat;
-		GlobalMemoryStatus(&stat);
+//		MEMORYSTATUS stat; // Don't create each frame
+		GlobalMemoryStatus(&m_stat);
 		std::string strRamAvail = "Free Mem = ";
 
-		strRamAvail += CStringUtils::IntToString(stat.dwAvailPhys/(1024*1024)) + "MB";
+		strRamAvail += CStringUtils::IntToString(m_stat.dwAvailPhys/(1024*1024)) + "MB";
 
 		m_pDebugFont->Render(m_iPosX, m_iPosY*2, m_iFontSize, 0xffffff, strRamAvail.c_str());
 	}
