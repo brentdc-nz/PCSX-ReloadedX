@@ -22,6 +22,7 @@ public:
 	void SetAlignment(int iAlignment) { m_iAlignment = iAlignment; };
 	std::string GetFont() { return m_strFont; };
 	DWORD GetColor() { return m_dwColor; };
+	void SetColor(DWORD dwColor) { m_dwColor = dwColor; };
 	unsigned int GetSize() { return m_iSize; };
 
 private:

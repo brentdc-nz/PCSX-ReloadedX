@@ -168,6 +168,9 @@ typedef OBJECT_ATTRIBUTES *POBJECT_ATTRIBUTES;
 #define FILE_VALID_MAILSLOT_OPTION_FLAGS        0x00000032
 #define FILE_VALID_SET_FLAGS                    0x00000036
 
+#define IOCTL_CDROM_BASE                FILE_DEVICE_CD_ROM
+#define IOCTL_CDROM_CHECK_VERIFY        CTL_CODE(IOCTL_CDROM_BASE, 0x0200, METHOD_BUFFERED, FILE_READ_ACCESS)
+
 // NtQueryVolumeInformation / NtSetVolumeInformation stuff
 // Type of information to retrieve; FileFsSizeInformation and
 // FileFsDeviceInformation are the only ones confirmed to work.

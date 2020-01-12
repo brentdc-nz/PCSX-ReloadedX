@@ -43,7 +43,9 @@ void CGUITextureManager::LoadTexture(string strFileName)
 	D3DXCreateTextureFromFile(m_pd3dDevice, strPath.c_str(), &pD3DTexture);
 
 	CTexture* pGUITexture = new CTexture(strFileName, pD3DTexture);
-	m_vecTextures.push_back(pGUITexture);
+
+	if(pGUITexture)
+		m_vecTextures.push_back(pGUITexture);
 }
 
 LPDIRECT3DTEXTURE8 CGUITextureManager::GetTexture(std::string strFileName)

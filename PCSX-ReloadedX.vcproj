@@ -474,6 +474,17 @@
 						RelativePath=".\xbox\tinyxml\tinyxmlparser.cpp">
 					</File>
 				</Filter>
+				<Filter
+					Name="glue"
+					Filter="">
+					<Filter
+						Name="sys"
+						Filter="">
+						<File
+							RelativePath=".\xbox\glue\sys\xboxata.cpp">
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="libpcsxcore"
@@ -870,6 +881,9 @@
 						</File>
 						<File
 							RelativePath=".\xbox\glue\sys\undocumented.h">
+						</File>
+						<File
+							RelativePath=".\xbox\glue\sys\xboxata.h">
 						</File>
 					</Filter>
 				</Filter>

@@ -64,5 +64,5 @@ void CGUIDialog::DoModal(int iParentId, int iWindowID /*= WINDOW_INVALID */)
 
 	// Active this window...
 	CGUIMessage msg(GUI_MSG_WINDOW_INIT, WINDOW_INVALID, iWindowID);
-	OnMessage(msg);
+	g_XboxGUI.GetWindowManager().OnMessage(msg);
 }
