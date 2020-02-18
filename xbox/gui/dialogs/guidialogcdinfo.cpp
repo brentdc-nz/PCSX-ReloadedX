@@ -33,12 +33,12 @@ bool CGUIDialogCDInfo::OnMessage(CGUIMessage message)
 			CGUIControlLabel* pCtrlCompatRslt = NULL;
 			pCtrlCompatRslt = (CGUIControlLabel*)GetControl(CONTROL_LABEL_COMPATRESULT);
 
-			// Check if the drive is compatable
+			// Check if the drive is compatible
 			if(CheckDriveCompat(strDriveModel))
 			{
 				if(pCtrlCompatRslt)
 				{
-					pCtrlCompatRslt->SetLabel("Drive is IS compatable :-)");
+					pCtrlCompatRslt->SetLabel("Drive is IS compatible :-)");
 					pCtrlCompatRslt->SetColor(D3DCOLOR_XRGB(0, 255, 0));
 				}
 			}
@@ -46,7 +46,7 @@ bool CGUIDialogCDInfo::OnMessage(CGUIMessage message)
 			{
 				if(pCtrlCompatRslt)
 				{
-					pCtrlCompatRslt->SetLabel("Drive is NOT compatable :-(");
+					pCtrlCompatRslt->SetLabel("Drive is NOT compatible :-(");
 					pCtrlCompatRslt->SetColor(D3DCOLOR_XRGB(255, 0, 0));
 				}
 			}
@@ -97,7 +97,7 @@ bool CGUIDialogCDInfo::CheckDriveCompat(std::string &strDVDDrvModel)
 		// TODO: Check if comparing strings is our only option, 
 		//       or can get a enum from the kernel?
 
-		// Compatable drives
+		// Compatible drives
 
 		// Philips
 		if(!strDVDModel.compare(strDVDModel.length()-5, 5, "3235C"))
