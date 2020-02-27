@@ -480,6 +480,8 @@ static void LoadConfig (void) // TODO : Support Pad 2 as well
 
 	SetDefaultConfig();
 
+	// Mirror the config of Pad 1 for now until it's mappable via UI
+	// Gamepad #1
 	global.config.buttons[0][XboxConfigs_GetInt("controls.cross")] = PSX_PAD_CROSS;
 	global.config.buttons[0][XboxConfigs_GetInt("controls.circle")] = PSX_PAD_CIRCLE;
 	global.config.buttons[0][XboxConfigs_GetInt("controls.triangle")] = PSX_PAD_TRIANGLE;
@@ -496,6 +498,24 @@ static void LoadConfig (void) // TODO : Support Pad 2 as well
 	global.config.buttons[0][XboxConfigs_GetInt("controls.r2")] = PSX_PAD_R2;
 	global.config.buttons[0][XboxConfigs_GetInt("controls.l3")] = PSX_PAD_L3;
 	global.config.buttons[0][XboxConfigs_GetInt("controls.r3")] = PSX_PAD_R3;
+
+	// Gamepad #2
+	global.config.buttons[1][XboxConfigs_GetInt("controls.cross")] = PSX_PAD_CROSS;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.circle")] = PSX_PAD_CIRCLE;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.triangle")] = PSX_PAD_TRIANGLE;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.square")] = PSX_PAD_SQUARE;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.dpadup")] = PSX_PAD_UP;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.dpaddown")] = PSX_PAD_DOWN;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.dpadleft")] = PSX_PAD_LEFT;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.dpadright")] = PSX_PAD_RIGHT;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.select")] = PSX_PAD_SELECT;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.start")] = PSX_PAD_START;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.l1")] = PSX_PAD_L1;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.r1")] = PSX_PAD_R1;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.l2")] = PSX_PAD_L2;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.r2")] = PSX_PAD_R2;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.l3")] = PSX_PAD_L3;
+	global.config.buttons[1][XboxConfigs_GetInt("controls.r3")] = PSX_PAD_R3;
 
 	SetXBoxConfig(global.config);
 #endif
