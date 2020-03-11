@@ -25,6 +25,8 @@ CGUIControlList::CGUIControlList(int iControlID, int iWindowID, int iPosX, int i
 	m_iCursor = 0;
 	m_iOffset = 0;
 	m_iItemsPerPage = iItemsPerPage; // TODO: Calculate from item size and control height
+	m_iPage = 0;
+	m_iTotalPages = 0;
 	m_iLineSpacing = iLineSpacing;
 	m_pFont = g_XboxGUI.GetFontManager().GetFont(strFont);
 	m_iFontSize = iSize;
@@ -47,6 +49,9 @@ void CGUIControlList::Render()
 	if(m_vecItems.size() < (unsigned int)m_iItemsPerPage)
 		iSize = m_vecItems.size();
 
+	if((m_iCursor+m_iItemsPerPage) > (int)m_vecItems.size())
+		iSize = m_vecItems.size() - m_iOffset;
+
 	for(int i = m_iOffset; i < iSize+m_iOffset; i++)
 	{
 		CGUIListItem* pListItem = m_vecItems[i];
@@ -65,7 +70,8 @@ void CGUIControlList::Render()
 
 	// TODO: Don't send this each frame, only when updated
 	// Update our selection label
-	string strLabel = CStringUtils::IntToString(m_iCursor+1) + " of " + CStringUtils::IntToString(m_vecItems.size());
+	string strLabel = "Item " + CStringUtils::IntToString(m_iCursor+1) + "/" + CStringUtils::IntToString(m_vecItems.size());
+	strLabel += " - Page " + CStringUtils::IntToString(m_iPage+1) + "/" + CStringUtils::IntToString(m_iTotalPages+1);
 	CGUIMessage msg(GUI_MSG_SET_LABEL, GetID(), CONTROL_LEBEL_ITEM, strLabel);
 	g_XboxGUI.SendMessage(msg);
 
@@ -83,6 +89,7 @@ bool CGUIControlList::OnKey(int iKey)
 			if(m_iCursor >= m_iItemsPerPage+m_iOffset)
 				m_iOffset++;
 		}
+		m_iPage = m_iCursor / m_iItemsPerPage;
 		return true;
 	}
 
@@ -98,6 +105,29 @@ bool CGUIControlList::OnKey(int iKey)
 					m_iOffset--;
 			}
 		}
+		m_iPage = m_iCursor / m_iItemsPerPage;
+		return true;
+	}
+
+	if(iKey == K_XBOX_DPAD_LEFT)
+	{
+		if(m_iPage != 0)
+		{
+			m_iCursor = (m_iPage-1)* m_iItemsPerPage;
+			m_iOffset = m_iCursor;
+		}
+		m_iPage = m_iCursor / m_iItemsPerPage;
+		return true;
+	}
+
+	if(iKey == K_XBOX_DPAD_RIGHT)
+	{
+		if(m_iPage < m_iTotalPages)
+		{
+			m_iCursor = (m_iPage+1) * m_iItemsPerPage;
+			m_iOffset = m_iCursor;
+		}
+		m_iPage = m_iCursor / m_iItemsPerPage;
 		return true;
 	}
 
@@ -105,6 +135,7 @@ bool CGUIControlList::OnKey(int iKey)
 	{
 		CGUIMessage msg(GUI_MSG_CLICKED, GetParentID(), GetID());
 		g_XboxGUI.SendMessage(msg);
+		m_iPage = m_iCursor / m_iItemsPerPage;
 		return true;
 	}
 
@@ -114,6 +145,7 @@ bool CGUIControlList::OnKey(int iKey)
 bool CGUIControlList::AddItem(CGUIListItem* pItem)
 {
 	m_vecItems.push_back(pItem);
+	m_iTotalPages = m_vecItems.size() / m_iItemsPerPage;
 
 	return true;
 }

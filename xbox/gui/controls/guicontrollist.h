@@ -41,6 +41,8 @@ private:
     int m_iCursor;
 	int m_iOffset;
 	int m_iItemsPerPage;
+	int m_iPage;
+	int m_iTotalPages;
 	int m_iLineSpacing;
 	CGUIFont* m_pFont;
 	unsigned int m_iFontSize;
