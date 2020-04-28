@@ -19,6 +19,8 @@ private:
 	unsigned int m_iFontSize;
 	CGUIFont* m_pDebugFont;
 	bool m_bAllocated;
+	bool m_bShowFPS;
+	bool m_bShowFreeMemory;
 	MEMORYSTATUS m_stat;
 };
 

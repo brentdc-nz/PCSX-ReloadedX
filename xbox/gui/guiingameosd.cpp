@@ -10,6 +10,8 @@ CGUIInGameOSD::CGUIInGameOSD()
 	m_iPosY = 40;
 	m_iFontSize = 40;
 	m_pDebugFont = NULL;
+	m_bShowFPS = false;
+	m_bShowFreeMemory = false;
 	m_bAllocated = false;
 }
 
@@ -59,6 +61,9 @@ void CGUIInGameOSD::Initialize()
 		m_iFontSize /= 2;
 	}
 
+	m_bShowFPS = g_XboxConfigs.GetBool("video.showfps");
+	m_bShowFreeMemory = g_XboxConfigs.GetBool("video.showfreememory");
+
 	m_bAllocated = true;
 }
 
@@ -69,13 +74,12 @@ void CGUIInGameOSD::Render(char* strFps)
 		return;
 
 	// FPS
-	if(g_XboxConfigs.GetBool("video.showfps"))
+	if(m_bShowFPS)
 		m_pDebugFont->Render(m_iPosX, m_iPosY, m_iFontSize, 0xffffff, strFps);
 
 	// Check Memory
-	if(g_XboxConfigs.GetBool("video.showfreememory"))
+	if(m_bShowFreeMemory)
 	{
-//		MEMORYSTATUS stat; // Don't create each frame
 		GlobalMemoryStatus(&m_stat);
 		std::string strRamAvail = "Free Mem = ";
 
