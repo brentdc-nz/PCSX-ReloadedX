@@ -19,7 +19,7 @@
 #ifndef __XBOX_H
 #define __XBOX_H
 
-#define XBOX_VERSION "Pre-Beta v0.7"
+#define XBOX_VERSION "Beta v1.0"
 
 // Commands
 #define ID_FILE_RUNBIOS 001
